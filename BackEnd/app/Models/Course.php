@@ -21,7 +21,7 @@ class Course extends Model
 
     public function materials()
     {
-        return $this->belongsToMany(Material::class, 'course_material');
+        return $this->hasMany(Material::class);
     }
 
     public function quizzes()

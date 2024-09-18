@@ -16,6 +16,6 @@ class Material extends Model
     // Relationships
     public function courses()
     {
-        return $this->belongsToMany(Course::class, 'course_material');
+        return $this->belongsTo(Course::class);
     }
 }

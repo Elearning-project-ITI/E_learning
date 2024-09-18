@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\User;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class WishlistController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +42,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +50,7 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +58,7 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(string $id)
     {
         //
     }
