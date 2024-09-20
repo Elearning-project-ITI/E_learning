@@ -11,6 +11,9 @@ use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\ChoiceController;
 use App\Http\Controllers\Api\MaterialController;
 use App\Http\Controllers\Api\QuizUserController;
+use App\Http\Controllers\Api\QuestionController;
+
+
 
 
 
@@ -40,5 +43,9 @@ Route::resource('choice', ChoiceController::class);
 Route::resource('material', MaterialController::class);
 
 Route::resource('quizuser', QuizUserController::class);
+
+Route::resource('question', QuestionController::class);
+
+Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']); // Get questions by Quiz ID
 
 
