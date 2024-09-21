@@ -13,6 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         //
+        $middleware->group('web', [
+
+        \App\Http\Middleware\CheckApiPrefix::class,
+    ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
