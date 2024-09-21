@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Remove the nullable constraint from the image field
-            $table->string('image');
+            $table->string('image')->nullable();
     
             // Add a unique constraint to the name field
-            $table->string('name')->unique()->change();
+            //$table->string('name')->unique()->change();
         });
     }
 
@@ -25,7 +25,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        $table->string('image')->nullable();
-        $table->dropUnique(['name']);
+        // $table->string('image')->nullable();
+        // $table->dropUnique(['name']);
     }
 };
