@@ -46,6 +46,6 @@ Route::resource('quizuser', QuizUserController::class);
 
 Route::resource('question', QuestionController::class);
 
-Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']); // Get questions by Quiz ID
+Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']);
 
 

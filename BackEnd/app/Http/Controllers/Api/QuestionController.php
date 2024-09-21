@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Question;
+use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -112,6 +113,34 @@ class QuestionController extends Controller
         'data' => $questions
     ], 200);
     }
+
+    // public function getByQuiz($quiz_id)
+    // {
+    // // Fetch the quiz along with its associated questions
+    // $quiz = Quiz::with('questions')->find($quiz_id);
+
+    // // Check if the quiz exists
+    // if (!$quiz) {
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'Quiz not found'
+    //     ], 404);
+    // }
+
+    // // Check if the quiz has questions
+    // if ($quiz->questions->isEmpty()) {
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'No questions found for this quiz'
+    //     ], 404);
+    // }
+
+    // // Return the quiz and its questions
+    // return response()->json([
+    //     'success' => true,
+    //     'data' => $quiz // This will include both the quiz and its questions
+    // ], 200);
+    // }
 
     /**
      * Show the form for editing the specified resource.
