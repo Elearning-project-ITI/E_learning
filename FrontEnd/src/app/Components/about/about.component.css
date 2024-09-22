@@ -1,0 +1,87 @@
+#hero {
+    background-color: #ece9f8;
+    padding: 100px 0px;
+    border-radius: 30px;
+  }
+  
+  .text-content h3 {
+    font-size: 3em;
+    color: #53328c;
+  }
+  
+  .highlight {
+    background-color: #8967B3;
+    padding: 5px;
+    border-radius: 40%;
+    color: white;
+  }
+  
+  .img-fluid {
+    border: 5px solid #ece9f8;
+  }
+  
+  .about-info {
+    color: #150a29;
+  }
+  
+  .about-info h2 {
+    position: relative;
+  }
+  
+  .about-info h2::before {
+    content: "";
+    width: 10%;
+    height: 3px;
+    background-image: linear-gradient(to right, #8967B3, #CB80AB);
+    position: absolute;
+    left: 45%;
+    top: 100%;
+  }
+  
+  .btn-about {
+    background-color: #8967B3;
+  }
+  
+  .btn-about:hover {
+    background-color: #ac87da;
+  }
+  
+  .captionimg img:hover {
+    animation-name: move;
+    animation-duration: 0.4s;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+  
+  @keyframes move {
+    0% {
+      transform: rotate(2deg) translate(1px);
+    }
+    20% {
+      transform: rotate(0deg) translate(-2px);
+    }
+    40% {
+      transform: rotate(-1deg) translate(0px);
+    }
+    60% {
+      transform: rotate(0deg) translate(1px);
+    }
+    80% {
+      transform: rotate(2deg) translate(-2px);
+    }
+    100% {
+      transform: rotate(0deg) translate(0px);
+    }
+  }
+  
+  @media screen and (max-width: 990px) {
+    .about-info h2::before {
+      content: "";
+      width: 20%;
+      height: 3px;
+      background-image: linear-gradient(to right, #8967B3, #CB80AB);
+      position: absolute;
+      left: 40%;
+      top: 100%;
+    }
+  }
