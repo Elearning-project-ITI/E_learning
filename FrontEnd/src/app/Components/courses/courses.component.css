@@ -1,0 +1,64 @@
+#displaycourses .card{
+    background-color: transparent;
+    color:white;
+}
+#displaycourses .card p{
+    color:#62686e;
+}
+#displaycourses .card-body span{
+    background-color: #32383e;
+}
+
+#displaycourses .card {
+   filter: grayscale(0.8);
+   transition: all 0.5s;
+}
+#displaycourses .card:hover{
+    filter: grayscale(0); 
+    transform: scale(1.05);
+}
+.card-title{
+ color:#ac87da ;  
+}
+.badge{
+    background-color:#ac87da ;
+}
+.cousre-info{
+    color:#150a29;
+}
+.cousre-info h2{
+    position: relative;
+}
+.cousre-info h2::before{
+content: "";
+ width:16%;
+height: 3px;
+background-image: linear-gradient(to right,#8967B3,#CB80AB);
+position: absolute;
+left:42%;
+top:100%; 
+
+}
+.heart-icon{
+    color:#8967B3  !important;
+}
+.btn-about {
+    background-color: #8967B3;
+  }
+  
+  .btn-about:hover {
+    background-color: #ac87da;
+  }
+@media screen and (max-width :990px){
+    
+    .cousre-info h2::before{
+        content: "";
+         width:28%;
+        height: 3px;
+        background-image: linear-gradient(to right,#8967B3,#CB80AB);
+        position: absolute;
+        left:35%;
+        top:100%; 
+        
+        }
+    }
