@@ -3,12 +3,19 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Policies\UserPolicy;
+use Illuminate\Support\Facades\Gate;
+
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
      * Register any application services.
      */
+    protected $policies = [
+        User::class => UserPolicy::class,
+    ];
     public function register(): void
     {
         //
@@ -20,5 +27,6 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         //
+      
     }
 }
