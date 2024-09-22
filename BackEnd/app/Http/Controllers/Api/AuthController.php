@@ -18,14 +18,13 @@ use App\Http\Requests\LoginUserRequest;
 class AuthController extends BaseController
 {
     // Register a new user
-    public function register(Request $request){
-        if ($request->bearerToken()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'You are already logged in. Please log out first.'
-            ], 403);
-        }
-        
+    public function register(StoreUserRequest $request){
+        // if ($request->bearerToken()) {
+        //     return response()->json([
+        //         'success' => false,
+        //         'message' => 'You are already logged in. Please log out first.'
+        //     ], 403);
+        // }
     //     $messages = [
     //         'name.required' => 'The name field is required.',
     //         'email.required' => 'The email field is required.',
@@ -84,10 +83,10 @@ class AuthController extends BaseController
         $token['token'] = $user->createToken('auth_token')->plainTextToken;
         $token['name'] =  $user->name;
 
-        return response()->json([
+        return $this->sendResponse(
              $token,
             'User register successfully.',
-        ]);
+        );
     }
 
     // Login a user
@@ -125,9 +124,9 @@ class AuthController extends BaseController
         // Generate a new token
         $token = $user->createToken('auth_token')->plainTextToken;
        
-        return response()->json([
+        $response = [
             'access_token' => $token,
-            'message' => $message ,
+            'message' => $message,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
@@ -135,7 +134,9 @@ class AuthController extends BaseController
                 'role' => $user->role,
                 'image' => asset('storage/' . $user->image),  // Include the image URL
             ],
-        ]);
+        ];
+
+        return $this->sendResponse($response, $message);
     }
 
     // Logout user
@@ -144,9 +145,8 @@ class AuthController extends BaseController
         
         $request->user()->currentAccessToken()->delete();
 
-        return response()->json([
-            'message' => 'Successfully logged out',
-        ]);
+        return $this->sendResponse([], 'Successfully logged out.');
+
     }
 
     // Get the authenticated user
@@ -158,19 +158,18 @@ class AuthController extends BaseController
 
         if (!$user) {
             // Return an error response if the email is not found
-            return response()->json(['message' => 'Email does not exist in our records.'], 404);
-        }
+            return $this->sendError('Email does not exist in our records.', [], 404);        }
         // Send password reset link
         $status = Password::sendResetLink(
             $request->only('email')
         );
         // Return appropriate response based on the status
         if ($status === Password::RESET_LINK_SENT) {
-            return response()->json(['message' => 'Password reset link sent!'], 200);
+            return $this->sendResponse([], 'Password reset link sent!');
         } elseif ($status === Password::RESET_THROTTLED) {
-            return response()->json(['message' => 'Too many requests. Please wait before retrying.'], 429);
+            return $this->sendResponse([], 'Password reset link sent!');
         } else {
-            return response()->json(['message' => 'Unable to send reset link to the provided email.'], 400);
+            return $this->sendError('Unable to send reset link to the provided email.', [], 400);
         } 
     }
     public function resetPassword(Request $request)
@@ -193,8 +192,12 @@ class AuthController extends BaseController
         );
 
         // Return appropriate response based on the status
-        return $status === Password::PASSWORD_RESET
-            ? response()->json(['message' => 'Password reset successful!'], 200)
-            : response()->json(['message' => 'Invalid token or email.'], 400);
+        if ($status === Password::PASSWORD_RESET) {
+            return $this->sendResponse([], 'Password reset successful!');
+        } else {
+            return $this->sendError('Invalid token or email.', [], 400);
+        }
     }
+
+
 }
