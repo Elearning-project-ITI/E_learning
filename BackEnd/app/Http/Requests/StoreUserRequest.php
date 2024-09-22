@@ -3,9 +3,17 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-
+use App\Http\Controllers\Api\BaseController;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 class StoreUserRequest extends FormRequest
 {
+    protected $baseController;
+
+    public function __construct(BaseController $baseController)
+    {
+        $this->baseController = $baseController;
+    } 
     /**
      * Determine if the user is authorized to make this request.
      */
@@ -38,5 +46,11 @@ class StoreUserRequest extends FormRequest
             'password.confirmed' => 'The password confirmation does not match.',
             'phone.regex' => 'The phone number must be between 10 and 15 digits.'
         ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            $this->baseController->sendError($validator->errors()->all())
+        );
     }
 }
