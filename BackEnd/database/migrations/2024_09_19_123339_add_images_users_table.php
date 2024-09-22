@@ -16,7 +16,11 @@ return new class extends Migration
             $table->string('image')->nullable();
     
             // Add a unique constraint to the name field
+<<<<<<< HEAD
             // $table->string('name')->unique()->change();
+=======
+            //$table->string('name')->unique()->change();
+>>>>>>> main
         });
     }
 

@@ -57,9 +57,9 @@ Route::get('/user', function (Request $request) {
 
 // Route::resource('quizuser', QuizUserController::class);
 
-Route::resource('question', QuestionController::class);
+// Route::resource('question', QuestionController::class);
 
-Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']);
+// Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']);
 
 
     // CRUD for resources, only accessible to authenticated users
