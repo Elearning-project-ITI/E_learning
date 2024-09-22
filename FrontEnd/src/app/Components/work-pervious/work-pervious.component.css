@@ -1,0 +1,56 @@
+#work{
+    margin-top: 100px;
+}
+.work-cars{
+    background-image: linear-gradient(rgba(79, 12, 82, 0.541),rgba(79, 12, 82, 0.541)),url('/images/background-image2.jpg');
+    background-size: 100% 100%;
+    background-position: center center;
+    background-attachment: fixed;
+    
+    
+ }
+ .work-cars .containerworkcars{
+    margin-block: 105px;
+ }
+
+   .carousel-indicators{
+       position: static;
+   } 
+   .carousel-indicators [data-bs-target]{
+       width:13px;
+       height: 13px;
+       border-radius: 50%;
+       background-color: #fff;
+       
+   }
+   .work{
+    width:200px;
+    height: 200px;
+   }
+   .about-info{
+    color:#150a29;
+}
+.about-info h2{
+    position: relative;
+}
+.about-info h2::before{
+content: "";
+ width:16%;
+height: 3px;
+background-image: linear-gradient(to right,#8967B3,#CB80AB);
+position: absolute;
+left:42%;
+top:100%; 
+
+}
+@media screen and (max-width: 990px) {
+    .about-info h2::before {
+      content: "";
+      width: 28%;
+      height: 3px;
+      background-image: linear-gradient(to right, #8967B3, #CB80AB);
+      position: absolute;
+      left: 35%;
+      top: 100%;
+    }
+  }
