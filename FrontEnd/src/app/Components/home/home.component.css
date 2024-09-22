@@ -1,0 +1,41 @@
+
+#home {
+    background-size: cover;
+    background-position: center center;
+    overflow: auto;
+    animation: slideshow 10s infinite alternate ease-in-out;
+}
+
+@keyframes slideshow {
+    0% {
+        background-image: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('/images/background\ image.jpg');
+    }
+    50% {
+        background-image: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('/images/background-image2.jpg');
+    }
+    100% {
+        background-image: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('/images/bground-image3.jpg');
+    }
+}
+
+#home .home-info {
+    margin-top: 230px;
+}
+
+#home .home-info h1 {
+    font-size: 50px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#home .home-info span {
+    font-size: 60px;
+}
+
+.home-icons i {
+    color: #6439FF;
+}
+
+.home-icons i:hover {
+    background-color: #6439FF !important;
+    color: white;
+}

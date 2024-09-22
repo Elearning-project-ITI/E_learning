@@ -18,13 +18,14 @@ use App\Http\Requests\LoginUserRequest;
 class AuthController extends BaseController
 {
     // Register a new user
-    public function register(StoreUserRequest $request){
+    public function register(Request $request){
         if ($request->bearerToken()) {
             return response()->json([
                 'success' => false,
                 'message' => 'You are already logged in. Please log out first.'
             ], 403);
         }
+        
     //     $messages = [
     //         'name.required' => 'The name field is required.',
     //         'email.required' => 'The email field is required.',
@@ -55,7 +56,11 @@ class AuthController extends BaseController
         // }
         // Create user
         // dd("hellooooooo");
+        // if($request->hasFile('image')){
+        //     // return ["message"=>$request->all()];
+        // }
         $imagePath = $request->file('image')->store('user_images', 'public');
+
 
         $user = User::create([
             'name' => $request->name,
@@ -64,10 +69,12 @@ class AuthController extends BaseController
             'phone' =>$request->phone,
             'role' => 'student', // Default role as 'student'
             'image' => $imagePath,  // Image is required and stored
-
-
+            
+            
         ]);
+                    // return ["message"=>$request->all()];
 
+ return ["message"=>$request->all()];
         // Generate token
         $token['token'] = $user->createToken('auth_token')->plainTextToken;
         $token['name'] =  $user->name;

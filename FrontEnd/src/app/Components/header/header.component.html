@@ -1,0 +1,46 @@
+<div class="loading">
+  <div class="loader"></div>
+</div>
+<nav id="navbar-example" class="navbar pt-4 pb-2 fixed-top navbar-expand-lg  navbar-dark shadow">
+    <div class="container">
+      <a class="navbar-brand fw-bold"  [routerLinkActiveOptions]="{exact:true}" routerLinkActive="active"  routerLink="/"><img src="images/Hk logo gray-01.png" alt="logo" class="logo"> </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+       
+        <i class="fa-solid fa-bars text-white "></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav m-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link fw-bold active" aria-current="page" routerLinkActive="active" routerLink="/home">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link "  routerLinkActive="active" routerLink="/about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link "  routerLinkActive="active" routerLink="/courses">Courses
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " routerLinkActive="active" routerLink="/workPervious">Work Previous</a>
+          </li>
+          <!-- <li class="nav-item">
+            <a class="nav-link " routerLinkActive="active" routerLink="/contact">Contact</a>
+          </li> -->
+          
+          </ul>
+          <form class="d-flex formsearch" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search.." aria-label="Search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          
+          </form>
+
+          
+            <a class="nav-link "  routerLink="/register"><button class="btn btn-register">Register</button></a>
+            <a class="nav-link "  routerLink="/login"><button class="btn btn-register">Login</button></a>
+           
+      </div>
+      <a class="nav-link "  routerLink="/profile"><img src="images/registeration.jpg" class="imgprofile rounded-circle"  alt="imgprofile"/></a>
+      <i routerLink="/notification" class="fa-regular fa-bell fs-4 notifiaction" (click)="togglenotify($event)" ></i>
+    </div>
+ 
+  </nav>
