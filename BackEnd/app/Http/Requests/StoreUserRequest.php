@@ -26,7 +26,7 @@ class StoreUserRequest extends FormRequest
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'phone' => 'required|regex:/^[0-9]{10,15}$/',
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',  // Image is now required
+            //'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',  // Image is now required
             //'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',  // Image is now required
 
         ];

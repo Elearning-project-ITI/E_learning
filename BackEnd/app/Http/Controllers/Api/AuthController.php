@@ -56,11 +56,16 @@ class AuthController extends BaseController
         // }
         // Create user
         // dd("hellooooooo");
-        // if($request->hasFile('image')){
-        //     // return ["message"=>$request->all()];
-        // }
-        $imagePath = $request->file('image')->store('user_images', 'public');
 
+        // if ($request->hasFile('image')) {
+        //     $image = $request->file('image');
+        //     $imagePath = $image->store('images', 'user_images');
+        // }
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('user_images', 'public');
+        }
 
         $user = User::create([
             'name' => $request->name,
