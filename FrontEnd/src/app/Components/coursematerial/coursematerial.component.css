@@ -1,0 +1,51 @@
+.btn-link{
+    text-decoration: none !important;
+    color:rgb(128, 67, 185);
+
+}
+/* .btn1{
+    background-color: rgb(182, 157, 206) !important;
+    color:white !important;
+} */
+.btn1:focus,.btn1:hover{
+    background-color: rgb(201, 184, 218) !important;
+    color:white !important;
+}
+.btn1{
+    background-color: rgb(186, 167, 206);
+    color:white;
+    margin-top: 2px;
+}
+.card {
+    animation: fadeInUp 0.5s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.btn-primary {
+    margin-right: 5px;
+    background-color: #73079e;
+    border: none;
+    transition: all 0.3s ease;
+    margin-bottom: 3px;
+}
+
+.btn-primary:hover {
+    background-color:  #b94fce !important;
+    border-color: #b94fce !important;
+}
+h2{
+    
+    color:#360549 ;
+    font-style: italic;
+  
+}

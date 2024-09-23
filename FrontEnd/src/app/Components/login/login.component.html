@@ -1,34 +1,47 @@
 <section id="login">
-    <div class="container">
-        <div class="row">
-          <div class="col-md-6">
-            <div class="home-head  ">
-            <h2>HK <span class="b"> Login </span> <span class="c"> System </span></h2>
-          </div>
-          </div>
+  <div class="container">
+      <div class="row">
         <div class="col-md-6">
-            <div class="registration-form shadow-lg p-4 rounded ">
-                <div class="head-sign my-5">
-                    <h2 class=" ">Login E-Learning</h2>
-                    <h2 class=" ">Login E-Learning</h2>
+          <div class="home-head  ">
+          <h2>HK <span class="b"> Login </span> <span class="c"> System </span></h2>
+        </div>
+        </div>
+      <div class="col-md-6">
+          <div class="registration-form shadow-lg p-4 rounded ">
+              <div class="head-sign my-5">
+                  <h2 class=" ">Login E-Learning</h2>
+                  <h2 class=" ">Login E-Learning</h2>
+                </div>
+              <form id="registrationForm" [formGroup]="loginForm" (ngSubmit)="handleForm()">
+                              
+                <div class="form-group">
+                  <label for="email"><i class="fa-solid fa-envelope"></i> Email address</label>
+                  <input type="email" formControlName="email" class="form-control" id="email" placeholder="Enter your Email" required>
+                  <div class="alert alert-danger" *ngIf="loginForm.get('email')?.errors && loginForm.get('email')?.touched">
+                    <p *ngIf="loginForm.get('email')?.getError('required')">Email is Required</p>
+                    <p *ngIf="loginForm.get('email')?.getError('email')">Email is not valid</p>
                   </div>
-                <form id="registrationForm">
-                                
-                    <div class="form-group">
-                        <label for="email"><i class="fa-solid fa-envelope"></i> Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter your email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="password"><i class="fa-solid fa-lock"></i> Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
-                    </div>
-                    
-                    <button id="loginbtn" class="btn btn1 w-100 my-3">login</button>
-                    <p class="text-login">Don’t have an account? <a class="aLogin" routerLink="/register"> Sign Up</a></p>
-                </form>
-                <div id="message" class="mt-3 text-center"></div>
-            </div>
-    </div>
+                </div>
+                <div class="form-group">
+                  <label for="password"> <i class="fa-solid fa-lock"></i> Password</label>
+                  <input type="password" formControlName="password" class="form-control" id="password" placeholder="Enter your password" required>
+                  <div class="alert alert-danger" *ngIf="loginForm.get('password')?.errors && loginForm.get('password')?.touched">
+                    <p *ngIf="loginForm.get('password')?.getError('required')">Password is Required</p>
+                    <p *ngIf="loginForm.get('password')?.getError('minlength')">Password must be at least 8 characters long</p>
+                  </div>
+                </div>
+                  
+                <button [disabled]="loginForm.invalid" type="submit" class="btn btn-primary btn-block mt-2">
+                  <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>
+                  Login</button>
+            <p *ngIf="msgError" class="alert alert-danger">{{msgError}}</p>
+            <p class="text-login"><a class="aLogin" routerLink="/forgetpassword">Forget Password</a></p>
+            <p class="text-login mt-2 mt-2"><a class="aLogin" routerLink="/resetpassword">Reset Password</a></p>
+                  <p class="text-login">Don’t have an account? <a class="aLogin" routerLink="/register"> Sign Up</a></p>
+              </form>
+              <div id="message" class="mt-3 text-center"></div>
+          </div>
   </div>
-       </div>
-    </section>
+</div>
+     </div>
+  </section>

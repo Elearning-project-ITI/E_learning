@@ -2,6 +2,8 @@ import { AuthService } from './../../shared/services/auth.service';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-registeration',
@@ -11,7 +13,10 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./registeration.component.css']
 })
 export class RegisterationComponent {
-  constructor(private _AuthService: AuthService) { }
+  constructor(private _AuthService: AuthService ,private _Router:Router) { }
+  msgErrorEmail:string='';
+  msgErrorName:string='';
+  isLoading:boolean=false;
 
   registerForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
@@ -32,7 +37,9 @@ export class RegisterationComponent {
   }
 
   handleForm() {
+    
     if (this.registerForm.valid && this.selectedFile) {
+      this.isLoading=true;
       const formData = new FormData();
       formData.append('name', this.registerForm.get('name')?.value);
       formData.append('email', this.registerForm.get('email')?.value);
@@ -43,11 +50,18 @@ export class RegisterationComponent {
 
       this._AuthService.setRegister(formData).subscribe({
         next: (response) => {
-          console.log(response);
-          console.log(formData.get('image'));  
+          if (response.success){
+            this.isLoading=false;
+             this._Router.navigate(['/login'])
+          }
+          // console.log(response);
+          // console.log(formData.get('image'));  
         },
-        error: (err) => {
-          console.log(err);
+        error: (err:HttpErrorResponse) => {
+          this.isLoading=false;
+          this.msgErrorEmail=err.error.errors.email;
+          this.msgErrorName=err.error.errors.name;
+          console.log(err.error);
         }
       });
     }
