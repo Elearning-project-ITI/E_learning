@@ -80,11 +80,11 @@ class AuthController extends BaseController
 
  return ["message"=>$request->all()];
         // Generate token
-        $token['token'] = $user->createToken('auth_token')->plainTextToken;
+        //$token['token'] = $user->createToken('auth_token')->plainTextToken;
         $token['name'] =  $user->name;
 
         return $this->sendResponse(
-             $token,
+        [],
             'User register successfully.',
         );
     }
@@ -105,10 +105,10 @@ class AuthController extends BaseController
     
         // Attempt to authenticate the user
         if (!Auth::attempt($request->only('email', 'password'))) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Invalid email or password.',
-            ], 401);
+            
+            return $this->sendError('Invalid email or password.', [], 401);        
+
+            
         }
     
         // Get the authenticated user
