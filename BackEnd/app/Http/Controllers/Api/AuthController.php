@@ -54,7 +54,17 @@ class AuthController extends BaseController
         //     return $this->sendError('Validation Error.', $validator->errors());       
         // }
         // Create user
-        $imagePath = $request->file('image')->store('user_images', 'public');
+        // dd("hellooooooo");
+
+        // if ($request->hasFile('image')) {
+        //     $image = $request->file('image');
+        //     $imagePath = $image->store('images', 'user_images');
+        // }
+
+        $imagePath = null;
+        if ($request->hasFile('image')) {
+            $imagePath = $request->file('image')->store('user_images', 'public');
+        }
 
         $user = User::create([
             'name' => $request->name,
@@ -63,10 +73,12 @@ class AuthController extends BaseController
             'phone' =>$request->phone,
             'role' => 'student', // Default role as 'student'
             'image' => $imagePath,  // Image is required and stored
-
-
+            
+            
         ]);
+                    // return ["message"=>$request->all()];
 
+ return ["message"=>$request->all()];
         // Generate token
         //$token['token'] = $user->createToken('auth_token')->plainTextToken;
         $token['name'] =  $user->name;

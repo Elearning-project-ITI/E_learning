@@ -9,12 +9,14 @@ class Material extends Model
 {
     use HasFactory;
 
+    protected $table = 'material'; // Ensure this matches the table name in the database
+
     protected $fillable = [
-        'url', 'type',
+        'url', 'type', 'course_id',
     ];
 
     // Relationships
-    public function courses()
+    public function course()
     {
         return $this->belongsTo(Course::class);
     }

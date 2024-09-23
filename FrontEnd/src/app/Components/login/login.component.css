@@ -1,0 +1,215 @@
+#login{
+    background-color: #f0f2f5;
+    font-family: 'Arial', sans-serif;
+    background-image:linear-gradient(rgba(0, 0, 0, 0.521),rgba(0,0,0, 0.521)) ,url('/images/registeration.jpg') ; /* Replace with your image URL */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    height:90vh;
+    margin-top:100px;
+}
+
+.registration-form {
+    background: rgba(219, 216, 216, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+    animation: fadeInUp 1s ease-out;
+    box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+    margin-top:100px
+}
+
+.registration-form h2 {
+    color: #9b26df;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    animation: bounceIn 1s ease;
+}
+
+.btn-primary {
+    background-color: #73079e;
+    border-color: #780999;
+}
+
+.btn-primary:focus ,.btn-primary:hover{
+    background-color: #b94fce !important;
+    border-color: #b94fce !important;
+}
+
+.btn-active {
+    background-color: #4b0a70 !important; 
+    border-color: #2e033f !important;
+    color: #fff;
+}
+
+.form-control {
+    border-radius: 0.25rem;
+}
+
+#message {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+
+
+
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+@media (max-width: 767px) {
+    .registration-form {
+        padding: 1.5rem;
+    }
+}
+
+
+/* //////////////////////////////////// */
+
+.home-head{
+    margin-top:75px;
+}
+.home-head h2 {
+    font-size: 130px;
+    color:#FAE7F3;
+ 
+}
+.home-head h2 .b{
+color:#FFD1E3;
+margin-left: 20px;
+}
+.home-head h2 .c{
+    color:#5D3587;
+    margin-left: 30px;
+}
+.btn1{
+    background-image:linear-gradient(to right,rgba(185, 172, 185, 0.521),rgba(37, 22, 172, 0.521)) ; 
+    transition: all 1s;
+    color:#DBCC95
+}
+.btn1:hover{
+    color:#CD8D7A;
+    background-color:rgba(137, 22, 172, 0.521) ;
+    
+}
+
+@media screen and (max-width :1200px){
+    .home-head h2 {
+        font-size: 130px;
+        color:#EAECCC
+     
+    }
+   } 
+
+@media screen and (max-width :992px){
+    .home-head h2 {
+        font-size: 100px;
+        color:#EAECCC
+     
+    }
+  }
+
+  @media screen and (max-width :768px){
+    .home-head h2 {
+        font-size: 50px;
+        color:#4d0850;
+       
+    }
+    .home-head h2 .b{
+        color:#4d0850;
+        margin-left: 0px;
+        }
+        .home-head h2 .c{
+            color:#4d0850;
+            margin-left: 0px;
+        
+        }
+        .home-head{
+            margin-top:50px;
+        }
+  }
+   @media screen and (max-width :576px){
+    .home-head h2 {
+        font-size: 50px;
+     
+    }
+  }
+  .text-login{
+  
+    font-weight: bold;
+
+  }
+  .aLogin{
+    font-style: italic;
+    text-decoration: none !important;
+    color: #b94fce !important;
+  }
+  label{
+    font-style: italic;
+    font-weight: bold;
+    color:#460b5e;
+
+}
+
+.form-control:focus{
+    border-color: #b94fce !important;
+    /* box-shadow: none !important; */
+    box-shadow: 0 0 0 .2rem #d3b5da;
+}
+
+.head-sign{
+    position: relative;
+    
+    
+    
+}
+.head-sign h2{
+    position:absolute;
+    left:60px;
+    bottom: -10px;
+    transform:translateX(-50%,-50%);
+    font-size: 1.8em;
+}
+.head-sign h2:nth-child(1){
+    color:transparent;
+    -webkit-text-stroke: 1px #b94fce;
+
+}
+.head-sign h2:nth-child(2){
+    color:03a9f4;
+    -webkit-text-stroke: 2px #b94fce;
+    animation: animate 3s ease-in-out infinite;
+
+}
+@keyframes animate
+{
+    0%,100%{
+        clip-path: polygon(2% 43%, 15% 38%, 26% 44%, 42% 53%, 58% 54%, 74% 53%, 87% 47%, 95% 44%, 100% 43%, 99% 100%, 0% 100%);    
+    }
+    50%{
+        clip-path: polygon(0 57%, 17% 63%, 33% 63%, 47% 56%, 60% 45%, 77% 31%, 90% 28%, 100% 28%, 99% 100%, 0% 100%);
+        
+    }
+}

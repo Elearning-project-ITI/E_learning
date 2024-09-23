@@ -11,6 +11,10 @@ use App\Http\Controllers\Api\QuizController;
 use App\Http\Controllers\Api\ChoiceController;
 use App\Http\Controllers\Api\MaterialController;
 use App\Http\Controllers\Api\QuizUserController;
+use App\Http\Controllers\Api\QuestionController;
+
+
+
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Api\PaymentController;
@@ -28,6 +32,37 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     Route::post('/logout', [AuthController::class, 'logout']);
    // Route::get('/user', [AuthController::class, 'user']);
+
+
+
+
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
+
+
+// Route::resource('user', UserController::class);
+
+// Route::resource('course', CourseController::class);
+
+// Route::resource('wishlist', WishlistController::class);
+
+// Route::resource('review', ReviewController::class);
+
+// Route::resource('notification', NotificationController::class);
+
+// Route::resource('quiz', QuizController::class);
+
+// Route::resource('choice', ChoiceController::class);
+
+// Route::resource('material', MaterialController::class);
+
+// Route::resource('quizuser', QuizUserController::class);
+
+// Route::resource('question', QuestionController::class);
+
+// Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']);
+
 
     // CRUD for resources, only accessible to authenticated users
     Route::resource('user', UserController::class);
