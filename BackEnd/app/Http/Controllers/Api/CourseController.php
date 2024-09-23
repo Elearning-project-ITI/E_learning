@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage;
+
 
 class CourseController extends Controller
 {
@@ -61,11 +63,7 @@ class CourseController extends Controller
         ], 422);
     }
 
-    // if ($request->hasFile('image')) {
-    //     $image = $request->file('image');
-    //     $imageName = time().'.'.$image->getClientOriginalExtension(); 
-    //     $image->storeAs('public/course_images', $imageName); 
-    // }
+   
 
     $imagePath = null;
         if ($request->hasFile('image')) {
@@ -107,11 +105,74 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
+    public function update(Request $request, $id)
+{
+   
+    $course = Course::find($id);
+
+   
+    if (!$course) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Course not found!',
+        ], 404); 
+    }
+
+   
+    $validator = Validator::make($request->all(), [
+        'name' => 'sometimes|required|string|max:255',
+        'price' => 'sometimes|required|numeric',
+        'image' => 'sometimes|file|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image
+        'date' => 'sometimes|required|date',
+    ]);
+
+    
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors(),
+        ], 422); 
+    }
+
+   
+    if ($request->hasFile('image')) {
+        
+        if ($course->image && Storage::exists($course->image)) {
+            Storage::delete($course->image);
+        }
+
+        
+        $imagePath = $request->file('image')->store('courses_images', 'public');
+        $course->image = $imagePath; 
+    }
+
+   
+    $course->update(array_merge(
+        $validator->validated(),
+        ['image' => $course->image] 
+    ));
+
+   
+    return response()->json([
+        'success' => true,
+        'message' => 'Course updated successfully!',
+        'data' => [
+            'id' => $course->id,
+            'name' => $course->name,
+            'price' => $course->price,
+            'image' => $course->image, 
+            'date' => $course->date,
+            'created_at' => $course->created_at,
+            'updated_at' => $course->updated_at,
+        ]
+    ], 200); 
+}
+
     // public function update(Request $request, $id)
     // {
     //     // Find the course by ID
     //     $course = Course::find($id);
-
+    
     //     // Check if the course exists
     //     if (!$course) {
     //         return response()->json([
@@ -119,15 +180,15 @@ class CourseController extends Controller
     //             'message' => 'Course not found!',
     //         ], 404); // Return 404 error if the course is not found
     //     }
-
+    
     //     // Manual validation for updating course
     //     $validator = Validator::make($request->all(), [
     //         'name' => 'sometimes|required|string|max:255',
     //         'price' => 'sometimes|required|numeric',
-    //         'image' => 'sometimes|required|string|max:255', // Handle file uploads separately if needed
+    //         'image' => 'sometimes|file|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image
     //         'date' => 'sometimes|required|date',
     //     ]);
-
+    
     //     // Check if validation fails
     //     if ($validator->fails()) {
     //         return response()->json([
@@ -135,64 +196,89 @@ class CourseController extends Controller
     //             'errors' => $validator->errors(),
     //         ], 422); // HTTP 422 for validation errors
     //     }
-
-    //     // Update the course with the validated data (either full or partial update)
-    //     $course->update($validator->validated());
-
+    
+    //     // Handle file upload if a new image is provided
+    //     if ($request->hasFile('image')) {
+    //         // Delete the old image if it exists
+    //         if ($course->image && Storage::exists($course->image)) {
+    //             Storage::delete($course->image);
+    //         }
+    
+    //         // Save new image and update the 'image' field
+    //         $imagePath = $request->file('image')->store('courses_images', 'public');
+    //         $course->image = $imagePath; // Update the image path
+    //     }
+    
+    //     // Update the course with the validated data
+    //     $course->update(array_merge(
+    //         $validator->validated(),
+    //         ['image' => $course->image] // Ensure the image path is also updated
+    //     ));
+    
     //     // Return a JSON response indicating success
     //     return response()->json([
     //         'success' => true,
     //         'message' => 'Course updated successfully!',
-    //         'data' => $course,
+    //         'data' => [
+    //             'id' => $course->id,
+    //             'name' => $course->name,
+    //             'price' => $course->price,
+    //             'image' => $course->image ? asset('storage/' . $course->image) : null, // Return full URL of the image
+    //             'date' => $course->date,
+    //             'created_at' => $course->created_at,
+    //             'updated_at' => $course->updated_at,
+    //         ]
     //     ], 200); // HTTP 200 for OK
     // }
+    
 
+   
 
-    public function update(Request $request, $id)
-{
-    $course = Course::find($id);
+//     public function update(Request $request, $id)
+// {
+//     $course = Course::find($id);
 
-    if (!$course) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Course not found!',
-        ], 404);
-    }
+//     if (!$course) {
+//         return response()->json([
+//             'success' => false,
+//             'message' => 'Course not found!',
+//         ], 404);
+//     }
 
-    $validator = Validator::make($request->all(), [
-        'name' => 'sometimes|required|string|max:255',
-        'price' => 'sometimes|required|numeric',
-        'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'date' => 'sometimes|required|date',
-    ]);
+//     $validator = Validator::make($request->all(), [
+//         'name' => 'sometimes|required|string|max:255',
+//         'price' => 'sometimes|required|numeric',
+//         'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif|max:2048',
+//         'date' => 'sometimes|required|date',
+//     ]);
 
-    if ($validator->fails()) {
-        return response()->json([
-            'success' => false,
-            'errors' => $validator->errors(),
-        ], 422);
-    }
+//     if ($validator->fails()) {
+//         return response()->json([
+//             'success' => false,
+//             'errors' => $validator->errors(),
+//         ], 422);
+//     }
 
-    if ($request->hasFile('image')) {
-        if ($course->image) {
-            \Storage::delete('public/course_images/' . $course->image);
-        }
+//     if ($request->hasFile('image')) {
+//         if ($course->image) {
+//             \Storage::delete('public/course_images/' . $course->image);
+//         }
 
-        $image = $request->file('image');
-        $imageName = time().'.'.$image->getClientOriginalExtension();
-        $image->storeAs('public/course_images', $imageName);
+//         $image = $request->file('image');
+//         $imageName = time().'.'.$image->getClientOriginalExtension();
+//         $image->storeAs('public/course_images', $imageName);
 
-        $course->update(array_merge($validator->validated(), ['image' => $imageName]));
-    } else {
-        $course->update($validator->validated());
-    }
+//         $course->update(array_merge($validator->validated(), ['image' => $imageName]));
+//     } else {
+//         $course->update($validator->validated());
+//     }
 
-    return response()->json([
-        'success' => true,
-        'message' => 'Course updated successfully!',
-        'data' => $course,
-    ], 200);
-}
+//     return response()->json([
+//         'success' => true,
+//         'message' => 'Course updated successfully!',
+//         'data' => $course,
+//     ], 200);
+// }
 
     /**
      * Remove the specified resource from storage.
