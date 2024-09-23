@@ -13,6 +13,8 @@ use App\Http\Controllers\Api\MaterialController;
 use App\Http\Controllers\Api\QuizUserController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\Api\PaymentController;
+
 // Public routes
 Route::middleware('guest:sanctum')->group(function () {
 
@@ -40,6 +42,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
+    
+    Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
 
     // Routes for admins only
     Route::middleware(AdminMiddleware::class)->group(function () {
