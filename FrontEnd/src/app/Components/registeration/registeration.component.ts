@@ -54,8 +54,8 @@ export class RegisterationComponent {
             this.isLoading=false;
              this._Router.navigate(['/login'])
           }
-          // console.log(response);
-          // console.log(formData.get('image'));  
+          console.log(response);
+          console.log(formData.get('image'));  
         },
         error: (err:HttpErrorResponse) => {
           this.isLoading=false;

@@ -20,16 +20,16 @@ export class AuthService {
     
   }
   setRegister(userData: FormData): Observable<any> {
-    return this._HttpClient.post(`http://0.0.0.0:8001/api/register`, userData);
+    return this._HttpClient.post(`http://0.0.0.0:8000/api/register`, userData);
   }
   setLogin(userData: FormData): Observable<any> {
-    return this._HttpClient.post(`http://0.0.0.0:8001/api/login`, userData);
+    return this._HttpClient.post(`http://0.0.0.0:8000/api/login`, userData);
   }
   setforget(userData: FormData): Observable<any> {
-    return this._HttpClient.post(`http://0.0.0.0:8001/api/forgetpassword`, userData);
+    return this._HttpClient.post(`http://0.0.0.0:8000/api/forgetpassword`, userData);
   }
   setreset(userData: FormData): Observable<any> {
-    return this._HttpClient.post(`http://0.0.0.0:8001/api/resetpassword`, userData);
+    return this._HttpClient.post(`http://0.0.0.0:8000/api/resetpassword`, userData);
   }
 }
 
