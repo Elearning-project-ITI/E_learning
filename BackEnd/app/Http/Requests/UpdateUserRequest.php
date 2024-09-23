@@ -3,11 +3,13 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule; // Add this line
 use App\Http\Controllers\Api\BaseController;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
+
     protected $baseController;
 
     public function __construct(BaseController $baseController)
@@ -29,15 +31,39 @@ class StoreUserRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'name' => 'required|string|max:255|unique:users,name',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-            'phone' => 'required|regex:/^[0-9]{10,15}$/',
-            //'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',  // Image is now required
-            //'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',  // Image is now required
+        $rules = [];
+      //  dd($this->all());
+        if ($this->has('name')) {
 
-        ];
+            $rules['name'] = [
+                'string',
+                'max:255',
+                Rule::unique('users')->ignore($this->user()->id),
+            ];
+        }
+
+        if ($this->has('email')) {
+            $rules['email'] = [
+                'email',
+                Rule::unique('users')->ignore($this->user()->id),
+            ];
+        }
+
+        if ($this->filled('password')) {
+
+            $rules['password'] = 'string|min:8|confirmed';
+        }
+
+        if ($this->has('phone')) {
+            $rules['phone'] = 'regex:/^[0-9]{10,15}$/';
+        }
+
+        if ($this->hasFile('image')) {
+            $rules['image'] = 'image|mimes:jpeg,png,jpg,gif|max:2048';
+        }
+
+        return $rules;
+
     }
     public function messages()
     {
