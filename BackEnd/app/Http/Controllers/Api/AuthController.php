@@ -68,9 +68,9 @@ class AuthController extends BaseController
             'password' => Hash::make($request->password),
             'phone' =>$request->phone,
             'role' => 'student', // Default role as 'student'
-            'image' => $imagePath,  // Image is required and stored
-            
-            
+            'image' => $imagePath,  
+
+
         ]);
                     // return ["message"=>$request->all()];
 
