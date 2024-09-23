@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, ElementRef, QueryList, ViewChildren } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,RouterModule],
   templateUrl: './courses.component.html',
   styleUrl: './courses.component.css'
 })

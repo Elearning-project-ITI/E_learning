@@ -61,4 +61,13 @@ top:100%;
         top:100%; 
         
         }
-    }
+
+}
+.btnshow{
+   border: 1px solid  #8967B3;
+}
+.btnshow:hover{
+    background-color: #8967B3;
+    color:white;
+    transition: all 0.5s;
+}
