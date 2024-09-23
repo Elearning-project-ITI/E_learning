@@ -72,6 +72,8 @@ Route::get('/user', function (Request $request) {
     Route::resource('choice', ChoiceController::class);
     Route::resource('material', MaterialController::class);
     Route::resource('quizuser', QuizUserController::class);
+    Route::resource('question', QuestionController::class);
+    Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']);
 
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
