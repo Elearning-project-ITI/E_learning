@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Storage; // Add this for handling storage operations
+
 
 class CourseController extends Controller
 {
@@ -28,31 +30,40 @@ class CourseController extends Controller
      */
     public function store(Request $request)
     {
-        // Manual validation using Validator facade
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'image' => 'required|string|max:255', // Adjust as needed for image uploads
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
             'date' => 'required|date',
         ]);
-
-        // Check if validation fails
+    
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors(),
-            ], 422); // HTTP 422 Unprocessable Entity for validation errors
+            ], 422);
         }
-
-        // Create a new course with the validated data
-        $course = Course::create($validator->validated());
-
-        // Return a JSON response indicating success
+    
+       
+    
+        $imagePath = null;
+            if ($request->hasFile('image')) {
+                $imagePath = $request->file('image')->store('courses_images', 'uploads');
+                $imagePath = asset('uploads/'.$imagePath);
+            }
+    
+        $course = Course::create([
+            'name' => $request->name,
+            'price' => $request->price,
+            'image' => $imagePath,
+            'date' => $request->date,
+        ]);
+    
         return response()->json([
             'success' => true,
             'message' => 'Course created successfully!',
             'data' => $course,
-        ], 201); // HTTP 201 for "Created"
+        ], 201);
     }
 
     /**
@@ -83,42 +94,65 @@ class CourseController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Find the course by ID
+       
         $course = Course::find($id);
-
-        // Check if the course exists
+    
+       
         if (!$course) {
             return response()->json([
                 'success' => false,
                 'message' => 'Course not found!',
-            ], 404); // Return 404 error if the course is not found
+            ], 404); 
         }
-
-        // Manual validation for updating course
+    
+       
         $validator = Validator::make($request->all(), [
             'name' => 'sometimes|required|string|max:255',
             'price' => 'sometimes|required|numeric',
-            'image' => 'sometimes|required|string|max:255', // Handle file uploads separately if needed
+            'image' => 'sometimes|file|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image
             'date' => 'sometimes|required|date',
         ]);
-
-        // Check if validation fails
+    
+        
         if ($validator->fails()) {
             return response()->json([
                 'success' => false,
                 'errors' => $validator->errors(),
-            ], 422); // HTTP 422 for validation errors
+            ], 422); 
         }
-
-        // Update the course with the validated data (either full or partial update)
-        $course->update($validator->validated());
-
-        // Return a JSON response indicating success
+    
+       
+        if ($request->hasFile('image')) {
+            
+            if ($course->image && Storage::exists($course->image)) {
+                Storage::delete($course->image);
+            }
+    
+            
+            $imagePath = $request->file('image')->store('courses_images', 'public');
+            $course->image = $imagePath; 
+        }
+    
+       
+        $course->update(array_merge(
+            $validator->validated(),
+            ['image' => $course->image] 
+        ));
+    
+       
         return response()->json([
             'success' => true,
             'message' => 'Course updated successfully!',
-            'data' => $course,
-        ], 200); // HTTP 200 for OK
+            'data' => [
+                'id' => $course->id,
+                'name' => $course->name,
+                'price' => $course->price,
+                'image' => $course->image, 
+                'date' => $course->date,
+                'created_at' => $course->created_at,
+                'updated_at' => $course->updated_at,
+            ]
+        ], 200); 
     }
 
     /**
