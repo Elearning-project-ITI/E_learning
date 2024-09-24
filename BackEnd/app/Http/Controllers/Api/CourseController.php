@@ -32,7 +32,7 @@ class CourseController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'price' => 'required|numeric',
-            'image' => 'required|string|max:255', // Adjust as needed for image uploads
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // Adjust as needed for image uploads
             'date' => 'required|date',
         ]);
 

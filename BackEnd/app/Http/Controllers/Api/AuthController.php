@@ -78,7 +78,6 @@ class AuthController extends BaseController
         ]);
                     // return ["message"=>$request->all()];
 
- return ["message"=>$request->all()];
         // Generate token
         //$token['token'] = $user->createToken('auth_token')->plainTextToken;
         $token['name'] =  $user->name;
@@ -126,7 +125,6 @@ class AuthController extends BaseController
        
         $response = [
             'access_token' => $token,
-            'message' => $message,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,
