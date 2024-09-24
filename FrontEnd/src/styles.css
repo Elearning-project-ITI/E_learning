@@ -6,4 +6,8 @@ html{
     padding: 0px;
     margin:0px;
     box-sizing: border-box;
+    
+}
+*::selection{
+   background-color: rgb(59, 59, 226);
 }

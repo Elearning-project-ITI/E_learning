@@ -48,13 +48,13 @@
               <label for="profileImage"><i class="fa-solid fa-image"></i> Profile Image</label>
               <div class="custom-file">
                 <input type="file" class="custom-file-input" id="profileImage" (change)="onFileSelected($event)" accept="image/*">
-                <label for="profileImage" class="btn btn-image">
+                <!-- <label for="profileImage" class="btn btn-image">
                   <i class="fa-solid fa-file-arrow-up"></i> Choose File
                 </label>
-                <span id="file-name">{{ selectedFile?.name || 'No file chosen' }}</span>
+                <span id="file-name">{{ selectedFile?.name || 'No file chosen' }}</span> -->
               </div>
             </div>
-            <button [disabled]="registerForm.invalid" type="submit" class="btn btn-primary btn-block">
+            <button [disabled]="registerForm.invalid" type="submit" class="btn btn-primary btn-block mt-2">
               <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>
               Register</button>
               

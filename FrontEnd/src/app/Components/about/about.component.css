@@ -3,14 +3,17 @@
     padding: 100px 0px;
     border-radius: 30px;
   }
+.about-info{
+margin-top: 30px;
+}
   
   .text-content h3 {
     font-size: 3em;
-    color: #53328c;
+    color: #3A6D8C;
   }
   
   .highlight {
-    background-color: #8967B3;
+    background-color: #7babc9;
     padding: 5px;
     border-radius: 40%;
     color: white;
@@ -32,18 +35,18 @@
     content: "";
     width: 10%;
     height: 3px;
-    background-image: linear-gradient(to right, #8967B3, #CB80AB);
+    background-image: linear-gradient(to right,#3A6D8C,#DEE5D4);
     position: absolute;
     left: 45%;
     top: 100%;
   }
   
   .btn-about {
-    background-color: #8967B3;
+    background-color: #3A6D8C;
   }
   
   .btn-about:hover {
-    background-color: #ac87da;
+    background-color: #7babc9;
   }
   
   .captionimg img:hover {

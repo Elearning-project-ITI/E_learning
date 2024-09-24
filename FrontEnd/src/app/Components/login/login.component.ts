@@ -38,8 +38,8 @@ export class LoginComponent {
           console.log(response)
           if (response.success){
             this.isLoading=false;
-             localStorage.setItem('eToken',response.access_token);
-             this._AuthService.saveUserData();
+             localStorage.setItem('eToken',response.data.access_token);
+            //  this._AuthService.saveUserData();
              this._Router.navigate(['/home'])
           } 
         },

@@ -50,7 +50,7 @@ export class RegisterationComponent {
 
       this._AuthService.setRegister(formData).subscribe({
         next: (response) => {
-          if (response.success){
+          if (response.success=true){
             this.isLoading=false;
              this._Router.navigate(['/login'])
           }

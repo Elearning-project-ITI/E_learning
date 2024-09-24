@@ -17,13 +17,13 @@
     width:110px
 }
 .formsearch .form-control{
-    background-color: #9370bd;
+    background-color: #3A6D8C;
     border:none;
     /* border-radius: 0 !important;  */
     
 }
 .formsearch i{
-    background-color:  #ba9ddd;
+    background-color:  #6A9AB0;
     padding: 20px;
   border-radius: 20%;
 }
@@ -54,14 +54,14 @@
 .navbar-nav .nav-link.active{
     position: relative;
     
-   border:#8967B3 3px solid;
+   border:#3A6D8C 3px solid;
    border-radius: 40%;
 }
 .navbar-nav .nav-link.active::before{
     content: "";
 width:72%;
 height: 2px;
-background-image: linear-gradient(to right,#9370bd,#CB80AB);
+background-image: linear-gradient(to right,#3A6D8C,#DEE5D4);
 position: absolute;
 left:15%;
 top:70%; 
@@ -74,7 +74,7 @@ opacity: 1;
 content: "";
  width:0%;
 height: 2px;
-background-image: linear-gradient(to right,#8967B3,#CB80AB);
+background-image: linear-gradient(to right,#3A6D8C,#DEE5D4);
 position: absolute;
 left:15%;
 top:70%; 
@@ -128,19 +128,19 @@ opacity: 0;
 }
 
 .btn-register{
-    background-image:linear-gradient(to right,rgba(185, 172, 185, 0.521),rgba(37, 22, 172, 0.521)) ; 
+    background-image:linear-gradient(to right,rgba(185, 172, 185, 0.521),rgba(9, 81, 236, 0.521)) ; 
     transition: all 1s;
     color:#DBCC95;
     margin-left:4px;
 }
 .btn-register:hover{
     color:#CD8D7A;
-    background-color:rgba(137, 22, 172, 0.521) ;
+    background-color:rgba(22, 50, 172, 0.521) ;
 }
 .imgprofile{
     width: 80px;
     margin:8px;
 }
 .notifiaction{
-    color: #9370bd !important;
+    color: #6A9AB0 !important;
 }

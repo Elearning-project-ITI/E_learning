@@ -1,6 +1,6 @@
 .btn-link{
     text-decoration: none !important;
-    color:rgb(128, 67, 185);
+    color:rgb(67, 94, 185);
 
 }
 /* .btn1{
@@ -33,19 +33,19 @@
 }
 .btn-primary {
     margin-right: 5px;
-    background-color: #73079e;
+    background-color: #4f7daf;
     border: none;
     transition: all 0.3s ease;
     margin-bottom: 3px;
 }
 
 .btn-primary:hover {
-    background-color:  #b94fce !important;
-    border-color: #b94fce !important;
+    background-color:  #8cabcc !important;
+    border-color: #8cabcc !important;
 }
 h2{
     
-    color:#360549 ;
+    color:#130b5e ;
     font-style: italic;
   
 }

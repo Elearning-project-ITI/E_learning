@@ -1,10 +1,10 @@
 
 .contact-info{
-    background-color: #231930;
+    background-color: #001F3F;
     margin-top: 0; 
 }
 .cardlayer i:hover{
-background-color: #8967B3 !important;
+background-color: #6A9AB0 !important;
 color:white !important;
 transition: all 0.5s;
 }
@@ -31,13 +31,13 @@ transition: all 0.5s;
     }
   }
   .formsearch .form-control{
-    background-color: #9370bd;
+    background-color: #3A6D8C;
     border:none;
     /* border-radius: 0 !important;  */
     
 }
 .formsearch i{
-    background-color:  #ba9ddd;
+    background-color:  #6A9AB0;
     padding: 20px;
   border-radius: 20%;
 }

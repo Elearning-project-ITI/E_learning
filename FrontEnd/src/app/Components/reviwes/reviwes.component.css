@@ -15,32 +15,32 @@
 }
 h2{
     
-        color:#360549 ;
+        color:#130b5e ;
         font-style: italic;
       
 }
 .form-control:focus ,.form-select:focus{
-    border-color: #b94fce !important;
+    border-color: #79ace4 !important;
     /* box-shadow: none !important; */
-    box-shadow: 0 0 0 .2rem #d3b5da;
+    box-shadow: 0 0 0 .2rem #90bef0;
 }
 .form-control::placeholder{
-    color:#380c42 !important;
+    color:#130b5e !important;
 }
 label{
     font-style: italic;
     font-weight: bold;
-    color:#460b5e;
+    color:#130b5e;
     margin-top: 5px;
 }
 .btn-primary {
     margin-right: 5px;
-    background-color: #73079e;
+    background-color: #4f7daf;
     border: none;
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color:  #b94fce !important;
-    border-color: #b94fce !important;
+    background-color:  #8cabcc !important;
+    border-color: #8cabcc !important;
 }

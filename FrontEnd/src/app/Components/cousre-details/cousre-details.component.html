@@ -1,40 +1,39 @@
-
-
-<section id="cousredetails">
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-2 sidebar bg-light">
-                <div class="text-center mb-4 imgdiv">
-                    <img src="images/portfolio/illustrator (1).png" alt="User Avatar" class="rounded-circle profile-avatar">
-                    <h4 class="mt-2">illustrator</h4>
-                    <p>Hello, {{ ID }}!</p>
-                </div>
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a  class="nav-link" routerLinkActive="active" routerLink="cousredetails">View Course</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" routerLinkActive="active" routerLink="cousrematerial">Material</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" routerLinkActive="active" routerLink="quizes">Quizes</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" routerLinkActive="active" routerLink="reviews">Reviews</a>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Profile Content -->
-            <div class="col-md-9 profile-content">
-                <!-- Router outlet for child routes -->
-                 <div class="container">
-                    <div class=" mycontainer">
-                <router-outlet></router-outlet>
-            </div>
-            </div>
-            </div>
+<section id="cousredetails" *ngIf="course; else loading">
+  <div class="container-fluid">
+    <div class="row">
+      <!-- Sidebar -->
+      <div class="col-md-2 sidebar bg-light">
+        <div class="text-center mb-4 imgdiv">
+          <img [src]="course.image" alt="User Avatar" class="rounded-circle profile-avatar">
+          <h4 class="mt-2">{{ course.name }}</h4>
+          <p>Hello, {{ ID }}!</p>
         </div>
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="cousredetails">View Course</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="cousrematerial">Material</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="quizes">Quizes</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="reviews">Reviews</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Profile Content -->
+      <div class="col-md-9 profile-content">
+        <div class="container mycontainer">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
     </div>
+  </div>
 </section>
+
+<ng-template #loading>
+ <app-loader></app-loader>
+</ng-template>
