@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Http\Controllers\Api;
+use GuzzleHttp\Client;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
 
 //use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\BaseController;
@@ -14,6 +17,7 @@ use Illuminate\Support\Facades\Auth;
 use Validator;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\LoginUserRequest;
+use App\Mail\VerifyEmail;  // Make sure this is at the top of your controller
 
 class AuthController extends BaseController
 {
@@ -60,10 +64,14 @@ class AuthController extends BaseController
         //     $image = $request->file('image');
         //     $imagePath = $image->store('images', 'user_images');
         // }
+        $isValidEmail = $this->checkEmailValidity($request->email);
 
+        if (!$isValidEmail) {
+            return $this->sendError('Invalid Email', ['error' => 'The provided email does not real.']);
+        }
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('user_images', 'public');
+            $imagePath = $request->file('image')->store('user_images', 'uploads');
         }
 
         $user = User::create([
@@ -73,18 +81,20 @@ class AuthController extends BaseController
             'phone' =>$request->phone,
             'role' => 'student', // Default role as 'student'
             'image' => $imagePath,  // Image is required and stored
-            
+            'email_verification_token' => Str::random(60),
+            'email_verified_at' => null,
+            'verification_token_created_at' => now(),
             
         ]);
                     // return ["message"=>$request->all()];
 
         // Generate token
         //$token['token'] = $user->createToken('auth_token')->plainTextToken;
-        $token['name'] =  $user->name;
-
-        return $this->sendResponse(
+       // $token['name'] =  $user->name;
+       Mail::to($user->email)->send(new VerifyEmail($user));
+       return $this->sendResponse(
         [],
-            'User register successfully.',
+            'Registration successful. Please verify your email.',
         );
     }
 
@@ -101,7 +111,8 @@ class AuthController extends BaseController
             //     ], 403);
             // }
         
-    
+            $user = User::where('email', $request->email)->first();
+
         // Attempt to authenticate the user
         if (!Auth::attempt($request->only('email', 'password'))) {
             
@@ -109,7 +120,19 @@ class AuthController extends BaseController
 
             
         }
-    
+        if (is_null($user->email_verified_at)) {
+            if (now()->diffInMinutes($user->verification_token_created_at) < -60.0) {
+                $user->email_verification_token = Str::random(60);
+            $user->verification_token_created_at = now();
+            $user->save();
+
+            // Resend the email
+            Mail::to($user->email)->send(new VerifyEmail($user));
+
+            return $this->sendError('Verification token has expired. A new verification email has been sent.', [], 400);
+            }
+            return $this->sendError('Please verify your email before logging in.', [], 403);
+        }  
         // Get the authenticated user
         $user = Auth::user();
         if ($user->tokens()->count() >= 2) {
@@ -197,5 +220,75 @@ class AuthController extends BaseController
         }
     }
 
+    public function verifyEmail(Request $request) {
+        $user = User::where('email_verification_token', $request->token)->first();
+    
+        if (!$user) {
+            return $this->sendError ('Invalid verification token.',[],400);
+        }
+    
+        // Check if the token is expired (1 hour = 60 minutes)
+      //  dd(now()->diffInMinutes($user->verification_token_created_at));
+        if (now()->diffInMinutes($user->verification_token_created_at) < -60.0) {
+            return $this->sendError ('Verification token has expired. must be login to resend Verification ',[],400);
+            
+        }
+    
+        // If the token is still valid, verify the user's email
+        $user->email_verified_at = now();
+        $user->email_verification_token = null; // Clear the token
+        $user->verification_token_created_at = null; // Clear the timestamp
+        $user->save();
+    
+        return $this->sendResponse([], 'Your email has been verified.');
+    }
+    private function checkEmailValidity($email)
+{
+    $client = new Client();
+    $apiKey = 'b69e3f0b1d114d2880ce08fa1b7e3689';  // Use the API key provided by the service you're using
+    
+    try {
+        $response = $client->request('GET', 'https://emailvalidation.abstractapi.com/v1/', [
+            'query' => [
+                'api_key' => $apiKey,
+                'email' => $email,
+            ]
+        ]);
+
+        $data = json_decode($response->getBody(), true);
+
+        // Check if the response indicates success or failure
+        if (isset($data['error'])) {
+            if ($data['error']['message'] == "Invalid API key") {
+                // Handle invalid API key case
+                \Log::error('Invalid Abstract API key.');
+                return response()->json(['error' => 'Invalid API key. Please contact the admin.'], 400);
+            }
+
+            if ($data['error']['message'] == "Account ran out of credits") {
+                // Handle no credits case
+                \Log::error('Abstract API account has run out of credits.');
+                return response()->json(['error' => 'Abstract API account ran out of credits.'], 400);
+            }
+        }
+
+        // Check if the email is valid based on the Abstract API response
+        if (isset($data['quality_score'])) {
+            $qualityScore = $data['quality_score'];
+            // Define a threshold for what you consider a valid email
+            $validThreshold = 0.7; // Adjust this threshold as needed
+
+            return $qualityScore >= $validThreshold;
+        }
+
+        // If no quality score is found, return false
+        return false;
+
+    } catch (\Exception $e) {
+        // Log and handle any other errors
+        \Log::error('Abstract API request failed: ' . $e->getMessage());
+        return response()->json(['error' => 'Failed to validate email. Please try again later.'], 500);
+    }
+}
 
 }

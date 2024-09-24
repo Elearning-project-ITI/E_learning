@@ -29,6 +29,8 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('forgot-password', [AuthController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::post('reset-password', [AuthController::class, 'resetPassword'])->name('password.reset');;
 });
+Route::get('/verify-email', [AuthController::class, 'verifyEmail']);
+
 // Protected routes that require authentication (using sanctum middleware)
 Route::middleware(['auth:sanctum'])->group( function () {
 
@@ -38,9 +40,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
 
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
 
 
 // Route::resource('user', UserController::class);
