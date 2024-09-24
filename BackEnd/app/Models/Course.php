@@ -10,7 +10,7 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'price', 'image', 'date',
+        'name', 'price', 'image', 'date', 'description',
     ];
 
     // Relationships

@@ -17,6 +17,10 @@ use App\Http\Controllers\Api\QuestionController;
 
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\StudentMiddleware;
+
+use App\Http\Controllers\Api\PaymentController;
+
 // Public routes
 Route::middleware('guest:sanctum')->group(function () {
 
@@ -72,14 +76,22 @@ Route::get('/user', function (Request $request) {
     Route::resource('choice', ChoiceController::class);
     Route::resource('material', MaterialController::class);
     Route::resource('quizuser', QuizUserController::class);
+    Route::resource('question', QuestionController::class);
+    Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']);
 
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
+    
+    Route::middleware(StudentMiddleware::class)->group(function () {
 
+    Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
+    });
     // Routes for admins only
     Route::middleware(AdminMiddleware::class)->group(function () {
         Route::get('/students', [UserController::class, 'index'])->name('students.index');
         Route::get('/students/{id}/profile', [UserController::class, 'showStudentProfile'])->name('students.profile.show');
+        Route::post('course', [ CourseController::class, 'store']);
+
     });
 });
 Route::get('/course', [CourseController::class, 'index'])->name('course.index');

@@ -128,7 +128,6 @@ class AuthController extends BaseController
        
         $response = [
             'access_token' => $token,
-            'message' => $message,
             'user' => [
                 'id' => $user->id,
                 'name' => $user->name,

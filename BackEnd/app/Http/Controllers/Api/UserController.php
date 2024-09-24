@@ -82,7 +82,7 @@ class UserController extends BaseController
             }
 
             // Save new image
-            $input['image'] = $request->file('image')->store('user_images', 'public');
+            $input['image'] = $request->file('image')->store('user_images', 'uploads');
         }
 
         // Only update the changed fields
