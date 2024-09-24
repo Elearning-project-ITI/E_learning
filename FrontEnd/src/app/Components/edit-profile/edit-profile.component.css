@@ -24,7 +24,7 @@ body {
 }
 
 .card-header {
-    background-color: #73079e;
+    background-color: #718abd;
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
@@ -32,25 +32,25 @@ body {
 
 .btn-primary {
     margin-right: 5px;
-    background-color: #73079e;
+    background-color: #507cd3;
     border: none;
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color:  #b94fce !important;
-    border-color: #b94fce !important;
+    background-color:  #8ba8e7 !important;
+    border-color: #8ba8e7 !important;
 }
 
 .btn-secondary {
-    background-color: #73079e;
+    background-color: #507cd3;
     border: none;
     transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background-color: #b94fce !important;
-    border-color: #b94fce !important;
+    background-color: #8ba8e7 !important;
+    border-color: #8ba8e7 !important;
 }
 
 .image-preview {
@@ -85,6 +85,6 @@ body {
 label{
     font-style: italic;
     font-weight: bold;
-    color:#460b5e;
+    color:#130b5e;
     margin-top: 5px;
 }

@@ -2,9 +2,15 @@
     background-color: transparent;
     color:white;
 }
+.course-info{
+    margin-top: 80px !important;
+}
 #displaycourses .card p{
     color:#62686e;
 }
+/* .cousre-info{
+    margin-top: 90px !important;
+} */
 #displaycourses .card-body span{
     background-color: #32383e;
 }
@@ -18,36 +24,36 @@
     transform: scale(1.05);
 }
 .card-title{
- color:#ac87da ;  
+ color:#7695FF ;  
 }
 .badge{
-    background-color:#ac87da ;
+    background-color:#7695FF ;
 }
-.cousre-info{
+.course-info{
     color:#150a29;
 }
-.cousre-info h2{
+.course-info h2{
     position: relative;
 }
-.cousre-info h2::before{
+.course-info h2::before{
 content: "";
  width:16%;
 height: 3px;
-background-image: linear-gradient(to right,#8967B3,#CB80AB);
+background-image: linear-gradient(to right,#3A6D8C,#DEE5D4);
 position: absolute;
 left:42%;
 top:100%; 
 
 }
 .heart-icon{
-    color:#8967B3  !important;
+    color:#7695FF  !important;
 }
 .btn-about {
-    background-color: #8967B3;
+    background-color: #7695FF;
   }
   
   .btn-about:hover {
-    background-color: #ac87da;
+    background-color: #9DBDFF;
   }
 @media screen and (max-width :990px){
     
@@ -55,10 +61,19 @@ top:100%;
         content: "";
          width:28%;
         height: 3px;
-        background-image: linear-gradient(to right,#8967B3,#CB80AB);
+        background-image: linear-gradient(to right,#3A6D8C,#DEE5D4);
         position: absolute;
         left:35%;
         top:100%; 
         
         }
-    }
+
+}
+.btnshow{
+   border: 1px solid  #7695FF;
+}
+.btnshow:hover{
+    background-color: #9DBDFF;
+    color:white;
+    transition: all 0.5s;
+}
