@@ -63,7 +63,7 @@ class AuthController extends BaseController
 
         $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('user_images', 'public');
+            $imagePath = $request->file('image')->store('user_images', 'uploads');
         }
 
         $user = User::create([

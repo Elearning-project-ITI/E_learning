@@ -68,7 +68,8 @@ class CourseController extends Controller
 
     $imagePath = null;
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('courses_images', 'public');
+            $imagePath = $request->file('image')->store('courses_images', 'uploads');
+            $imagePath = asset('uploads/'.$imagePath);
         }
 
     $course = Course::create([
@@ -145,8 +146,9 @@ class CourseController extends Controller
         }
 
         
-        $imagePath = $request->file('image')->store('courses_images', 'public');
+        $imagePath = $request->file('image')->store('courses_images', 'uploads');
         $course->image = $imagePath; 
+        
     }
 
    
