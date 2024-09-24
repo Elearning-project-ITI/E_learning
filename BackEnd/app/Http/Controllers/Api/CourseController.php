@@ -54,6 +54,7 @@ class CourseController extends Controller
         'price' => 'required|numeric',
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
         'date' => 'required|date',
+        'description' => 'required|string',
     ]);
 
     if ($validator->fails()) {
@@ -75,6 +76,7 @@ class CourseController extends Controller
         'price' => $request->price,
         'image' => $imagePath,
         'date' => $request->date,
+        'description' => $request->description,
     ]);
 
     return response()->json([
@@ -122,8 +124,9 @@ class CourseController extends Controller
     $validator = Validator::make($request->all(), [
         'name' => 'sometimes|required|string|max:255',
         'price' => 'sometimes|required|numeric',
-        'image' => 'sometimes|file|image|mimes:jpeg,png,jpg,gif|max:2048', // Validate the image
+        'image' => 'sometimes|file|image|mimes:jpeg,png,jpg,gif|max:2048',
         'date' => 'sometimes|required|date',
+        'description' => 'required|string',
     ]);
 
     
@@ -162,6 +165,7 @@ class CourseController extends Controller
             'price' => $course->price,
             'image' => $course->image, 
             'date' => $course->date,
+            'description' => $course->description,
             'created_at' => $course->created_at,
             'updated_at' => $course->updated_at,
         ]
@@ -170,10 +174,10 @@ class CourseController extends Controller
 
     // public function update(Request $request, $id)
     // {
-    //     // Find the course by ID
+    //     
     //     $course = Course::find($id);
     
-    //     // Check if the course exists
+    //     
     //     if (!$course) {
     //         return response()->json([
     //             'success' => false,
@@ -181,7 +185,7 @@ class CourseController extends Controller
     //         ], 404); // Return 404 error if the course is not found
     //     }
     
-    //     // Manual validation for updating course
+    //     
     //     $validator = Validator::make($request->all(), [
     //         'name' => 'sometimes|required|string|max:255',
     //         'price' => 'sometimes|required|numeric',
@@ -189,7 +193,7 @@ class CourseController extends Controller
     //         'date' => 'sometimes|required|date',
     //     ]);
     
-    //     // Check if validation fails
+    //     
     //     if ($validator->fails()) {
     //         return response()->json([
     //             'success' => false,
@@ -197,25 +201,25 @@ class CourseController extends Controller
     //         ], 422); // HTTP 422 for validation errors
     //     }
     
-    //     // Handle file upload if a new image is provided
+    //     
     //     if ($request->hasFile('image')) {
     //         // Delete the old image if it exists
     //         if ($course->image && Storage::exists($course->image)) {
     //             Storage::delete($course->image);
     //         }
     
-    //         // Save new image and update the 'image' field
+    //        
     //         $imagePath = $request->file('image')->store('courses_images', 'public');
-    //         $course->image = $imagePath; // Update the image path
+    //         $course->image = $imagePath; 
     //     }
     
     //     // Update the course with the validated data
     //     $course->update(array_merge(
     //         $validator->validated(),
-    //         ['image' => $course->image] // Ensure the image path is also updated
+    //         ['image' => $course->image] 
     //     ));
     
-    //     // Return a JSON response indicating success
+    //     
     //     return response()->json([
     //         'success' => true,
     //         'message' => 'Course updated successfully!',
@@ -228,7 +232,7 @@ class CourseController extends Controller
     //             'created_at' => $course->created_at,
     //             'updated_at' => $course->updated_at,
     //         ]
-    //     ], 200); // HTTP 200 for OK
+    //     ], 200); 
     // }
     
 
