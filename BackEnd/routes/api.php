@@ -82,6 +82,8 @@ Route::get('/user', function (Request $request) {
         Route::get('/students/{id}/profile', [UserController::class, 'showStudentProfile'])->name('students.profile.show');
     });
 });
+Route::get('/course', [CourseController::class, 'index'])->name('course.index');
+
 // Route::any('/{any}', function () {
 //     return response()->json([
 //         'message' => 'Route not found. Please check the URL and try again.'
