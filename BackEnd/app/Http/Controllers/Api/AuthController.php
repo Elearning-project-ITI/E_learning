@@ -265,13 +265,16 @@ class AuthController extends BaseController
             if ($data['error']['message'] == "Invalid API key") {
                 // Handle invalid API key case
                 \Log::error('Invalid Abstract API key.');
-                return response()->json(['error' => 'Invalid API key. Please contact the admin.'], 400);
+               // return response()->json(['error' => 'Invalid API key. Please contact the admin.'], 400);
+                return $this->sendError ('Invalid API key. Please contact the admin.',[],400);
+
             }
 
             if ($data['error']['message'] == "Account ran out of credits") {
                 // Handle no credits case
                 \Log::error('Abstract API account has run out of credits.');
-                return response()->json(['error' => 'Abstract API account ran out of credits.'], 400);
+               // return response()->json(['error' => 'Abstract API account ran out of credits.'], 400);
+                return $this->sendError ('Abstract API account ran out of credits.',[],400);
             }
         }
 
@@ -290,7 +293,9 @@ class AuthController extends BaseController
     } catch (\Exception $e) {
         // Log and handle any other errors
         \Log::error('Abstract API request failed: ' . $e->getMessage());
-        return response()->json(['error' => 'Failed to validate email. Please try again later.'], 500);
+     //   return response()->json(['error' => 'Failed to validate email. Please try again later.'], 500);
+        return $this->sendError ('Failed to validate email. Please try again later.',[],400);
+
     }
 }
 

@@ -59,8 +59,9 @@ export class RegisterationComponent {
         },
         error: (err:HttpErrorResponse) => {
           this.isLoading=false;
-          this.msgErrorEmail=err.error.errors.email;
-          this.msgErrorName=err.error.errors.name;
+          this.msgErrorEmail=err.error.message[0];
+          this.msgErrorName=err.error.message[1];
+        
           console.log(err.error);
         }
       });
