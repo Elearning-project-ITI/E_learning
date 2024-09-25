@@ -1,8 +1,8 @@
 #work{
-    margin-top: 100px;
+    margin-top: 130px;
 }
 .work-cars{
-    background-image: linear-gradient(rgba(79, 12, 82, 0.541),rgba(79, 12, 82, 0.541)),url('/images/background-image2.jpg');
+    background-image: linear-gradient(rgba(65, 117, 231, 0.541),rgba(65, 117, 231, 0.541)),url('/images/background-image2.jpg');
     background-size: 100% 100%;
     background-position: center center;
     background-attachment: fixed;
@@ -37,7 +37,7 @@
 content: "";
  width:16%;
 height: 3px;
-background-image: linear-gradient(to right,#8967B3,#CB80AB);
+background-image: linear-gradient(to right,#3A6D8C,#DEE5D4);
 position: absolute;
 left:42%;
 top:100%; 
@@ -48,7 +48,7 @@ top:100%;
       content: "";
       width: 28%;
       height: 3px;
-      background-image: linear-gradient(to right, #8967B3, #CB80AB);
+      background-image: linear-gradient(to right,#3A6D8C,#DEE5D4);
       position: absolute;
       left: 35%;
       top: 100%;

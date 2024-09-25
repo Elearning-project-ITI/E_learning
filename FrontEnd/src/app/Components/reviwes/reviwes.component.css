@@ -1,0 +1,46 @@
+.card {
+    animation: fadeInUp 0.5s ease-in-out;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 8px;
+}
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+h2{
+    
+        color:#130b5e ;
+        font-style: italic;
+      
+}
+.form-control:focus ,.form-select:focus{
+    border-color: #79ace4 !important;
+    /* box-shadow: none !important; */
+    box-shadow: 0 0 0 .2rem #90bef0;
+}
+.form-control::placeholder{
+    color:#130b5e !important;
+}
+label{
+    font-style: italic;
+    font-weight: bold;
+    color:#130b5e;
+    margin-top: 5px;
+}
+.btn-primary {
+    margin-right: 5px;
+    background-color: #4f7daf;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color:  #8cabcc !important;
+    border-color: #8cabcc !important;
+}

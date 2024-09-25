@@ -96,8 +96,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     });
 });
-Route::any('/{any}', function () {
-    return response()->json([
-        'message' => 'Route not found. Please check the URL and try again.'
-    ], 404);
-})->where('any', '.*');
+// Route::any('/{any}', function () {
+//     return response()->json([
+//         'message' => 'Route not found. Please check the URL and try again.'
+//     ], 404);
+// })->where('any', '.*');

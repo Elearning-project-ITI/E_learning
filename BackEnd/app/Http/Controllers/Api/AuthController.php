@@ -72,6 +72,8 @@ class AuthController extends BaseController
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('user_images', 'uploads');
+            $imagePath = asset('uploads/'.$imagePath);
+
         }
 
         $user = User::create([
@@ -88,6 +90,7 @@ class AuthController extends BaseController
         ]);
                     // return ["message"=>$request->all()];
 
+//  return ["message"=>$request->all()];
         // Generate token
         //$token['token'] = $user->createToken('auth_token')->plainTextToken;
        // $token['name'] =  $user->name;

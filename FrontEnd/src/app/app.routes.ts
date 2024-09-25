@@ -10,6 +10,13 @@ import { ProfileComponent } from './Components/profile/profile.component';
 import { ViewProfileComponent } from './Components/view-profile/view-profile.component';
 import { NotificationComponent } from './Components/notification/notification.component';
 import { EditProfileComponent } from './Components/edit-profile/edit-profile.component';
+import { ForgetPasswordComponent } from './Components/forget-password/forget-password.component';
+import { ResetPasswordComponent } from './Components/reset-password/reset-password.component';
+import { CousreDetailsComponent } from './Components/cousre-details/cousre-details.component';
+import { ViewCourseDetailsComponent } from './Components/view-course-details/view-course-details.component';
+import { CoursematerialComponent } from './Components/coursematerial/coursematerial.component';
+import { QuizesComponent } from './Components/quizes/quizes.component';
+import { ReviwesComponent } from './Components/reviwes/reviwes.component';
 
 export const routes: Routes = [
     {path:"",component:LoginComponent},
@@ -19,6 +26,8 @@ export const routes: Routes = [
     {path:"workPervious",component:WorkPerviousComponent},
     {path:"register",component:RegisterationComponent},
     {path:"login",component:LoginComponent},
+    {path:"forgetpassword",component:ForgetPasswordComponent},
+    {path:"resetpassword",component:ResetPasswordComponent},
     {path:"notification",component:NotificationComponent},
     {path:"profile",component:ProfileComponent, children: [
         { path: "", component: ViewProfileComponent },
@@ -26,6 +35,12 @@ export const routes: Routes = [
         { path: "notification", component: NotificationComponent },
         { path: "editProfile", component: EditProfileComponent }
     ]},
-
+    {path:"cousres/:id",component:CousreDetailsComponent,children:[
+        { path: "", component: ViewCourseDetailsComponent },
+        { path: "cousredetails", component: ViewCourseDetailsComponent },
+        { path: "cousrematerial", component: CoursematerialComponent },
+        { path: "quizes", component: QuizesComponent },
+        { path: "reviews", component: ReviwesComponent }
+    ]},
     {path:"**",component:NotFoundComponent}
 ];
