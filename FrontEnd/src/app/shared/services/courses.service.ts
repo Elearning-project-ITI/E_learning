@@ -30,15 +30,14 @@ export class CoursesService {
   constructor(private readonly http: HttpClient) { }
 
   GetAllCourses(): Observable<GetAllCoursesResponse> {
-    const token = localStorage.getItem('access_token');
+    // const token = localStorage.getItem('access_token');
 
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<GetAllCoursesResponse>(this.DB_URL, { headers }).pipe(
-      catchError(this.handleError)
-    );
+    return this.http.get<GetAllCoursesResponse>(this.DB_URL );
   }
-
+  // , { headers }).pipe(
+  //   catchError(this.handleError)
   GetCoursetByID(id:any): Observable<GetCourseResponse>{
     const token = localStorage.getItem('access_token');
 

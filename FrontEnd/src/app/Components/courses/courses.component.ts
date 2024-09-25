@@ -1,6 +1,64 @@
+// import { CommonModule } from '@angular/common';
+// import { Component, OnInit } from '@angular/core';
+// import { RouterLink, RouterModule } from '@angular/router';
+// import { CoursesService } from '../../shared/services/courses.service';
+// import { LoaderComponent } from "../loader/loader.component";
+
+// @Component({
+//   selector: 'app-courses',
+//   standalone: true,
+//   imports: [CommonModule, RouterModule, LoaderComponent],
+//   templateUrl: './courses.component.html',
+//   styleUrls: ['./courses.component.css']  
+// })
+// export class CoursesComponent implements OnInit {
+//   Courses: any[] = [];
+//   // private baseUrl: string = ''; 
+
+//   constructor(private courseserv: CoursesService) { }
+
+//   ngOnInit(): void {
+//     this.courseserv.GetAllCourses().subscribe({
+//       next: (response) => {
+//         console.log(response);
+//         if (response.success) {
+//           this.Courses = response.data;
+//           // this.Courses.forEach(course => {
+//           //   console.log(this.getImageUrl(course.image));
+//           // });
+//         }
+//       },
+//       error: (err) => {
+//         console.log(err);  
+//       }
+//     });
+//     }
+
+//   // getImageUrl(imagePath: string): string {
+//   //   return this.baseUrl + encodeURIComponent(imagePath);
+//   // }
+//   // getImageUrl(imagePath: string): string {
+//   //   return this.baseUrl + imagePath; 
+//   // }
+//   // getImageUrl(imagePath: string): string {
+//   //   return this.baseUrl + imagePath.replace(/ /g, '%20'); // Encode only spaces
+//   // }
+  
+
+//   toggleHeart(event: Event): void {
+//     const heartIcon = event.target as HTMLElement;
+//     if (heartIcon.classList.contains('fa-regular')) {
+//       heartIcon.classList.remove('fa-regular');
+//       heartIcon.classList.add('fa-solid');
+//     } else {
+//       heartIcon.classList.remove('fa-solid');
+//       heartIcon.classList.add('fa-regular');
+//     }
+//   }
+// }
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule } from '@angular/router';
 import { CoursesService } from '../../shared/services/courses.service';
 import { LoaderComponent } from "../loader/loader.component";
 
@@ -9,13 +67,12 @@ import { LoaderComponent } from "../loader/loader.component";
   standalone: true,
   imports: [CommonModule, RouterModule, LoaderComponent],
   templateUrl: './courses.component.html',
-  styleUrls: ['./courses.component.css']  
+  styleUrls: ['./courses.component.css']
 })
 export class CoursesComponent implements OnInit {
   Courses: any[] = [];
-  // private baseUrl: string = ''; 
 
-  constructor(private courseserv: CoursesService) { }
+  constructor(private courseserv: CoursesService, private router: Router) { }
 
   ngOnInit(): void {
     this.courseserv.GetAllCourses().subscribe({
@@ -23,27 +80,13 @@ export class CoursesComponent implements OnInit {
         console.log(response);
         if (response.success) {
           this.Courses = response.data;
-          // this.Courses.forEach(course => {
-          //   console.log(this.getImageUrl(course.image));
-          // });
         }
       },
       error: (err) => {
         console.log(err);  
       }
     });
-    }
-
-  // getImageUrl(imagePath: string): string {
-  //   return this.baseUrl + encodeURIComponent(imagePath);
-  // }
-  // getImageUrl(imagePath: string): string {
-  //   return this.baseUrl + imagePath; 
-  // }
-  // getImageUrl(imagePath: string): string {
-  //   return this.baseUrl + imagePath.replace(/ /g, '%20'); // Encode only spaces
-  // }
-  
+  }
 
   toggleHeart(event: Event): void {
     const heartIcon = event.target as HTMLElement;
@@ -55,4 +98,79 @@ export class CoursesComponent implements OnInit {
       heartIcon.classList.add('fa-regular');
     }
   }
+
+  enroll(courseId: number): void {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken) {
+      // Show an alert or modal to the user
+      alert('You need to log in before enrolling in a course.');
+      // Optionally, you can redirect to the login page
+      this.router.navigate(['/login']);
+    } else {
+      // If the user is logged in, navigate to the course details or perform the enrollment
+      this.router.navigate(['/cousres', courseId]);
+    }
+  }
 }
+// import { CommonModule } from '@angular/common';
+// import { Component, OnInit } from '@angular/core';
+// import { Router, RouterModule } from '@angular/router';
+// import { CoursesService } from '../../shared/services/courses.service';
+// import { LoaderComponent } from "../loader/loader.component";
+
+// @Component({
+//   selector: 'app-courses',
+//   standalone: true,
+//   imports: [CommonModule, RouterModule, LoaderComponent],
+//   templateUrl: './courses.component.html',
+//   styleUrls: ['./courses.component.css']
+// })
+// export class CoursesComponent implements OnInit {
+//   Courses: any[] = [];
+//   showModal: boolean = false;
+
+//   constructor(private courseserv: CoursesService, private router: Router) { }
+
+//   ngOnInit(): void {
+//     this.courseserv.GetAllCourses().subscribe({
+//       next: (response) => {
+//         console.log(response);
+//         if (response.success) {
+//           this.Courses = response.data;
+//         }
+//       },
+//       error: (err) => {
+//         console.log(err);
+//       }
+//     });
+//   }
+
+//   toggleHeart(event: Event): void {
+//     const heartIcon = event.target as HTMLElement;
+//     if (heartIcon.classList.contains('fa-regular')) {
+//       heartIcon.classList.remove('fa-regular');
+//       heartIcon.classList.add('fa-solid');
+//     } else {
+//       heartIcon.classList.remove('fa-solid');
+//       heartIcon.classList.add('fa-regular');
+//     }
+//   }
+
+//   enroll(courseId: number): void {
+//     const accessToken = localStorage.getItem('access_token');
+//     if (!accessToken) {
+//       this.showModal = true; // Show the modal
+//     } else {
+//       this.router.navigate(['/courses', courseId]);
+//     }
+//   }
+
+//   closeModal(): void {
+//     this.showModal = false; // Hide the modal
+//   }
+
+//   navigateToLogin(): void {
+//     this.router.navigate(['/login']); // Navigate to login page
+//     this.closeModal(); // Close the modal
+//   }
+// }
