@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { RouterLinkActive, RouterModule } from '@angular/router';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -18,5 +19,9 @@ export class HeaderComponent {
       notifiaction.classList.remove('fa-solid');
       notifiaction.classList.add('fa-regular');
     }
+  }
+  constructor(private _AuthService: AuthService) {}
+  logOutUser():void{
+ this._AuthService.logOut();
   }
 }

@@ -23,7 +23,9 @@ class PaymentController extends Controller
             Stripe::setApiKey(env('STRIPE_SECRET'));
 
             // Find the course price based on the provided course ID
-            $course = Course::find($request->course_id);
+            
+             $course = Course::find($request->course_id);
+             $amount = $course->price * 100; // Stripe requires the amount in cents
 
             // Ensure that course is retrieved correctly
             if (!$course) {

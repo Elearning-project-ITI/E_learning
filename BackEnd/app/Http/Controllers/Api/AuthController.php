@@ -67,7 +67,9 @@ class AuthController extends BaseController
         $isValidEmail = $this->checkEmailValidity($request->email);
 
         if (!$isValidEmail) {
-            return $this->sendError('Invalid Email', ['error' => 'The provided email does not real.']);
+            return $this->sendError(['The provided email does not real.'], [], 401);        
+
+           // return $this->sendError('Invalid Email', ['error' => 'The provided email does not real.']);
         }
         $imagePath = null;
         if ($request->hasFile('image')) {
@@ -119,7 +121,7 @@ class AuthController extends BaseController
         // Attempt to authenticate the user
         if (!Auth::attempt($request->only('email', 'password'))) {
             
-            return $this->sendError('Invalid email or password.', [], 401);        
+            return $this->sendError(['Invalid email or password.'], [], 401);        
 
             
         }
@@ -132,9 +134,9 @@ class AuthController extends BaseController
             // Resend the email
             Mail::to($user->email)->send(new VerifyEmail($user));
 
-            return $this->sendError('Verification token has expired. A new verification email has been sent.', [], 400);
+            return $this->sendError(['Verification token has expired. A new verification email has been sent.'], [], 400);
             }
-            return $this->sendError('Please verify your email before logging in.', [], 403);
+            return $this->sendError(['Please verify your email before logging in.'], [], 403);
         }  
         // Get the authenticated user
         $user = Auth::user();
@@ -182,7 +184,7 @@ class AuthController extends BaseController
 
         if (!$user) {
             // Return an error response if the email is not found
-            return $this->sendError('Email does not exist in our records.', [], 404);        }
+            return $this->sendError(['Email does not exist in our records.'], [], 404);        }
         // Send password reset link
         $status = Password::sendResetLink(
             $request->only('email')
@@ -193,7 +195,7 @@ class AuthController extends BaseController
         } elseif ($status === Password::RESET_THROTTLED) {
             return $this->sendResponse([], 'Password reset link sent!');
         } else {
-            return $this->sendError('Unable to send reset link to the provided email.', [], 400);
+            return $this->sendError(['Unable to send reset link to the provided email.'], [], 400);
         } 
     }
     public function resetPassword(Request $request)
@@ -219,7 +221,7 @@ class AuthController extends BaseController
         if ($status === Password::PASSWORD_RESET) {
             return $this->sendResponse([], 'Password reset successful!');
         } else {
-            return $this->sendError('Invalid token or email.', [], 400);
+            return $this->sendError(['Invalid token or email.'], [], 400);
         }
     }
 
@@ -227,13 +229,13 @@ class AuthController extends BaseController
         $user = User::where('email_verification_token', $request->token)->first();
     
         if (!$user) {
-            return $this->sendError ('Invalid verification token.',[],400);
+            return $this->sendError (['Invalid verification token.'],[],400);
         }
     
         // Check if the token is expired (1 hour = 60 minutes)
       //  dd(now()->diffInMinutes($user->verification_token_created_at));
         if (now()->diffInMinutes($user->verification_token_created_at) < -60.0) {
-            return $this->sendError ('Verification token has expired. must be login to resend Verification ',[],400);
+            return $this->sendError (['Verification token has expired. must be login to resend Verification '],[],400);
             
         }
     

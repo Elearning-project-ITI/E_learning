@@ -14,8 +14,10 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class RegisterationComponent {
   constructor(private _AuthService: AuthService ,private _Router:Router) { }
-  msgErrorEmail:string='';
-  msgErrorName:string='';
+  // msgErrorEmail:string='';
+  // msgErrorName:string='';
+  msgSuccess=''
+  msgErrors: string[] = [];
   isLoading:boolean=false;
 
   registerForm: FormGroup = new FormGroup({
@@ -48,20 +50,41 @@ export class RegisterationComponent {
       formData.append('image', this.selectedFile);  // Make sure `selectedFile` is the actual file object
       
 
+      // this._AuthService.setRegister(formData).subscribe({
+      //   next: (response) => {
+      //     if (response.success=true){
+      //       this.isLoading=false;
+      //        this._Router.navigate(['/login'])
+      //     }
+      //     console.log(response);
+      //     console.log(formData.get('image'));  
+      //   },
+      //   error: (err:HttpErrorResponse) => {
+      //     this.isLoading=false;
+      //     console.log(err.error.errors);
+      //     this.msgErrorEmail=err.message;
+      //     this.msgErrorName=err.error.errors.name;
+      //     // console.log(err.error);
+      //   }
+      // });
       this._AuthService.setRegister(formData).subscribe({
         next: (response) => {
           if (response.success=true){
             this.isLoading=false;
-             this._Router.navigate(['/login'])
+            this.msgSuccess=response.message;
+            // console.log(response.message)
+            setTimeout(() => {
+              this._Router.navigate(['/login']); // Navigate to the login page after 3 seconds
+            }, 2000);
           }
-          console.log(response);
-          console.log(formData.get('image'));  
+          // console.log(response);
+          // console.log(formData.get('image'));  
         },
         error: (err:HttpErrorResponse) => {
           this.isLoading=false;
-          this.msgErrorEmail=err.error.message[0];
-          this.msgErrorName=err.error.message[1];
-        
+          // this.msgErrorEmail=err.error.message[0];
+          // this.msgErrorName=err.error.message[1];
+          this.msgErrors = err.error.message;
           console.log(err.error);
         }
       });

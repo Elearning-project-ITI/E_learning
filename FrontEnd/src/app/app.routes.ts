@@ -17,6 +17,10 @@ import { ViewCourseDetailsComponent } from './Components/view-course-details/vie
 import { CoursematerialComponent } from './Components/coursematerial/coursematerial.component';
 import { QuizesComponent } from './Components/quizes/quizes.component';
 import { ReviwesComponent } from './Components/reviwes/reviwes.component';
+import { CoursesAdminComponent } from './Components/courses-admin/courses-admin.component';
+import { QuizesAdminComponent } from './Components/quizes-admin/quizes-admin.component';
+import { MaterialAdminComponent } from './Components/material-admin/material-admin.component';
+import { WishlistComponent } from './Components/wishlist/wishlist.component';
 
 export const routes: Routes = [
     {path:"",component:LoginComponent},
@@ -29,6 +33,10 @@ export const routes: Routes = [
     {path:"forgetpassword",component:ForgetPasswordComponent},
     {path:"resetpassword",component:ResetPasswordComponent},
     {path:"notification",component:NotificationComponent},
+    {path:"myCourses",component:CoursesAdminComponent},
+    {path:"myQuizes",component:QuizesAdminComponent},
+    {path:"myMaterial",component:MaterialAdminComponent},
+    {path:"wishlist",component:WishlistComponent},
     {path:"profile",component:ProfileComponent, children: [
         { path: "", component: ViewProfileComponent },
         { path: "viewProfile", component: ViewProfileComponent },

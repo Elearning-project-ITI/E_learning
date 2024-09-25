@@ -187,13 +187,16 @@ export class ResetPasswordComponent implements OnInit {
 
   // Handle form submission
   handleForm(): void {
-    if (this.resetPasswordForm.invalid || this.resetPasswordForm.value.newpassword !== this.resetPasswordForm.value.repassword) {
+    if (
+      this.resetPasswordForm.invalid ||
+      this.resetPasswordForm.value.newpassword !== this.resetPasswordForm.value.repassword
+    ) {
       this.msgError = 'Passwords do not match or are invalid.';
       return;
     }
   
     this.isLoading = true;
-    
+  
     // Create a new FormData object
     const formData = new FormData();
     formData.append('token', this.token as string); // Ensure token is a string
@@ -203,19 +206,21 @@ export class ResetPasswordComponent implements OnInit {
   
     // Send data to backend to reset the password
     this._AuthService.setreset(formData).subscribe({
-        next: (response: any) => {
-          console.log(response);
-            alert('Password reset successful!');
-          // this.msgsuccess = response.message;
-          // console.log(this.msgsuccess )
-          this.router.navigate(['/login']);
-          this.isLoading = false;
-        },
-        error: (err: HttpErrorResponse) => {
-          this.msgError = err.error.message || 'Failed to reset password. Please try again.';
-          console.error('Error:', err);
-          this.isLoading = false;
-        }
-      });
+      next: (response: any) => {
+        console.log(response);
+        this.msgsuccess = response.message; // Show the success message
+        this.isLoading = false;
+  
+        // Delay navigation to the login page to show the success message
+        setTimeout(() => {
+          this.router.navigate(['/login']); // Navigate to the login page after 3 seconds
+        }, 2000);
+      },
+      error: (err: HttpErrorResponse) => {
+        this.msgError = err.error.message || 'Failed to reset password. Please try again.';
+        console.error('Error:', err);
+        this.isLoading = false;
+      }
+    });
   }
 }
