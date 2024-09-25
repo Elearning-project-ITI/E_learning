@@ -64,16 +64,6 @@ return [
             'throw' => false,
         ],
 
-
-        'uploads' => [
-            'driver' => 'local',
-            'root' => public_path('uploads'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
-            'throw' => false,
-        ],
-
-
     ],
 
     /*
