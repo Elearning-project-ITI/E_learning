@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
-use Stripe\PaymentIntent;
+use Stripe\Checkout\Session; // Import the Stripe Checkout Session class
 use Exception;
 use App\Models\Course;  // Assuming courses are stored in a Course model
 
@@ -15,8 +15,7 @@ class PaymentController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'course_id' => 'required|exists:courses,id', // Make sure the course exists
-           // 'payment_method_id' => 'required|string', // Stripe payment method ID from frontend
+            'course_id' => 'required|exists:courses,id', // Ensure the course exists
         ]);
 
         try {
@@ -25,24 +24,40 @@ class PaymentController extends Controller
 
             // Find the course price based on the provided course ID
              $course = Course::find($request->course_id);
+             $course = Course::find($request->course_id);
+             $amount = $course->price * 100; // Stripe requires the amount in cents
+            $course = Course::find($request->course_id);
              $amount = $course->price * 100; // Stripe requires the amount in cents
 
-            // Create a new PaymentIntent
-            $paymentIntent = PaymentIntent::create([
-                'amount' => $amount, // Amount in cents
-                'currency' => 'usd', // or whatever currency you're using
-                'payment_method' => 'pm_card_visa', // ID from frontend
-                'confirmation_method' => 'manual',
-                'confirm' => true,
-                'return_url' => 'https://your-app.test/payment/complete' // Add this URL
-                ,
+            // Ensure that course is retrieved correctly
+            if (!$course) {
+                return response()->json(['success' => false, 'error' => 'Course not found'], 404);
+            }
+
+            $coursename = $course->name;
+            $price = $course->price * 100; // Stripe expects the amount in cents
+
+            // Create the Checkout Session
+            $session = Session::create([
+                'line_items' => [
+                    [
+                        'price_data' => [
+                            'currency' => 'USD',
+                            'product_data' => [
+                                'name' => $coursename,
+                            ],
+                            'unit_amount' => $price,  // Price is already in cents
+                        ],
+                        'quantity' => 1,
+                    ],
+                ],
+                'mode' => 'payment',
+                'success_url' => route('success'), 
+                'cancel_url' => route('cancel'),
             ]);
 
-            // Return a successful response with the payment intent data
-            return response()->json([
-                'success' => true,
-                'paymentIntent' => $paymentIntent
-            ]);
+            // Redirect to the Stripe Checkout session URL
+            return redirect()->away($session->url);
 
         } catch (Exception $e) {
             // Handle any errors that occur during payment processing

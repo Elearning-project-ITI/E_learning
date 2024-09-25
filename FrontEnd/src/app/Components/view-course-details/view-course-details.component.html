@@ -1,4 +1,4 @@
-<div *ngIf="course" class="card mt-4">
+<!-- <div *ngIf="course" class="card mt-4">
     <div class="card-header">
       <h3>{{ course.name }}</h3>
     </div>
@@ -22,4 +22,31 @@
         <button class="btn btn-outline-warning w-100">Pay</button>
       </div>
     </div>
+  </div> -->
+  <div *ngIf="course" class="card mt-4">
+    <div class="card-header">
+      <h3>{{ course.name }}</h3>
+    </div>
+    <div class="card-body">
+      <h3>Image Course:</h3>
+      <div class="image-preview">
+        <img [src]="course.image" alt="Course Image" class="rounded-circle">
+      </div>
+      <h3>Name: <span>{{ course.name }}</span></h3>
+      <h3>Price: <span class="bg-warning rounded p-1">{{ course.price }} $</span></h3>
+      <h3>Date: <span>{{ course.date }}</span></h3>
+      <h3>Description:</h3>
+      <p>{{ course.description }}</p>
+      <div class="d-flex">
+        <h3>Rate:</h3>
+        <div class="mt-2">
+          <i class="fa-solid fa-star text-warning" *ngFor="let star of [1, 2, 3, 4, 5]"></i>
+        </div>
+      </div>
+      <div class="w-25 m-auto">
+        <!-- Pay button calls makePayment() -->
+        <button class="btn btn-outline-warning w-100" (click)="makePayment()">Pay</button>
+      </div>
+    </div>
   </div>
+  

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { Observable } from 'rxjs';
+import { Observable, catchError } from 'rxjs';
 interface userAuth {
   user :any
  }
@@ -49,5 +49,6 @@ export class AuthService {
    localStorage.removeItem("access_token");
    this._Router.navigate(['/login'])
   }
-}
 
+ 
+}

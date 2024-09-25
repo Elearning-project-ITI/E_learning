@@ -47,6 +47,21 @@ export class CoursesService {
       catchError(this.handleError)
     );
   }
+  payment(courseId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+  
+    if (!token) {
+      return throwError(() => new Error('Token not found'));
+    }
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    const body = { course_id: courseId };  // Assuming 'course_id' is required by the API
+  
+    return this.http.post(`http://127.0.0.1:8000/api/payment`, body, { headers }).pipe(
+   catchError(this.handleError)
+    );
+  }
+  
   private handleError(error: any) {
     let errorMessage = 'An unknown error occurred!';
     if (error.error instanceof ErrorEvent) {
