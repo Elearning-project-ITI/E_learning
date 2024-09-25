@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
 interface userAuth {
@@ -11,7 +12,7 @@ interface userAuth {
 export class AuthService {
   userData: any;
   userToken: any;
-  constructor(private _HttpClient: HttpClient) {}
+  constructor(private _HttpClient: HttpClient,private _Router:Router) {}
   saveUserData() {
     const token = localStorage.getItem('eToken');
     if (token != null) {
@@ -42,6 +43,11 @@ export class AuthService {
    
       return this._HttpClient.post(`http://0.0.0.0:8000/api/reset-password`, userData);
    
+  }
+  logOut():void{
+   localStorage.removeItem("eToken");
+   localStorage.removeItem("access_token");
+   this._Router.navigate(['/login'])
   }
 }
 
