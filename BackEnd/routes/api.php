@@ -96,6 +96,8 @@ Route::middleware(['auth:sanctum'])->group( function () {
 
     });
 });
+Route::get('/course', [CourseController::class, 'index'])->name('course.index');
+
 // Route::any('/{any}', function () {
 //     return response()->json([
 //         'message' => 'Route not found. Please check the URL and try again.'

@@ -30,7 +30,7 @@ export class CoursesService {
   constructor(private readonly http: HttpClient) { }
 
   GetAllCourses(): Observable<GetAllCoursesResponse> {
-    const token = localStorage.getItem('eToken');
+    const token = localStorage.getItem('access_token');
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
@@ -40,7 +40,7 @@ export class CoursesService {
   }
 
   GetCoursetByID(id:any): Observable<GetCourseResponse>{
-    const token = localStorage.getItem('eToken');
+    const token = localStorage.getItem('access_token');
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 

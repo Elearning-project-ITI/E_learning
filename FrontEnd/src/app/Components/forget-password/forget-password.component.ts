@@ -15,6 +15,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 export class ForgetPasswordComponent {
   constructor(private _AuthService: AuthService ,private _Router:Router) { }
   msgError:string='';
+  msgsuccess:string='';
   isLoading:boolean=false;
 
   forgetpassword: FormGroup = new FormGroup({
@@ -37,6 +38,7 @@ export class ForgetPasswordComponent {
           console.log(response)
           if (response.success){
             this.isLoading=false;
+            this.msgsuccess=response.message;
           } 
         },
         error: (err:HttpErrorResponse) => {

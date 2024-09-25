@@ -2,22 +2,32 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable } from 'rxjs';
-
+interface userAuth {
+  user :any
+ }
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-
+  userData: any;
+  userToken: any;
   constructor(private _HttpClient: HttpClient) {}
-  userData:any;
   saveUserData() {
-    if(localStorage.getItem('eToken')!=null){
-      let encodeToken:any =localStorage.getItem('eToken');
-     let decodeToken= jwtDecode(encodeToken);
-     this.userData=decodeToken;
-     console.log(decodeToken)
+    const token = localStorage.getItem('eToken');
+    if (token != null) {
+      const decodedToken: any = jwtDecode(token);
+      console.log('Decoded Token:', decodedToken);
+      this.userData = decodedToken;
+      const accessToken = decodedToken?.access_token;
+  
+      if (accessToken) {
+        this.userToken = accessToken;
+        localStorage.setItem('access_token', this.userToken);
+        console.log('Access Token Saved:', this.userToken);
+      } else {
+        console.error('Access token not found in decoded JWT');
+      }
     }
-    
   }
   setRegister(userData: FormData): Observable<any> {
     return this._HttpClient.post(`http://0.0.0.0:8000/api/register`, userData);
@@ -26,11 +36,12 @@ export class AuthService {
     return this._HttpClient.post(`http://0.0.0.0:8000/api/login`, userData);
   }
   setforget(userData: FormData): Observable<any> {
-    return this._HttpClient.post(`http://0.0.0.0:8000/api/forgetpassword`, userData);
+    return this._HttpClient.post(`http://0.0.0.0:8000/api/forgot-password`, userData);
   }
-  setreset(userData: FormData): Observable<any> {
-    return this._HttpClient.post(`http://0.0.0.0:8000/api/resetpassword`, userData);
+  setreset(userData:FormData): Observable<any> {
+   
+      return this._HttpClient.post(`http://0.0.0.0:8000/api/reset-password`, userData);
+   
   }
 }
-
 

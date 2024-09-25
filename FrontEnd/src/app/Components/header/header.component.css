@@ -17,15 +17,19 @@
     width:110px
 }
 .formsearch .form-control{
-    background-color: #3A6D8C;
+    background-color: rgba(84, 170, 240, 0.356);
     border:none;
     /* border-radius: 0 !important;  */
     
 }
+.formsearch .form-control::placeholder{
+    color:white;
+}
 .formsearch i{
-    background-color:  #6A9AB0;
+    background-color:  rgba(84, 170, 240, 0.555);
     padding: 20px;
   border-radius: 20%;
+  color:white;
 }
 .navbar{
     background-color: rgba(19, 18, 18, 0.295);
@@ -123,19 +127,21 @@ opacity: 0;
         padding-block: 12px;
         font-size: 13px;
     }
-    
+    .btn-register{
+        margin-top: 5px;
+    }
 
 }
 
 .btn-register{
-    background-image:linear-gradient(to right,rgba(185, 172, 185, 0.521),rgba(9, 81, 236, 0.521)) ; 
+    background-image:linear-gradient(to right,rgba(185, 172, 185, 0.521),rgba(9, 134, 236, 0.521)) ; 
     transition: all 1s;
     color:#DBCC95;
     margin-left:4px;
 }
 .btn-register:hover{
     color:#CD8D7A;
-    background-color:rgba(22, 50, 172, 0.521) ;
+    background-color:rgba(9, 134, 236, 0.521);
 }
 .imgprofile{
     width: 80px;
