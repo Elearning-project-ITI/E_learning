@@ -97,7 +97,13 @@ Route::middleware(['auth:sanctum'])->group( function () {
     });
 });
 Route::get('/course', [CourseController::class, 'index'])->name('course.index');
+Route::get('/payment/success', function () {
+    return response()->json(['success' => true, 'message' => 'Payment successful!']);
+})->name('success');
 
+Route::get('/payment/cancel', function () {
+    return response()->json(['success' => false, 'message' => 'Payment canceled.']);
+})->name('cancel');
 // Route::any('/{any}', function () {
 //     return response()->json([
 //         'message' => 'Route not found. Please check the URL and try again.'

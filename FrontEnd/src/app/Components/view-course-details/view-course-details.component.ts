@@ -73,7 +73,7 @@ export class ViewCourseDetailsComponent {
       this.courseserv.payment(this.course.id).subscribe({
         next: (response) => {
           console.log('Payment Successful:', response);
-          alert('Payment Successful');
+          window.location.href = response.url;
         },
         error: (err) => {
           console.error('Payment Failed:', err);

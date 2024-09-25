@@ -97,6 +97,7 @@ class AuthController extends BaseController
         //$token['token'] = $user->createToken('auth_token')->plainTextToken;
        // $token['name'] =  $user->name;
        Mail::to($user->email)->send(new VerifyEmail($user));
+       
        return $this->sendResponse(
         [],
             'Registration successful. Please verify your email.',

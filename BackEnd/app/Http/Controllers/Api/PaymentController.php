@@ -15,7 +15,7 @@ class PaymentController extends Controller
     {
         // Validate the request data
         $request->validate([
-            'course_id' => 'required|exists:courses,id', // Ensure the course exists
+            'id' => 'required|exists:courses,id', // Ensure the course exists
         ]);
 
         try {
@@ -23,10 +23,10 @@ class PaymentController extends Controller
             Stripe::setApiKey(env('STRIPE_SECRET'));
 
             // Find the course price based on the provided course ID
-            
-             $course = Course::find($request->course_id);
+        
+             $course = Course::find($request->id);
              $amount = $course->price * 100; // Stripe requires the amount in cents
-
+            
             // Ensure that course is retrieved correctly
             if (!$course) {
                 return response()->json(['success' => false, 'error' => 'Course not found'], 404);
@@ -34,8 +34,6 @@ class PaymentController extends Controller
 
             $coursename = $course->name;
             $price = $course->price * 100; // Stripe expects the amount in cents
-
-            // Create the Checkout Session
             $session = Session::create([
                 'line_items' => [
                     [
@@ -55,7 +53,8 @@ class PaymentController extends Controller
             ]);
 
             // Redirect to the Stripe Checkout session URL
-            return redirect()->away($session->url);
+            
+            return response()->json(['url' => $session->url]);
 
         } catch (Exception $e) {
             // Handle any errors that occur during payment processing

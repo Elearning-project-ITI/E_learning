@@ -55,9 +55,9 @@ export class CoursesService {
     }
   
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const body = { course_id: courseId };  // Assuming 'course_id' is required by the API
+    const body = { id: courseId };  // Assuming 'course_id' is required by the API
   
-    return this.http.post(`http://127.0.0.1:8000/api/payment`, body, { headers }).pipe(
+    return this.http.post(`http://0.0.0.0:8000/api/payment`, body, { headers }).pipe(
    catchError(this.handleError)
     );
   }
