@@ -1,0 +1,25 @@
+#quiz {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin-bottom: 20px;
+}
+
+.mycontainer {
+    margin-top: 20px; /* Adjusted to create space below the header */
+    text-align: center; /* Center align text */
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+button {
+    margin-top: 10px;
+    margin-right: 10px; /* Space between buttons */
+}
+
+/* New CSS for left-aligned labels */
+.form-group label {
+    text-align: left;
+    display: block;
+}
