@@ -1,0 +1,14 @@
+<div class="verify-email-container">
+    <div class="verify-email-card" *ngIf="isLoading">
+      <p class="loading-message">Verifying your email, please wait...</p>
+    </div>
+  
+    <div class="verify-email-card" *ngIf="!isLoading">
+      <p class="verification-message">{{ verificationMessage }}</p>
+  
+      <div *ngIf="isVerified">
+        <button class="btn-primary" (click)="goToLogin()">Go to Login</button>
+      </div>
+    </div>
+  </div>
+  

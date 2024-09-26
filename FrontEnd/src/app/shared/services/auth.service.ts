@@ -1,18 +1,174 @@
-import { HttpClient } from '@angular/common/http';
+// // import { HttpClient, HttpHeaders } from '@angular/common/http';
+// // import { Injectable } from '@angular/core';
+// // import { Router } from '@angular/router';
+// // import { jwtDecode } from 'jwt-decode';
+// // import { Observable, catchError } from 'rxjs';
+// // interface userAuth {
+// //   user :any
+// //  }
+// // @Injectable({
+// //   providedIn: 'root'
+// // })
+// // export class AuthService {
+// //   userData: any;
+// //   userToken: any;
+// //   constructor(private _HttpClient: HttpClient,private _Router:Router) {}
+// //   saveUserData() {
+// //     const token = localStorage.getItem('eToken');
+// //     if (token != null) {
+// //       const decodedToken: any = jwtDecode(token);
+// //       console.log('Decoded Token:', decodedToken);
+// //       this.userData = decodedToken;
+// //       const accessToken = decodedToken?.access_token;
+  
+// //       if (accessToken) {
+// //         this.userToken = accessToken;
+// //         localStorage.setItem('access_token', this.userToken);
+// //         console.log('Access Token Saved:', this.userToken);
+// //       } else {
+// //         console.error('Access token not found in decoded JWT');
+// //       }
+// //     }
+// //   }
+// //   setRegister(userData: FormData): Observable<any> {
+// //     return this._HttpClient.post(`http://0.0.0.0:8000/api/register`, userData);
+// //   }
+// //   setLogin(userData: FormData): Observable<any> {
+// //     return this._HttpClient.post(`http://0.0.0.0:8000/api/login`, userData);
+// //   }
+// //   setforget(userData: FormData): Observable<any> {
+// //     return this._HttpClient.post(`http://0.0.0.0:8000/api/forgot-password`, userData);
+// //   }
+// //   setreset(userData:FormData): Observable<any> {
+   
+// //       return this._HttpClient.post(`http://0.0.0.0:8000/api/reset-password`, userData);
+   
+// //   }
+// //   logout(): void {
+// //     const token = localStorage.getItem('access_token');
+    
+// //     if (!token) {
+// //       console.error('No access token found.');
+// //       return;
+// //     }
+
+// //     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+// //     this._HttpClient.post(`http://0.0.0.0:8000/api/logout`, {}, { headers })
+// //       .subscribe({
+// //         next: (response) => {
+// //           console.log('Logout successful:', response);
+// //           localStorage.removeItem('eToken');
+// //           localStorage.removeItem('access_token');
+// //           this._Router.navigate(['/login']);
+// //         },
+// //         error: (err) => {
+// //           console.error('Logout failed:', err);
+// //         }
+// //       });
+// //   }
+// // }
+ 
+// import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { Injectable } from '@angular/core';
+// import { Router } from '@angular/router';
+// import { jwtDecode } from 'jwt-decode';
+// import { Observable } from 'rxjs';
+
+// interface userAuth {
+//   user: any;
+// }
+
+// @Injectable({
+//   providedIn: 'root',
+// })
+// export class AuthService {
+//   userData: any;
+//   userToken: any;
+
+  
+//   private baseURL = 'http://0.0.0.0:8000/api';
+
+//   constructor(private _HttpClient: HttpClient, private _Router: Router) {}
+
+//   saveUserData() {
+//     const token = localStorage.getItem('eToken');
+//     if (token != null) {
+//       const decodedToken: any = jwtDecode(token);
+//       console.log('Decoded Token:', decodedToken);
+//       this.userData = decodedToken;
+//       const accessToken = decodedToken?.access_token;
+
+//       if (accessToken) {
+//         this.userToken = accessToken;
+//         localStorage.setItem('access_token', this.userToken);
+//         console.log('Access Token Saved:', this.userToken);
+//       } else {
+//         console.error('Access token not found in decoded JWT');
+//       }
+//     }
+//   }
+
+//   setRegister(userData: FormData): Observable<any> {
+//     return this._HttpClient.post(`${this.baseURL}/register`, userData);
+//   }
+
+//   setLogin(userData: FormData): Observable<any> {
+//     return this._HttpClient.post(`${this.baseURL}/login`, userData);
+//   }
+
+//   setforget(userData: FormData): Observable<any> {
+//     return this._HttpClient.post(`${this.baseURL}/forgot-password`, userData);
+//   }
+
+//   setreset(userData: FormData): Observable<any> {
+//     return this._HttpClient.post(`${this.baseURL}/reset-password`, userData);
+//   }
+
+//   logout(): void {
+//     const token = localStorage.getItem('access_token');
+
+//     if (!token) {
+//       console.error('No access token found.');
+//       return;
+//     }
+
+//     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+//     this._HttpClient.post(`${this.baseURL}/logout`, {}, { headers }).subscribe({
+//       next: (response) => {
+//         console.log('Logout successful:', response);
+//         localStorage.removeItem('eToken');
+//         localStorage.removeItem('access_token');
+//         this._Router.navigate(['/login']);
+//       },
+//       error: (err) => {
+//         console.error('Logout failed:', err);
+//       },
+//     });
+//   }
+// }
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { Observable, catchError } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+
 interface userAuth {
-  user :any
- }
+  user: any;
+}
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   userData: any;
   userToken: any;
-  constructor(private _HttpClient: HttpClient,private _Router:Router) {}
+
+  private baseURL = 'http://0.0.0.0:8000/api';
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkToken());
+  isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
+  constructor(private _HttpClient: HttpClient, private _Router: Router) {}
+
   saveUserData() {
     const token = localStorage.getItem('eToken');
     if (token != null) {
@@ -20,35 +176,58 @@ export class AuthService {
       console.log('Decoded Token:', decodedToken);
       this.userData = decodedToken;
       const accessToken = decodedToken?.access_token;
-  
+
       if (accessToken) {
         this.userToken = accessToken;
         localStorage.setItem('access_token', this.userToken);
         console.log('Access Token Saved:', this.userToken);
+        this.isAuthenticatedSubject.next(true); // Emit true when token is saved
       } else {
         console.error('Access token not found in decoded JWT');
       }
     }
   }
+
   setRegister(userData: FormData): Observable<any> {
-    return this._HttpClient.post(`http://0.0.0.0:8000/api/register`, userData);
-  }
-  setLogin(userData: FormData): Observable<any> {
-    return this._HttpClient.post(`http://0.0.0.0:8000/api/login`, userData);
-  }
-  setforget(userData: FormData): Observable<any> {
-    return this._HttpClient.post(`http://0.0.0.0:8000/api/forgot-password`, userData);
-  }
-  setreset(userData:FormData): Observable<any> {
-   
-      return this._HttpClient.post(`http://0.0.0.0:8000/api/reset-password`, userData);
-   
-  }
-  logOut():void{
-   localStorage.removeItem("eToken");
-   localStorage.removeItem("access_token");
-   this._Router.navigate(['/login'])
+    return this._HttpClient.post(`${this.baseURL}/register`, userData);
   }
 
- 
+  setLogin(userData: FormData): Observable<any> {
+    return this._HttpClient.post(`${this.baseURL}/login`, userData);
+  }
+
+  setforget(userData: FormData): Observable<any> {
+    return this._HttpClient.post(`${this.baseURL}/forgot-password`, userData);
+  }
+
+  setreset(userData: FormData): Observable<any> {
+    return this._HttpClient.post(`${this.baseURL}/reset-password`, userData);
+  }
+
+  logout(): void {
+    const token = localStorage.getItem('access_token');
+
+    if (!token) {
+      console.error('No access token found.');
+      return;
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    this._HttpClient.post(`${this.baseURL}/logout`, {}, { headers }).subscribe({
+      next: (response) => {
+        console.log('Logout successful:', response);
+        localStorage.removeItem('eToken');
+        localStorage.removeItem('access_token');
+        this.isAuthenticatedSubject.next(false); // Emit false on logout
+        this._Router.navigate(['/login']);
+      },
+      error: (err) => {
+        console.error('Logout failed:', err);
+      },
+    });
+  }
+
+  private checkToken(): boolean {
+    return !!localStorage.getItem('access_token'); // Check if token exists
+  }
 }
