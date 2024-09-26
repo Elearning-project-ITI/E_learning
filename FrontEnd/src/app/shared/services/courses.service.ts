@@ -1,4 +1,4 @@
-// src/app/shared/services/courses.service.ts
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
@@ -55,7 +55,7 @@ export class CoursesService {
     }
   
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const body = { course_id: courseId };  // Assuming 'course_id' is required by the API
+    const body = { course_id: courseId };  
   
     return this.http.post(`http://127.0.0.1:8000/api/payment`, body, { headers }).pipe(
    catchError(this.handleError)
