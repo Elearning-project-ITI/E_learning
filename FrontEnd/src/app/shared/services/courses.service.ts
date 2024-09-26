@@ -2,6 +2,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
+import { environment } from '../../../environment/environment';
 
 interface Course {
   id: number;
@@ -25,7 +26,7 @@ interface GetCourseResponse {
   providedIn: 'root'
 })
 export class CoursesService {
-  private readonly DB_URL = "http://localhost:8000/api/course";
+  private readonly DB_URL = environment.apiUrl;
 
   constructor(private readonly http: HttpClient) { }
 
@@ -34,7 +35,7 @@ export class CoursesService {
 
     // const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<GetAllCoursesResponse>(this.DB_URL );
+    return this.http.get<GetAllCoursesResponse>(this.DB_URL +'/course');
   }
   // , { headers }).pipe(
   //   catchError(this.handleError)
@@ -43,7 +44,7 @@ export class CoursesService {
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http.get<GetCourseResponse>(this.DB_URL+"/"+id, { headers }).pipe(
+    return this.http.get<GetCourseResponse>(this.DB_URL+"/course/"+id, { headers }).pipe(
       catchError(this.handleError)
     );
   }
@@ -57,7 +58,7 @@ export class CoursesService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     const body = { id: courseId };  // Assuming 'course_id' is required by the API
   
-    return this.http.post(`http://0.0.0.0:8000/api/payment`, body, { headers }).pipe(
+    return this.http.post(this.DB_URL+`/payment`, body, { headers }).pipe(
    catchError(this.handleError)
     );
   }
