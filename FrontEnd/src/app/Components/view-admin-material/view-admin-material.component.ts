@@ -1,17 +1,14 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 @Component({
-  selector: 'app-coursematerial',
+  selector: 'app-view-admin-material',
   standalone: true,
   imports: [CommonModule,FormsModule],
-  templateUrl: './coursematerial.component.html',
-  styleUrls: ['./coursematerial.component.css']
+  templateUrl: './view-admin-material.component.html',
+  styleUrl: './view-admin-material.component.css'
 })
-export class CoursematerialComponent {
-
-
+export class ViewAdminMaterialComponent {
   videos = [
     { title: 'Video 1: Course Overview', url: 'images/video1.mp4', visible: false, completed: false },
     { title: 'Video 2: Introduction to Topic', url: 'images/video1.mp4', visible: false, completed: false }
@@ -50,7 +47,6 @@ export class CoursematerialComponent {
      this.videos[index].completed = true; 
    }
 
-   
    onDescriptionCompleted() {
      this.descriptionCompleted = !this.descriptionCompleted; 
    }

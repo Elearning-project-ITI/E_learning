@@ -1,0 +1,62 @@
+<div class="course-material-container mt-5">
+    <!-- Course Description Section -->
+    <section class="course-description">
+      <div class="card course-card animated-card">
+        <div class="card-header">
+          <h2>
+            <button class="toggle-btn" (click)="toggleDescription()">
+              <i class="fas fa-info-circle"></i> Course Description
+            </button>
+          </h2>
+        </div>
+        <div *ngIf="descriptionVisible" class="card-body description-content">
+          <p class="description-text">This is a detailed description of the course. Click the checkbox below once you have read it.</p>
+          <div class="description-check">
+            <input type="checkbox" [(ngModel)]="descriptionCompleted" (change)="onDescriptionCompleted()" id="description-check" />
+            <label for="description-check">Course Description Completed</label>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Course Videos Section -->
+    <section class="course-videos mt-5">
+      <div class="header">
+        <h2><i class="fas fa-video"></i> Course Videos</h2>
+      </div>
+      <div class="video-cards">
+        <div class="video-card advanced-card" *ngFor="let video of videos; let i = index" (mouseenter)="hoverVideo(i)" (mouseleave)="hoverVideo(i)">
+          <div class="video-header" id="heading{{i}}">
+            <button class="toggle-btn" type="button" (click)="toggleVideo(i)">
+              <i class="fas fa-play-circle"></i> {{ video.title }}
+            </button>
+          </div>
+          <div class="video-body" *ngIf="video.visible">
+            <video class="video-player advanced-video" controls (ended)="onVideoEnded(i)">
+              <source [src]="video.url" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+            <div class="video-completed" *ngIf="video.completed">
+              <input type="checkbox" [checked]="video.completed" id="video-check{{i}}" />
+              <label for="video-check{{i}}">Video Completed</label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  
+    <!-- Course PDFs Section -->
+    <section class="course-pdfs mt-5">
+      <div class="header">
+        <h2><i class="fas fa-file-pdf"></i> Course PDFs</h2>
+      </div>
+      <ul class="pdf-list advanced-list">
+        <li *ngFor="let pdf of pdfs; let i = index">
+          <button class="btn-download advanced-btn" (click)="togglePdf(i)">
+            <i class="fas fa-download"></i> {{ pdf.title }}
+          </button>
+          <a *ngIf="pdf.visible" [href]="pdf.url" target="_blank" class="pdf-link advanced-pdf-link">{{ pdf.title }}</a>
+        </li>
+      </ul>
+    </section>
+  </div>

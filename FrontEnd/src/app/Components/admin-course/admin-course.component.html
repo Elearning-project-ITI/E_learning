@@ -1,0 +1,32 @@
+<section id="course">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 sidebar bg-light">
+                <div class="text-center mb-4 imgdiv">
+                    <img src="assets/course-placeholder.jpg" alt="Course Image" class="rounded-circle course-avatar">
+                    <h4 class="mt-2">Course Management</h4>
+                </div>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" routerLink="list-courses">View Courses</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" routerLink="add-course">Add Course</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" routerLinkActive="active" routerLink="edit-course">Edit Course</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-md-9 course-content">
+                <!-- Router outlet for child routes -->
+                <div class="container">
+                    <div class="mycontainer">
+                        <router-outlet></router-outlet>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

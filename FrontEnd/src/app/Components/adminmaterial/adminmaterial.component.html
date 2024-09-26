@@ -1,0 +1,30 @@
+<section id="profile">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar bg-light">
+                
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a  class="nav-link" >View Material</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" >Add Material</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" >Edit Material</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- Profile Content -->
+            <div class="col-md-9 profile-content">
+                <!-- Router outlet for child routes -->
+                 <div class="container">
+                    <div class=" mycontainer">
+                      <router-outlet></router-outlet>
+                    </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+</section>
