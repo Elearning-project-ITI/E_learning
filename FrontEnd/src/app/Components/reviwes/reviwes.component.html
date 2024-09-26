@@ -1,45 +1,69 @@
-<div class="card">
+<div class="review-section">
     <div class="container mt-5">
-        <div class="row">
-            <div class="col-md-6 mx-auto">
-                <h2 class="text-center mb-4">Submit Your Review</h2>
-                <form>
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="rating" class="form-label">Rating</label>
-                        <select class="form-select" id="rating" required>
-                            <option value="" selected disabled>Choose rating</option>
-                            <option value="1">1 - Very Poor</option>
-                            <option value="2">2 - Poor</option>
-                            <option value="3">3 - Average</option>
-                            <option value="4">4 - Good</option>
-                            <option value="5">5 - Excellent</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="comments" class="form-label">Comments</label>
-                        <textarea class="form-control" id="comments" rows="8" placeholder="Write your comments here..." required></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">Submit Review</button>
-                </form>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                <div class="card review-card p-4 shadow-lg">
+                    <h2 class="text-center mb-4">Submit Your Review</h2>
+                    <form>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="rating" class="form-label">Rating</label>
+                                <select class="form-select" id="rating" required>
+                                    <option value="" selected disabled>Choose rating</option>
+                                    <option value="1"> Very Poor</option>
+                                    <option value="2"> Poor</option>
+                                    <option value="3"> Average</option>
+                                    <option value="4"> Good</option>
+                                    <option value="5"> Excellent</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="comments" class="form-label">Comments</label>
+                            <textarea class="form-control" id="comments" rows="6" placeholder="Write your comments here..." required></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary submit-btn">Submit Review</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
 
         <!-- Existing Reviews Section -->
-        <div class="row mt-5">
-            <div class="col-md-8 mx-auto">
+        <div class="row justify-content-center mt-5">
+            <div class="col-lg-10">
                 <h2 class="text-center mb-4">User Reviews</h2>
 
                 <!-- Example Review -->
-                <div class="card mb-3">
+                <div class="card review-card mb-4 shadow-sm">
                     <div class="card-body">
-                        <h5 class="card-title">Marina Samir</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Rating: 4/5</h6>
-                        <p class="card-text">This course is really good! I enjoyed listen it, but there are some improvements to be made.</p>
-                        <p class="text-end"><small>Posted on: 2024-09-23</small></p>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <h5 class="card-title mb-0">Meray Hosam</h5>
+                                <h6 class="card-subtitle text-muted">Rating: 4/5</h6>
+                            </div>
+                            <small class="text-muted">Posted on: 2024-09-23</small>
+                        </div>
+                        <p class="card-text">This course is really good! I enjoyed it, but there are some improvements to be made.</p>
+                    </div>
+                </div>
+
+                <!-- Example Review -->
+                <div class="card review-card mb-4 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <div>
+                                <h5 class="card-title mb-0">John Doe</h5>
+                                <h6 class="card-subtitle text-muted">Rating: 5/5</h6>
+                            </div>
+                            <small class="text-muted">Posted on: 2024-09-20</small>
+                        </div>
+                        <p class="card-text">Excellent course with well-structured material and great instructor support.</p>
                     </div>
                 </div>
             </div>
