@@ -185,7 +185,7 @@ export class ResetPasswordComponent implements OnInit {
     });
   }
 
-  // Handle form submission
+ 
   handleForm(): void {
     if (
       this.resetPasswordForm.invalid ||

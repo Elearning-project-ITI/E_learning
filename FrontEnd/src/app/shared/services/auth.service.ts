@@ -146,12 +146,12 @@
 //     });
 //   }
 // }
-import { environment } from '../../../environment/environment';
+import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 
 interface userAuth {
   user: any;
@@ -163,7 +163,7 @@ interface userAuth {
 export class AuthService {
   userData: any;
   userToken: any;
-
+  
   private baseURL = environment.apiUrl;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkToken());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
@@ -228,17 +228,24 @@ export class AuthService {
     });
   }
 
+  // private checkToken(): boolean {
+  //   return !!localStorage.getItem('access_token');
+  // }
+  getProfile(): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    
+    if (!token) {
+      console.error('No access token found.');
+    
+      return throwError(() => new Error('No access token found.'));
+    }
+    
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this._HttpClient.get(`${this.baseURL}/profile`, { headers });
+  }
+
   private checkToken(): boolean {
     return !!localStorage.getItem('access_token');
   }
-  // getProfile(): Observable<any> {
-  //   const token = localStorage.getItem('access_token');
-  //   if (!token) {
-  //     console.error('No access token found.');
-  //     return;
-  //   }
-  
-  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-  //   return this._HttpClient.get(`${this.baseURL}/profile`, { headers });
-  // }
 }
+

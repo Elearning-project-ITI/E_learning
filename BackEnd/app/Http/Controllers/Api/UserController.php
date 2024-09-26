@@ -104,7 +104,7 @@ class UserController extends BaseController
     {
         $user = $request->user();
 
-        return $this->sendResponse($user, 'Profile retrieved successfully.');// Return user profile as JSON or render a view
+        return $this->sendResponse([$user], 'Profile retrieved successfully.');// Return user profile as JSON or render a view
     }
     public function showStudentProfile($id)
     {
