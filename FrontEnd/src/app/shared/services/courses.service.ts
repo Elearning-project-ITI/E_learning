@@ -1,4 +1,4 @@
-// src/app/shared/services/courses.service.ts
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';

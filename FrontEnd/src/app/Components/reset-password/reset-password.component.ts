@@ -146,7 +146,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { AuthService } from './../../shared/services/auth.service'; // Import AuthService
+import { AuthService } from './../../shared/services/auth.service'; 
 
 @Component({
   selector: 'app-reset-password',
@@ -168,9 +168,9 @@ export class ResetPasswordComponent implements OnInit {
     private route: ActivatedRoute,
     private http: HttpClient,
     private router: Router,
-    private _AuthService: AuthService // Correctly inject AuthService here
+    private _AuthService: AuthService 
   ) {
-    // Form initialization with validators
+   
     this.resetPasswordForm = this.fb.group({
       newpassword: ['', [Validators.required, Validators.minLength(8)]],
       repassword: ['', [Validators.required, Validators.minLength(8)]]
@@ -178,7 +178,7 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Capture token and email from query parameters
+   
     this.route.queryParams.subscribe(params => {
       this.token = params['token'];
       this.email = params['email'];
@@ -197,23 +197,23 @@ export class ResetPasswordComponent implements OnInit {
   
     this.isLoading = true;
   
-    // Create a new FormData object
+   
     const formData = new FormData();
-    formData.append('token', this.token as string); // Ensure token is a string
-    formData.append('email', this.email as string); // Ensure email is a string
+    formData.append('token', this.token as string); 
+    formData.append('email', this.email as string);
     formData.append('password', this.resetPasswordForm.value.newpassword);
     formData.append('password_confirmation', this.resetPasswordForm.value.repassword);
   
-    // Send data to backend to reset the password
+    
     this._AuthService.setreset(formData).subscribe({
       next: (response: any) => {
         console.log(response);
-        this.msgsuccess = response.message; // Show the success message
+        this.msgsuccess = response.message; 
         this.isLoading = false;
   
-        // Delay navigation to the login page to show the success message
+        
         setTimeout(() => {
-          this.router.navigate(['/login']); // Navigate to the login page after 3 seconds
+          this.router.navigate(['/login']); 
         }, 2000);
       },
       error: (err: HttpErrorResponse) => {
