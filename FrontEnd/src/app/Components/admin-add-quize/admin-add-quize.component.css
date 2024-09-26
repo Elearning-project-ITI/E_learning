@@ -5,8 +5,8 @@
 }
 
 .mycontainer {
-    margin-top: 20px; /* Adjusted to create space below the header */
-    text-align: center; /* Center align text */
+    margin-top: 20px; 
+    text-align: center; 
 }
 
 .question {
@@ -15,10 +15,10 @@
 
 button {
     margin-top: 10px;
-    margin-right: 10px; /* Space between buttons */
+    margin-right: 10px; 
 }
 
-/* New CSS for left-aligned labels */
+
 .form-group label {
     text-align: left;
     display: block;
