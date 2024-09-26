@@ -46,7 +46,7 @@ class VerifyEmail extends Mailable
     // }
     public function build()
     {
-        $verificationLink = url('/api/verify-email?token=' . $this->user->email_verification_token);
+        $verificationLink = url(config('app.frontend_url').'/verify-email?token=' . $this->user->email_verification_token);
 
         return $this->subject('Verify Your Email Address')
         ->html('
