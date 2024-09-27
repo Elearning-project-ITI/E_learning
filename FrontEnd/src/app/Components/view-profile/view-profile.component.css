@@ -50,7 +50,7 @@
     font-size: 1.2rem;
 }
 
-.profile-detail h4 {
+.profile-detail h3 {
     color: #360549;
     font-style: italic;
     font-weight: 500;
@@ -59,8 +59,8 @@
     align-items: center;
 }
 
-.profile-detail h4 i {
-    color: #b94fce;
+.profile-detail h3 i {
+    color: #4f6dce;
     margin-right: 10px;
     font-size: 1.5rem;
 }
