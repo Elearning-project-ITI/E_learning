@@ -84,9 +84,12 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
     
+    
     Route::middleware(StudentMiddleware::class)->group(function () {
 
     Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
+    Route::get('/payment/success', [PaymentController::class, 'success'])->name('success');
+Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
     });
     // Routes for admins only
     Route::middleware(AdminMiddleware::class)->group(function () {
@@ -97,15 +100,9 @@ Route::middleware(['auth:sanctum'])->group( function () {
     });
 });
 Route::get('/course', [CourseController::class, 'index'])->name('course.index');
-Route::get('/payment/success', function () {
-    return response()->json(['success' => true, 'message' => 'Payment successful!']);
-})->name('success');
 
-Route::get('/payment/cancel', function () {
-    return response()->json(['success' => false, 'message' => 'Payment canceled.']);
-})->name('cancel');
-// Route::any('/{any}', function () {
-//     return response()->json([
-//         'message' => 'Route not found. Please check the URL and try again.'
-//     ], 404);
-// })->where('any', '.*');
+Route::any('/{any}', function () {
+    return response()->json([
+        'message' => 'Route not found. Please check the URL and try again.'
+    ], 404);
+})->where('any', '.*');

@@ -70,7 +70,7 @@ class UserController extends BaseController
 
         // Only update the fields that have changed
         $input = $request->only(['name', 'email', 'phone', 'password', 'image']);
-
+ 
         if ($request->has('password')) {
             $input['password'] = Hash::make($request->password);
         }
@@ -83,13 +83,14 @@ class UserController extends BaseController
 
             // Save new image
             $input['image'] = $request->file('image')->store('user_images', 'uploads');
+            $input['image']= asset('uploads/'.$input['image']);
         }
 
         // Only update the changed fields
         $user->fill($input)->save();
 
         // Send success response
-        return $this->sendResponse($user, 'Profile updated successfully.');
+        return $this->sendResponse([$user], 'Profile updated successfully.');
     }
 
     /**
