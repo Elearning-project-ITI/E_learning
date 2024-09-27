@@ -74,7 +74,6 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
-import { ProfileDataService } from '../../shared/services/profile-data.service';
 
 @Component({
   selector: 'app-header',
@@ -84,33 +83,26 @@ import { ProfileDataService } from '../../shared/services/profile-data.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  isLoggedIn: boolean = false; // to track the login status
-  // userProfileImage: string = 'images/registeration.jpg'; // default user image
+  isLoggedIn: boolean = false;
+  userProfileImage: string = 'images/user.jpeg'; // default user image
   private authSubscription!: Subscription;
-  private profileSubscription!: Subscription;
-  profileData: any = null;
-  constructor(private _AuthService: AuthService ,private profileDataService: ProfileDataService) {}
+
+  constructor(private _AuthService: AuthService) {}
 
   ngOnInit(): void {
-   
     this.authSubscription = this._AuthService.isAuthenticated$.subscribe(
       (isAuthenticated: boolean) => {
-        this.isLoggedIn = isAuthenticated; 
-      }
-    );
-    this.profileSubscription = this.profileDataService.profileData$.subscribe(
-      (data) => {
-        this.profileData = data;
-        console.log('Profile Data in header Component:', this.profileData);
+        this.isLoggedIn = isAuthenticated;
+        if (this.isLoggedIn) {
+          this.userProfileImage = this._AuthService.getUserImage();
+        }
       }
     );
   }
+
   ngOnDestroy(): void {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
-    }
-    if (this.profileSubscription) {
-      this.profileSubscription.unsubscribe();
     }
   }
 
@@ -127,5 +119,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logOutUser(): void {
     this._AuthService.logout();
+    this.isLoggedIn = false;
+    this.userProfileImage = 'images/user.jpeg'; // reset to default after logout
   }
 }

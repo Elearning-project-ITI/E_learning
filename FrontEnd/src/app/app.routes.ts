@@ -22,6 +22,9 @@ import { ReviwesComponent } from './Components/reviwes/reviwes.component';
 
 import { WishlistComponent } from './Components/wishlist/wishlist.component';
 import { VerifyEmailComponent } from './Components/verify-email/verify-email.component';
+import { AdminCourseComponent } from './Components/admin-course/admin-course.component';
+import { AdminmaterialComponent } from './Components/adminmaterial/adminmaterial.component';
+import { AdmimQuizeComponent } from './Components/admim-quize/admim-quize.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -35,7 +38,11 @@ export const routes: Routes = [
     {path:"resetpassword",component:ResetPasswordComponent},
     {path:"verify-email",component:VerifyEmailComponent},
     {path:"notification",component:NotificationComponent},
-  
+
+    
+    {path:"adminCourses",component:AdminCourseComponent},
+    {path:"adminMaterial",component:AdminmaterialComponent},
+    {path:"adminQuizes",component:AdmimQuizeComponent},
    
    
     {path:"wishlist",component:WishlistComponent},

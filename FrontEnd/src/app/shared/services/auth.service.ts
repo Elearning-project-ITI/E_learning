@@ -95,33 +95,53 @@ interface userAuth {
 export class AuthService {
   userData: any;
   userToken: any;
-  
+  userRole:any;
+  userimage:any;
   private baseURL = environment.apiUrl;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkToken());
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
-  private profileDataSubject = new BehaviorSubject<any>(null);
-  profileData$ = this.profileDataSubject.asObservable();
+  // private profileDataSubject = new BehaviorSubject<any>(null);
+  // profileData$ = this.profileDataSubject.asObservable();
   constructor(private _HttpClient: HttpClient, private _Router: Router) {}
 
   saveUserData() {
     const token = localStorage.getItem('eToken');
     if (token != null) {
-      const decodedToken: any = jwtDecode(token);
-      console.log('Decoded Token:', decodedToken);
-      this.userData = decodedToken;
-      const accessToken = decodedToken?.access_token;
-
-      if (accessToken) {
-        this.userToken = accessToken;
-        localStorage.setItem('access_token', this.userToken);
-        console.log('Access Token Saved:', this.userToken);
-        this.isAuthenticatedSubject.next(true);
-         // Emit true when token is saved
-      } else {
-        console.error('Access token not found in decoded JWT');
+      try {
+        const decodedToken: any = jwtDecode(token);
+        console.log('Decoded Token:', decodedToken);
+  
+        // Assuming user is an object, not an array
+        this.userData = decodedToken;
+        const accessToken = decodedToken?.access_token;
+        const myRole = decodedToken?.user.role; // Corrected to access role from user object
+        const myimage=decodedToken?.user.image;
+        if (accessToken) {
+          this.userToken = accessToken;
+          this.userRole = myRole; // Save user role
+          this.userimage=myimage;
+          console.log("user image",this.userimage)
+          console.log('User Role:', this.userRole);
+          localStorage.setItem('access_token', this.userToken);
+          console.log('Access Token Saved:', this.userToken);
+          localStorage.removeItem('eToken');
+          this.isAuthenticatedSubject.next(true); // Emit true when token is saved
+        } else {
+          console.error('Access token not found in decoded JWT');
+        }
+      } catch (error) {
+        console.error('Error decoding JWT:', error);
       }
     }
   }
+  getUserImage(): string {
+    if (this.userimage) {
+      const imageUrlParts = this.userimage.split('/storage/');
+      return imageUrlParts.length > 1 ? imageUrlParts[1] : this.userimage;
+    }
+    return 'images/user.jpeg'; 
+  }
+  
 
   setRegister(userData: FormData): Observable<any> {
     return this._HttpClient.post(`${this.baseURL}/register`, userData);
@@ -151,7 +171,7 @@ export class AuthService {
     this._HttpClient.post(`${this.baseURL}/logout`, {}, { headers }).subscribe({
       next: (response) => {
         console.log('Logout successful:', response);
-        localStorage.removeItem('eToken');
+        // localStorage.removeItem('eToken');
         localStorage.removeItem('access_token');
         this.isAuthenticatedSubject.next(false); // Emit false on logout
         this._Router.navigate(['/login']);
