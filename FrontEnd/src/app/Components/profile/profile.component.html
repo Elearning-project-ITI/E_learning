@@ -1,11 +1,15 @@
+<div *ngIf="!decodedData ; else showCourses">
+    <app-loader></app-loader>
+  </div>
+  <ng-template #showCourses>
 <section id="profile">
     <div class="container-fluid">
         <div class="row">
             <!-- Sidebar -->
             <div class="col-md-2 sidebar bg-light">
                 <div class="text-center mb-4 imgdiv">
-                    <img [src]="decodedData[0]?.image || 'images/default-profile.jpg'" alt="User Avatar" class="rounded-circle profile-avatar" *ngIf="decodedData">
-                    <h4 class="mt-2">Jolia John</h4>
+                    <img [src]="decodedData[0]?.image || 'images/user.jpeg'" alt="User Avatar" class="rounded-circle profile-avatar" *ngIf="decodedData">
+                    <h4 class="mt-2">{{decodedData[0].name}}</h4>
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
@@ -32,3 +36,4 @@
         </div>
     </div>
 </section>
+</ng-template>

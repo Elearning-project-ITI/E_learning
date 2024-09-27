@@ -20,7 +20,7 @@ body {
 }
 
 .card-header {
-    background: linear-gradient(135deg, #6a0dad, #a259ff);
+    background: linear-gradient(135deg, #abb6f1, #5985ff);
     color: white;
     font-size: 1.8rem;
     font-weight: bold;
@@ -37,8 +37,8 @@ body {
 .form-group label {
     font-style: italic;
     font-weight: bold;
-    color: #5c2a7a;
-    margin-bottom: 10px;
+    color: #2a4a7a;
+    /* margin-bottom: 10px; */
 }
 
 input.form-control {
@@ -46,10 +46,11 @@ input.form-control {
     border-radius: 6px;
     border: 2px solid #c7c7c7;
     transition: border-color 0.3s ease;
+    margin-bottom: 10px;
 }
 
 input.form-control:focus {
-    border-color: #a259ff;
+    border-color: #5980ff;
     box-shadow: 0 0 10px rgba(162, 89, 255, 0.2);
 }
 
@@ -78,7 +79,7 @@ input.form-control:focus {
 .custom-file label {
     display: inline-block;
     padding: 10px 20px;
-    background-color: #6a0dad;
+    background-color: #0d38ad;
     color: white;
     border-radius: 8px;
     cursor: pointer;
@@ -86,11 +87,11 @@ input.form-control:focus {
 }
 
 .custom-file label:hover {
-    background-color: #a259ff;
+    background-color: #598eff;
 }
 
 .btn-primary {
-    background-color: #6a0dad;
+    background-color: #1845db;
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -98,12 +99,12 @@ input.form-control:focus {
 }
 
 .btn-primary:hover {
-    background-color: #a259ff;
+    background-color: #5985ff;
     transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background-color: #5c2a7a;
+    background-color: #1845db;
     border: none;
     padding: 10px 20px;
     border-radius: 8px;
@@ -111,7 +112,7 @@ input.form-control:focus {
 }
 
 .btn-secondary:hover {
-    background-color: #9b3ecf;
+    background-color: #5985ff;
     transform: translateY(-2px);
 }
 

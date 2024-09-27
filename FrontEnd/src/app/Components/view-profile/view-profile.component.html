@@ -1,37 +1,26 @@
-<!-- <div class="card mt-4">
-    <div class="card-header">
-        <h3>My Profile</h3>
-    </div>
 
-    <div class="card-body">
-        <h3>Profile Image:</h3>
-        <div class="image-preview">
-            <img [src]="decodedData[0]?.image" alt="User Avatar" class="rounded-circle profile-avatar">
-            <ng-container *ngIf="decodedData?.length === 0">
-                <p>No profile image available.</p>
-            </ng-container>
-        </div>
-        <h3>Name: <span>{{ decodedData?.[0]?.name || 'N/A' }}</span></h3>
-        <h3>Phone: <span>{{ decodedData?.[0]?.phone || 'N/A' }}</span></h3>
-        <h3>Email: <span>{{ decodedData?.[0]?.email || 'N/A' }}</span></h3>
-    </div>
-</div> -->
+<section id="viewProfile">
 <div class="card mt-4">
     <div class="card-header">
         <h3>My Profile</h3>
     </div>
-
+    <div *ngIf="!profileData ; else showCourses">
+        <app-loader></app-loader>
+      </div>
+      <ng-template #showCourses>
     <div class="card-body">
         <h3>Profile Image:</h3>
         <div class="image-preview">
-            <!-- Check if decodedData and decodedData[0] exist before accessing the image -->
-            <img [src]="decodedData?.[0]?.image || 'images/default-profile.jpg'" alt="User Avatar" class="rounded-circle profile-avatar" *ngIf="decodedData?.[0]">
-            <ng-container *ngIf="!decodedData || !decodedData[0]">
-                <p>No profile image available.</p>
+           
+            <img [src]="profileData.image || 'images/user.jpeg'" alt="User Avatar" class="rounded-circle profile-avatar" *ngIf="profileData">
+            <ng-container *ngIf="!profileData || !profileData">
+               <img src="images/user.jpeg"/>
             </ng-container>
         </div>
-        <h3>Name: <span>{{ decodedData?.[0]?.name || 'N/A' }}</span></h3>
-        <h3>Phone: <span>{{ decodedData?.[0]?.phone || 'N/A' }}</span></h3>
-        <h3>Email: <span>{{ decodedData?.[0]?.email || 'N/A' }}</span></h3>
+        <h3>Name: <span>{{ profileData?.name || 'N/A' }}</span></h3>
+        <h3>Phone: <span>{{ profileData?.phone || 'N/A' }}</span></h3>
+        <h3>Email: <span>{{ profileData?.email || 'N/A' }}</span></h3>
     </div>
+      </ng-template>
 </div>
+</section>

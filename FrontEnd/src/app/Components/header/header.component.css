@@ -144,8 +144,9 @@ opacity: 0;
     background-color:rgba(9, 134, 236, 0.521);
 }
 .imgprofile{
-    width: 80px;
+    width: 50px;
     margin:8px;
+    height: 50px;
 }
 .notifiaction{
     color: #6A9AB0 !important;

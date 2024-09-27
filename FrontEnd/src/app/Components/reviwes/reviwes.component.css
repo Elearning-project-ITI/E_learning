@@ -10,7 +10,7 @@
 }
 
 h2 {
-    color: #360549;
+    color: #050f49;
     font-style: italic;
     font-weight: bold;
 }
@@ -18,7 +18,7 @@ h2 {
 .form-label {
     font-style: italic;
     font-weight: bold;
-    color: #460b5e;
+    color: #0b135e;
     margin-top: 5px;
 }
 
@@ -28,22 +28,22 @@ h2 {
 }
 
 .form-control:focus, .form-select:focus {
-    border-color: #b94fce !important;
-    box-shadow: 0 0 10px rgba(185, 79, 206, 0.5);
+    border-color: #4f6dce !important;
+    box-shadow: 0 0 10px rgba(79, 102, 206, 0.5);
 }
 
 .form-control::placeholder {
-    color: #380c42 !important;
+    color: #0c1642 !important;
 }
 
 .submit-btn {
-    background-color: #73079e;
+    background-color: #07239e;
     border: none;
     transition: background-color 0.3s ease;
 }
 
 .submit-btn:hover {
-    background-color: #b94fce !important;
+    background-color: #4f62ce !important;
 }
 
 .review-card .card-body {
@@ -54,7 +54,7 @@ h2 {
 
 .review-card h5 {
     font-weight: bold;
-    color: #73079e;
+    color: #072a9e;
 }
 
 .review-card p {
@@ -63,7 +63,7 @@ h2 {
 }
 
 .review-card .card-subtitle {
-    color: #b94fce;
+    color: #4f62ce;
 }
 
 .review-card small {

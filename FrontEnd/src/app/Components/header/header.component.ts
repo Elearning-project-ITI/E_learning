@@ -74,6 +74,7 @@ import { RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { ProfileDataService } from '../../shared/services/profile-data.service';
 
 @Component({
   selector: 'app-header',
@@ -84,24 +85,32 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false; // to track the login status
-  userProfileImage: string = 'images/registeration.jpg'; // default user image
+  // userProfileImage: string = 'images/registeration.jpg'; // default user image
   private authSubscription!: Subscription;
-
-  constructor(private _AuthService: AuthService) {}
+  private profileSubscription!: Subscription;
+  profileData: any = null;
+  constructor(private _AuthService: AuthService ,private profileDataService: ProfileDataService) {}
 
   ngOnInit(): void {
-    // Subscribe to the authentication status
+   
     this.authSubscription = this._AuthService.isAuthenticated$.subscribe(
       (isAuthenticated: boolean) => {
-        this.isLoggedIn = isAuthenticated; // Update isLoggedIn when the status changes
+        this.isLoggedIn = isAuthenticated; 
+      }
+    );
+    this.profileSubscription = this.profileDataService.profileData$.subscribe(
+      (data) => {
+        this.profileData = data;
+        console.log('Profile Data in header Component:', this.profileData);
       }
     );
   }
-
   ngOnDestroy(): void {
-    // Clean up the subscription
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
+    }
+    if (this.profileSubscription) {
+      this.profileSubscription.unsubscribe();
     }
   }
 

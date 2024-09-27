@@ -96,7 +96,11 @@
             <button class="btn btn-register" (click)="logOutUser()">Logout</button>
           </a>
           <a class="nav-link" routerLink="/profile">
-            <img [src]="userProfileImage" class="imgprofile rounded-circle" alt="imgprofile"/>
+            <img [src]="profileData.image || 'images/user.jpeg'" alt="User Avatar" class="imgprofile rounded-circle" *ngIf="profileData">
+            <div *ngIf="!profileData || !profileData" >
+               <img src="images/user.jpeg" width="25%" class="rounded-circle" alt="user"/>
+            </div>
+            <!-- <img [src]="userProfileImage" class="imgprofile rounded-circle" alt="imgprofile"/> -->
           </a>
           <i routerLink="/notification" class="fa-regular fa-bell fs-4 notifiaction" (click)="togglenotify($event)"></i>
         </div>
