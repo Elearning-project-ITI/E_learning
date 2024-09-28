@@ -36,34 +36,55 @@ class MaterialController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Validate the request data
-        $validator = Validator::make($request->all(), [
-            'url' => 'required|url',
-            'type' => 'required|in:pdf,video,audio,text',
-            'course_id' => 'required|exists:courses,id',
-        ]);
+{
+    
+    $validator = Validator::make($request->all(), [
+        'url' => 'required_without:file|url', 
+        'file' => 'required_without:url|file|mimes:pdf,mp4,mov,avi,mp3,wav,txt|max:20480', 
+        'type' => 'required|in:pdf,video,audio,text', 
+        'course_id' => 'required|exists:courses,id',
+    ]);
 
-        // Check for validation errors
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-            ], 400); // HTTP 400 for Bad Request
+    
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors(),
+        ], 422); 
+    }
+
+    $filePath = null;
+
+    
+    if ($request->hasFile('file')) {
+        $file = $request->file('file');
+
+        
+        if ($request->type === 'pdf') {
+            $filePath = $file->store('materials_pdfs', 'uploads');
+        } elseif ($request->type === 'video' && in_array($file->extension(), ['mp4', 'mov', 'avi'])) {
+            $filePath = $file->store('materials_videos', 'uploads');
+        } elseif ($request->type === 'audio' && in_array($file->extension(), ['mp3', 'wav'])) {
+            $filePath = $file->store('materials_audios', 'uploads');
+        } elseif ($request->type === 'text' && $file->extension() === 'txt') {
+            $filePath = $file->store('materials_texts', 'uploads');
         }
 
-        // Create a new material
-        $material = Material::create([
-            'url' => $request->url,
-            'type' => $request->type,
-            'course_id' => $request->course_id,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'data' => $material,
-        ], 201); // HTTP 201 for Created
+        $filePath = asset('uploads/' . $filePath);
     }
+
+    $material = Material::create([
+        'url' => $filePath ?? $request->url, 
+        'type' => $request->type, 
+        'course_id' => $request->course_id,
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'data' => $material,
+    ], 201);
+}
+
 
     /**
      * Display the specified resource.
