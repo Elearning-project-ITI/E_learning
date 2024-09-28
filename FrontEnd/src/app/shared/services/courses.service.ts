@@ -100,4 +100,13 @@ export class CoursesService {
       catchError(this.handleError)
     );
   }
+  deleteCourse(courseId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    return this.http.delete(`${this.DB_URL}/course/${courseId}`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
 }

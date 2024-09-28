@@ -29,6 +29,36 @@ export class AdminCourseComponent {
       }
     });
   }
-
+  deleteCourse(courseId: number): void {
+    if (confirm('Are you sure you want to delete this course?')) {
+      this.courseserv.deleteCourse(courseId).subscribe({
+        next: (response) => {
+          if (response.success) {
+            alert('Course deleted successfully!');
+            this.router.navigate(['/adminCourses']); // Navigate to courses list
+            // Optionally, reload the courses without a full page navigation
+            this.loadCourses(); // Call the method to reload courses
+          }
+        },
+        error: (err) => {
+          console.error(err);
+          alert('An error occurred while deleting the course.');
+        }
+      });
+    }
+  }
+  
+  loadCourses(): void {
+    this.courseserv.GetAllCourses().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.Courses = response.data;
+        }
+      },
+      error: (err) => {
+        console.log(err);  
+      }
+    });
+  }
 
 }
