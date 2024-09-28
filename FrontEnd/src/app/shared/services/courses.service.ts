@@ -83,4 +83,12 @@ export class CoursesService {
   getCourse() {
     return this.courseData;
   }
+  addCourse(courseData: FormData): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.post(this.DB_URL + '/course', courseData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
 }
