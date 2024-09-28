@@ -152,22 +152,20 @@ class MaterialController extends Controller
      */
     public function destroy($id)
     {
-        // Find the material by ID
         $material = Material::find($id);
 
         if (!$material) {
             return response()->json([
                 'success' => false,
                 'message' => 'Material not found',
-            ], 404); // HTTP 404 for Not Found
+            ], 404); 
         }
 
-        // Delete the material
         $material->delete();
 
         return response()->json([
             'success' => true,
             'message' => 'Material deleted successfully',
-        ], 200); // HTTP 200 for OK
+        ], 200); 
     }
 }
