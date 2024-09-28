@@ -5,6 +5,9 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class ProfileDataService {
+  unsubscribe() {
+    throw new Error('Method not implemented.');
+  }
   private profileDataSubject = new BehaviorSubject<any>(null);
   profileData$ = this.profileDataSubject.asObservable();
 

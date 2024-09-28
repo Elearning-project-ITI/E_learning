@@ -70,15 +70,18 @@
 //   }
 // }
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../shared/services/auth.service';
 import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
+import { ProfileDataService } from '../../shared/services/profile-data.service';
+import { jwtDecode } from 'jwt-decode';
+import { LoaderComponent } from "../loader/loader.component";
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, LoaderComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
@@ -87,21 +90,44 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userProfileImage: string = 'images/user.jpeg'; 
   userRole: string | null = null;
   private authSubscription!: Subscription;
-
-  constructor(private _AuthService: AuthService) {}
+  profileData: any = null;
+  decodedData: any = null;
+  constructor(private _AuthService: AuthService, private profileDataService: ProfileDataService, private router: Router) {}
 
   ngOnInit(): void {
     this.authSubscription = this._AuthService.isAuthenticated$.subscribe(
       (isAuthenticated: boolean) => {
         this.isLoggedIn = isAuthenticated;
         if (this.isLoggedIn) {
-          this.userProfileImage = this._AuthService.getUserImage();
-          this.userRole = this._AuthService.userRole; // Get the user role
+          // this.userProfileImage = this._AuthService.getUserImage();
+          // this.userRole = this._AuthService.userRole; // Get the user role
         } else {
-          this.userRole = null; // Reset user role when logged out
+          // this.userRole = null; // Reset user role when logged out
         }
       }
     );
+    const navigation = this.router.getCurrentNavigation();
+    const state = navigation?.extras?.state as { updatedProfileData: any };
+  
+    if (state && state.updatedProfileData) {
+      // If there's updated profile data passed from the EditProfileComponent, use it
+      this.profileData = state.updatedProfileData;
+      this.profileDataService.setProfileData(this.profileData); // Optionally store it in service
+    } else {
+      // If no data is passed, fetch it from the API
+      this._AuthService.getProfile().subscribe({
+        next: (response) => {
+          this.profileData = response;
+  
+          if (this.profileData?.data) {
+            this.decodeProfileData(this.profileData.data);
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching profile:', err);
+        },
+      });
+    }
   }
 
   ngOnDestroy(): void {
@@ -124,6 +150,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logOutUser(): void {
     this._AuthService.logout();
     this.isLoggedIn = false;
-    this.userProfileImage = 'images/user.jpeg'; // reset to default after logout
+    // this.userProfileImage = 'images/user.jpeg'; // reset to default after logout
+  }
+  decodeProfileData(token: string): void {
+    try {
+      this.decodedData = jwtDecode(token);
+      console.log('Decoded Profile Data:', this.decodedData);
+      this.profileDataService.setProfileData(this.decodedData[0]);
+    } catch (error) {
+      console.error('Failed to decode token:', error);
+    }
   }
 }
