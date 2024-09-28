@@ -5,7 +5,7 @@ body {
 }
 
 .sidebar {
-    background-color: #73079e;
+    background-color: #6b5fd9;
     height: 100vh;
     position: fixed;
     padding-top: 20px;
@@ -20,7 +20,7 @@ body {
 }
 
 .sidebar .nav-link:hover, .nav-link.active {
-    background-color: #73079e;
+    background-color: #625ed3;
     color: white;
 }
 
@@ -36,32 +36,32 @@ body {
 }
 
 .card-header {
-    background-color: #73079e;
+    background-color: #2535b2;
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
 }
 
 .btn-primary {
-    background-color: #73079e;
+    background-color: #3041be;
     border: none;
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #b94fce !important;
-    border-color: #b94fce !important;
+    background-color: #4f51ce !important;
+    border-color: #4f62ce !important;
 }
 
 .btn-secondary {
-    background-color: #73079e;
+    background-color: #07099e;
     border: none;
     transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background-color: #b94fce !important;
-    border-color: #b94fce !important;
+    background-color: #4f51ce !important;
+    border-color: #4f6ace !important;
 }
 
 @keyframes fadeInUp {
