@@ -104,40 +104,48 @@ class MaterialController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    {
-       
-        $material = Material::find($id);
+{
+    $material = Material::find($id);
 
-        if (!$material) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Material not found',
-            ], 404);
-        }
-
-        
-        $validator = Validator::make($request->all(), [
-            'url' => 'sometimes|url',
-            'type' => 'sometimes|in:pdf,video,audio,text',
-            'course_id' => 'sometimes|exists:courses,id',
-        ]);
-
-       
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-            ], 400); 
-        }
-
-        // Update the material with the request data
-        $material->update($request->only(['url', 'type', 'course_id']));
-
+    if (!$material) {
         return response()->json([
-            'success' => true,
-            'data' => $material,
-        ], 200); // HTTP 200 for OK
+            'success' => false,
+            'message' => 'Material not found',
+        ], 404);
     }
+
+    $validator = Validator::make($request->all(), [
+        'url' => 'sometimes|url',
+        'type' => 'sometimes|in:pdf,video,audio,text',
+        'course_id' => 'sometimes|exists:courses,id',
+        'file' => 'nullable|file|mimes:pdf,mp4,mkv,avi,webm|max:102400', 
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'message' => $validator->errors(),
+        ], 400); 
+    }
+
+   
+    if ($request->hasFile('file')) {
+    
+        $path = $request->file('file')->store('materials', 'uploads');
+        $file_path = asset('uploads/' . $path); 
+        $material->file = $file_path; 
+    }
+
+    $material->update($request->only(['url', 'type', 'course_id']));
+
+    $material->save();
+
+    return response()->json([
+        'success' => true,
+        'data' => $material,
+    ], 200); 
+}
+
 
     /**
      * Remove the specified resource from storage.
