@@ -73,7 +73,7 @@
               </div>
             </div>
   
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary" [disabled]="courseForm.invalid">  <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>Save</button>
             <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
           </form>
   
