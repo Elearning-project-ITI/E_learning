@@ -2,16 +2,16 @@
 .navbar-nav .nav-link.active{
     color:#fff;
     font-size:14px;
-    font-weight: 400 !important;
-    font-family: 'Poppins', sans-serif;
+    font-weight: bold !important;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
 
 }
 .navbar-nav .nav-link{
     color:#fff;
     font-size:14px;
-    font-weight: 400 !important;
-    font-family: 'Poppins', sans-serif;
-
+    font-weight: 500 !important;
+   
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
 }
 .logo{
     width:110px
@@ -144,8 +144,9 @@ opacity: 0;
     background-color:rgba(9, 134, 236, 0.521);
 }
 .imgprofile{
-    width: 80px;
+    width: 50px;
     margin:8px;
+    height: 50px;
 }
 .notifiaction{
     color: #6A9AB0 !important;

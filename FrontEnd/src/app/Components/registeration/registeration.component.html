@@ -43,6 +43,14 @@
                 <p *ngIf="registerForm.get('password')?.getError('minlength')">Password must be at least 8 characters long</p>
               </div>
             </div>
+            <div class="form-group">
+              <label for="password_confirmation"> <i class="fa-solid fa-lock"></i> password_confirmation</label>
+              <input type="password" formControlName="password_confirmation" class="form-control" id="password_confirmation" placeholder="Enter your password_confirmation" required>
+              <div class="alert alert-danger" *ngIf="registerForm.get('password_confirmation')?.errors && registerForm.get('password_confirmation')?.touched">
+                <p *ngIf="registerForm.get('password_confirmation')?.getError('required')">password_confirmation is Required</p>
+                <p *ngIf="registerForm.get('password_confirmation')?.getError('minlength')">password_confirmation must be at least 8 characters long</p>
+              </div>
+            </div>
 
             <div class="form-group">
               <label for="profileImage"><i class="fa-solid fa-image"></i> Profile Image</label>

@@ -1,43 +1,112 @@
-<div class="card mt-4">
-    <div class="card-header">
-        <h3>Edit Profile</h3>
+<section id="editProfile">
+    <div class="profile-container mt-5">
+      <div class="card profile-card">
+        <div class="card-header text-center">
+          <h3>Edit Your Profile</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="editProfileForm" (ngSubmit)="updateProfile()">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="username"><i class="fa-solid fa-user"></i>UserName</label>
+                  <input type="text" class="form-control" id="userName" formControlName="name" placeholder="UserName">
+                  <div class="alert alert-danger" *ngIf="editProfileForm.get('name')?.errors && editProfileForm.get('name')?.touched">
+                    <p *ngIf="editProfileForm.get('name')?.getError('required')">Name is Required</p>
+                    <p *ngIf="editProfileForm.get('name')?.getError('maxlength')">Max Length Should be 255</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="email"><i class="fa-solid fa-envelope"></i>Email</label>
+                  <input type="email" class="form-control" id="email" formControlName="email" placeholder="Email">
+                  <div class="alert alert-danger" *ngIf="editProfileForm.get('email')?.errors && editProfileForm.get('email')?.touched">
+                    <p *ngIf="editProfileForm.get('email')?.getError('required')">Email is Required</p>
+                    <p *ngIf="editProfileForm.get('email')?.getError('email')">Email is not valid</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-12">
+              <div class="form-group">
+                <label for="phone"><i class="fa-solid fa-phone"></i>Contact Number</label>
+                <input type="tel" class="form-control" id="phone" formControlName="phone" placeholder="Phone Number">
+                <div class="alert alert-danger" *ngIf="editProfileForm.get('phone')?.errors && editProfileForm.get('phone')?.touched">
+                  <p *ngIf="editProfileForm.get('phone')?.getError('required')">Phone is Required</p>
+                  <p *ngIf="editProfileForm.get('phone')?.getError('pattern')">Phone is not valid</p>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+             
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="password_confirmation"> <i class="fa-solid fa-lock"></i>Password</label>
+                  <input type="password" class="form-control" id="password" formControlName="password" placeholder="Password">
+                  <div class="alert alert-danger" *ngIf="editProfileForm.get('password')?.errors && editProfileForm.get('password')?.touched">
+                    <p *ngIf="editProfileForm.get('password')?.getError('required')">Password is Required</p>
+                    <p *ngIf="editProfileForm.get('password')?.getError('minlength')">Password must be at least 8 characters long</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="password_confirmation"> <i class="fa-solid fa-lock"></i> password confirmation</label>
+                  <input type="password" formControlName="password_confirmation" class="form-control" id="password_confirmation" placeholder="Enter your password_confirmation" required>
+                  <div class="alert alert-danger" *ngIf="editProfileForm.get('password_confirmation')?.errors && editProfileForm.get('password_confirmation')?.touched">
+                    <p *ngIf="editProfileForm.get('password_confirmation')?.getError('required')">password_confirmation is Required</p>
+                    <p *ngIf="editProfileForm.get('password_confirmation')?.getError('minlength')">password_confirmation must be at least 8 characters long</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+      
+            <!-- <div class="form-group text-center profile-image-group">
+              <label class="form-label">Profile Image</label>
+              <div class="image-preview">
+                <img src="images/registeration.jpg" alt="Profile Image" id="profileImagePreview" class="rounded-circle profile-avatar shadow">
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="profileImage" (change)="onFileChange($event)" accept="image/*"> -->
+                <!-- <label for="profileImage" class="btn btn-image"> -->
+                  <!-- <i class="fa-solid fa-file-arrow-up"></i> Choose File
+                </label>
+                <span id="file-name">{{ editProfileForm.get('profileImage')?.value?.name }}</span> -->
+              <!-- </div>
+            </div>
+   -->
+   <div class="form-group text-center profile-image-group">
+    <label class="form-label"><i class="fa-solid fa-image"></i>Profile Image</label>
+    <div class="image-preview">
+      <img 
+        [src]="currentProfileImage || 'images/user.jpeg'" 
+        alt="Profile Image" 
+        id="profileImagePreview" 
+        class="rounded-circle profile-avatar shadow"
+      >
     </div>
-    <div class="card-body">
-        <form id="profileForm">
-            <div class="form-group">
-                <label for="username">UserName</label>
-                <input type="text" class="form-control" id="userName" placeholder="UserName">
+    <div class="custom-file">
+      <input type="file" class="custom-file-input" id="profileImage" (change)="onFileChange($event)" accept="image/*">
+    </div>
+  </div>
+            <div class="text-center mt-4 d-flex justify-content-around">
+              <button type="submit" class="btn btn-primary btn-lg" [disabled]="editProfileForm.invalid || isLoading">
+                <i class="fa-solid fa-floppy-disk"></i> Save Changes
+              </button>
+              <button type="button" class="btn btn-secondary btn-lg" (click)="editProfileForm.reset()">
+                <i class="fa-solid fa-xmark"></i> Cancel
+              </button>
             </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" placeholder="Email">
-            </div>
-            <div class="form-group">
-                <label for="phone">Contact Number</label>
-                <input type="tel" class="form-control" id="phone" placeholder="Phone Number">
-            </div>
+          </form>
+          <div *ngIf="msgSuccess" class="alert alert-success mt-3">{{ msgSuccess }}</div>
         
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password">
-            </div>
-            <div class="form-group text-center">
-                <label  class="form-label">Profile Image</label>
-                <div class="image-preview">
-                    <img src="images/registeration.jpg" alt="Profile Image" id="profileImagePreview" class="rounded-circle">
-                </div>
-                <div class="custom-file">
-                    <!-- Hidden file input -->
-                    <input type="file" class="custom-file-input" id="profileImage" accept="image/*" style="display: none;">
-                    <!-- Custom button with icon -->
-                    <label for="profileImage" class="btn btn-image ">
-                        <i class="fa-solid fa-file-arrow-up"></i> Choose File
-                    </label>
-                    <span id="file-name"></span>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-secondary">Cancel</button>
-        </form>
+            <div *ngFor="let error of msgErrors" class="alert alert-danger mt-3">
+                {{ error }}
+              </div>
+          
+        </div>
+      </div>
     </div>
-</div>
+  </section>
+  

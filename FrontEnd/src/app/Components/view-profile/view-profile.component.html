@@ -1,18 +1,75 @@
-<div class="card mt-4">
-    <div class="card-header">
-        <h3>My Profile</h3>
-    </div>
+<section id="viewProfile">
+<div class="container mt-4">
 
+<div class="card mt-4 profile-card">
+    <div class="card-header text-center">
+        <h3 class="profile-heading">My Profile</h3>
+    </div>
+    <div *ngIf="!profileData ; else showCourses">
+        <app-loader></app-loader>
+      </div>
+      <ng-template #showCourses>
     <div class="card-body">
-        <h3> Image Profile :</h3>
+        <div class="row">
+        <h3>Profile Image:</h3>
+        <div class="col-md-4 text-center">
         <div class="image-preview">
-            <img src="images/registeration.jpg" alt="Profile Image" id="profileImagePreview" class="rounded-circle">
+           
+            <img [src]="profileData.image || 'images/user.jpeg'" alt="User Avatar" class="rounded-circle profile-avatar" *ngIf="profileData">
+            <ng-container *ngIf="!profileData || !profileData">
+               <img src="images/user.jpeg"/>
+            </ng-container>
         </div>
-     <h3> Name :<span> Marina Samir</span></h3>
-     <h3> Phone :<span> 01201242302</span></h3>
-     <h3> Email :<span>marinasamir15102001gmail.com </span></h3>
-    
-   
-  
+        </div>
+         <div class="col-md-8">
+            <div class="profile-content">
+                <div class="profile-detail">
+                    <h3><i class="fas fa-user-circle"></i>Name: <span>{{ profileData?.name || 'N/A' }}</span></h3>
+                </div>
+                 <div class="profile-detail">
+                    <h3><i class="fas fa-phone"></i>Phone: <span>{{ profileData?.phone || 'N/A' }}</span></h3>
+                </div>
+                <div class="profile-detail">
+                 <h3><i class="fas fa-envelope"></i>Email: <span>{{ profileData?.email || 'N/A' }}</span></h3>
+                </div>
+          </div>
+    </div>
     </div>
 </div>
+      </ng-template>
+</div>
+
+
+</div>
+</section>
+<!-- <div class="container mt-5">
+    <div class="card profile-card">
+        <div class="card-header text-center">
+            <h2 class="profile-heading">My Profile</h2>
+        </div>
+
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <div class="image-preview">
+                        <img src="images/registeration.jpg" alt="Profile Image" id="profileImagePreview" class="rounded-circle profile-avatar">
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="profile-content">
+                        <div class="profile-detail">
+                            <h4><i class="fas fa-user-circle"></i> Name : <span>Marina Samir</span></h4>
+                        </div>
+                        <div class="profile-detail">
+                            <h4><i class="fas fa-phone"></i> Phone : <span>01201242302</span></h4>
+                        </div>
+                        <div class="profile-detail">
+                            <h4><i class="fas fa-envelope"></i> Email : <span>marinagmail.com</span></h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div> -->

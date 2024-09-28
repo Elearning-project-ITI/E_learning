@@ -25,6 +25,7 @@ export class RegisterationComponent {
     email: new FormControl(null, [Validators.required, Validators.email]),
     phone: new FormControl(null, [Validators.required, Validators.pattern('^[0-9]{10,15}$')]),
     password: new FormControl(null, [Validators.required, Validators.minLength(8)]),
+    password_confirmation: new FormControl(null, [Validators.required, Validators.minLength(8)]),
     image: new FormControl(null),
   });
 
@@ -47,6 +48,7 @@ export class RegisterationComponent {
       formData.append('email', this.registerForm.get('email')?.value);
       formData.append('phone', this.registerForm.get('phone')?.value);
       formData.append('password', this.registerForm.get('password')?.value);
+      formData.append('password_confirmation', this.registerForm.get('password_confirmation')?.value);
       formData.append('image', this.selectedFile);  // Make sure `selectedFile` is the actual file object
       
 

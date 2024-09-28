@@ -12,7 +12,7 @@ class Material extends Model
     protected $table = 'material'; // Ensure this matches the table name in the database
 
     protected $fillable = [
-        'url', 'type', 'course_id',
+        'url', 'type', 'course_id','file',
     ];
 
     // Relationships
