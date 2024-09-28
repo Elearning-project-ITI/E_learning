@@ -70,7 +70,7 @@ class UserController extends BaseController
 
         // Only update the fields that have changed
         $input = $request->only(['name', 'email', 'phone', 'password', 'image']);
-
+ 
         if ($request->has('password')) {
             $input['password'] = Hash::make($request->password);
         }

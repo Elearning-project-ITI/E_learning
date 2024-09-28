@@ -83,7 +83,7 @@ class AuthController extends BaseController
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'phone' =>$request->phone,
-            'role' => 'student', // Default role as 'student'
+            'role' => 'admin', // Default role as 'student'
             'image' => $imagePath,  // Image is required and stored
             'email_verification_token' => Str::random(60),
             'email_verified_at' => null,

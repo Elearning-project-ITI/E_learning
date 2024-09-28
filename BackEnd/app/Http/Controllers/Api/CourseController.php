@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use Google_Service_Drive;
+use Google_Service_Drive_DriveFile;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
@@ -47,6 +48,7 @@ class CourseController extends Controller
     //     ], 201);
     // }
 
+ 
     public function store(Request $request)
 {
     $validator = Validator::make($request->all(), [
@@ -64,18 +66,56 @@ class CourseController extends Controller
         ], 422);
     }
 
-   
-
     $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('courses_images', 'uploads');
-            $imagePath = asset('uploads/'.$imagePath);
-        }
+    $googleDriveUrl = null;
 
+    if ($request->hasFile('image')) {
+        $file = $request->file('image');
+        $imagePath = $request->file('image')->store('courses_images', 'uploads');
+        $imagePath = asset('uploads/' . $imagePath);
+
+        // Google Drive Service
+        $driveService = app(Google_Service_Drive::class);
+
+        // Create file metadata for Google Drive
+        $fileMetadata = new Google_Service_Drive_DriveFile([
+            'name' => $file->getClientOriginalName(),
+            'parents' => [env('GOOGLE_DRIVE_FOLDER_ID')]  // Optional: specify folder
+        ]);
+
+        // Upload the file to Google Drive
+        $fileContent = file_get_contents($file->getRealPath());
+        $uploadedFile = $driveService->files->create($fileMetadata, [
+            'data' => $fileContent,
+            'mimeType' => $file->getMimeType(),
+            'uploadType' => 'multipart',
+            'fields' => 'id',
+        ]);
+
+        // Get the file ID and create a public link
+        $fileId = $uploadedFile->id;
+        $driveService->files->update($fileId, new Google_Service_Drive_DriveFile(), [
+            'addParents' => env('GOOGLE_DRIVE_FOLDER_ID'),
+            'fields' => 'webViewLink, webContentLink',
+        ]);
+
+        // Set permission to make the file publicly accessible
+        $permission = new \Google_Service_Drive_Permission([
+            'type' => 'anyone',
+            'role' => 'reader',
+        ]);
+        $driveService->permissions->create($fileId, $permission);
+
+        // Generate and store the public URL
+        $googleDriveUrl = "https://drive.google.com/uc?id={$fileId}";
+    }
+
+    // Create the course with the Google Drive image link
     $course = Course::create([
         'name' => $request->name,
         'price' => $request->price,
-        'image' => $imagePath,
+        'image' => $imagePath, // This can be kept if you want to store the local image path as well
+        'drive_image' => $googleDriveUrl, // Store the Google Drive URL
         'date' => $request->date,
         'description' => $request->description,
     ]);
