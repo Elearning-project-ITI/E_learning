@@ -1,43 +1,88 @@
 <section id="editCourse">
- <div class="container">
-<div class="card mt-4">
-    <div class="card-header">
-        <h3>Edit course</h3>
-    </div>
-    <div class="card-body">
-        <form id="profileForm">
+    <div class="container">
+      <div class="card mt-4">
+        <div class="card-header">
+          <h3>Edit Course</h3>
+        </div>
+        <div class="card-body">
+          <form [formGroup]="courseForm" (ngSubmit)="handleForm()">
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Name">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" id="name" placeholder="Name" formControlName="name">
+              <div class="alert alert-danger" *ngIf="courseForm.get('name')?.errors && courseForm.get('name')?.touched">
+                <p *ngIf="courseForm.get('name')?.getError('required')">Course name is required</p>
+                <p *ngIf="courseForm.get('name')?.getError('maxlength')">Max length should be 255</p>
+              </div>
             </div>
+  
             <div class="form-group">
-                <label for="price">Price</label>
-                <input type="number" class="form-control" id="price" placeholder="Price">
+              <label for="price">Price</label>
+              <input type="number" class="form-control" id="price" placeholder="Price" formControlName="price">
+              <div class="alert alert-danger" *ngIf="courseForm.get('price')?.errors && courseForm.get('price')?.touched">
+                <p *ngIf="courseForm.get('price')?.getError('required')">Price is required</p>
+                <p *ngIf="courseForm.get('price')?.getError('pattern')">Price must be a valid number</p>
+              </div>
             </div>
+  
             <div class="form-group">
-                <label for="date">Date</label>
-                <input type="date" class="form-control" id="date">
+              <label for="date">Date</label>
+              <input type="date" class="form-control" id="date" formControlName="date">
+              <div class="alert alert-danger" *ngIf="courseForm.get('date')?.errors && courseForm.get('date')?.touched">
+                <p *ngIf="courseForm.get('date')?.getError('required')">Date is required</p>
+              </div>
             </div>
-            
-            <div class="form-group text-center">
-                <label  class="form-label">Profile Image</label>
-                <div class="image-preview">
-                    <img src="images/registeration.jpg" alt="Profile Image" id="profileImagePreview" class="rounded-circle">
-                </div>
-                <div class="custom-file">
-                    <!-- Hidden file input -->
-                    <input type="file" class="custom-file-input" id="profileImage" accept="image/*" style="display: none;">
-                    <!-- Custom button with icon -->
-                    <label for="profileImage" class="btn btn-image ">
-                        <i class="fa-solid fa-file-arrow-up"></i> Choose File
-                    </label>
-                    <span id="file-name"></span>
-                </div>
+  
+            <div class="form-group">
+              <label for="description"><i class="fa-solid fa-file-alt"></i> Description</label>
+              <textarea formControlName="description" class="form-control" id="description" rows="6" placeholder="Enter course description" required></textarea>
+              <div class="alert alert-danger" *ngIf="courseForm.get('description')?.errors && courseForm.get('description')?.touched">
+                <p *ngIf="courseForm.get('description')?.getError('required')">Description is required</p>
+              </div>
             </div>
+            <div class="form-group text-center mb-4">
+              <label class="form-label"><i class="fa-solid fa-image"></i>Profile Image</label>
+              <div class="image-preview">
+                <img
+                  *ngIf="selectedFile"
+                  [src]="selectedFile ? selectedFile : 'path_to_default_image'"
+                  alt="Profile Image"
+                  id="profileImagePreview"
+                  class="rounded-circle"
+                />
+                <img
+                  *ngIf="!selectedFile && courseForm.get('image')?.value"
+                  [src]="courseForm.get('image')?.value"
+                  alt="Current Course Image"
+                  id="currentImagePreview"
+                  class="rounded-circle"
+                />
+                <img
+                  *ngIf="!selectedFile && !courseForm.get('image')?.value"
+                  src="images/service.png"
+                  alt="Default Course Image"
+                  id="currentImagePreview"
+                  class="rounded-circle"
+                />
+              </div>
+              <div class="custom-file">
+                <input type="file" class="custom-file-input" id="profileImage" accept="image/*" (change)="onFileSelected($event)">
+                <!-- <label for="profileImage" class="btn btn-image">
+                  <i class="fa-solid fa-file-arrow-up"></i> Choose File
+                </label>
+                <span id="file-name">{{ selectedFile?.name }}</span> -->
+              </div>
+            </div>
+  
             <button type="submit" class="btn btn-primary">Save</button>
-            <button type="button" class="btn btn-secondary">Cancel</button>
-        </form>
+            <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+          </form>
+  
+          <div *ngIf="msgSuccess" class="alert alert-success mt-3">{{ msgSuccess }}</div>
+          <div *ngIf="msgErrors.length > 0" class="alert alert-danger mt-3">
+            <div *ngFor="let error of msgErrors">{{ error }}</div>
+          </div>
+        </div>
+      </div>
     </div>
-</div>
-</div>
-</section>
+  </section>
+  

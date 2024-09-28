@@ -4,12 +4,13 @@ import { Injectable } from '@angular/core';
 import { Observable, catchError, throwError } from 'rxjs';
 // import { environment } from '../../../environment/environment';
 import { environment } from '../../environments/environment';
-interface Course {
+export interface Course {
   id: number;
   name: string;
   price: string;
   image: string;
   date: string;
+  description: string;
 }
 
 interface GetAllCoursesResponse {
@@ -88,6 +89,14 @@ export class CoursesService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     
     return this.http.post(this.DB_URL + '/course', courseData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  updateCourse(courseId: string, courseData: FormData): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    courseData.append('_method', 'PUT');
+    return this.http.post(`${this.DB_URL}/course/${courseId}`, courseData, { headers }).pipe(
       catchError(this.handleError)
     );
   }

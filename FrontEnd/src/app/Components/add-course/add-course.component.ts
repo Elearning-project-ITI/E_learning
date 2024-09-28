@@ -71,7 +71,7 @@ export class AddCourseComponent {
       courseData.append('price', this.courseForm.get('price')?.value);
       courseData.append('date', this.courseForm.get('date')?.value);
       courseData.append('description', this.courseForm.get('description')?.value);
-      courseData.append('image', this.selectedFile);  // Append the selected image file
+      courseData.append('image', this.selectedFile); 
 
       this.courseserv.addCourse(courseData).subscribe({
         next: (response) => {
