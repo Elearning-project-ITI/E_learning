@@ -15,7 +15,21 @@ class CourseController extends Controller
     
     public function index()
     {
-        $courses = Course::all();
+        $courses = Course::with('bookings', 'reviews')->get();
+
+        // Modify the course data to include number of students and average rating
+        $courses = $courses->map(function ($course) {
+            return [
+                'id' => $course->id,
+                'name' => $course->name,
+                'description' => $course->description,
+                'number_of_students' => $course->bookings->count(),  // Number of students who booked the course
+                'price' =>$course->price,
+                'average_rating' => $course->reviews->avg('rating'),  // Average rating of the course
+                'created_at' => $course->created_at,
+                'updated_at' => $course->updated_at,
+            ];
+        });
 
         return response()->json([
             'success' => true,
@@ -55,7 +69,7 @@ class CourseController extends Controller
         'name' => 'required|string|max:255',
         'price' => 'required|numeric',
         'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', 
-        'date' => 'required|date',
+       // 'date' => 'required|date',
         'description' => 'required|string',
     ]);
 
@@ -116,7 +130,7 @@ class CourseController extends Controller
         'price' => $request->price,
         'image' => $imagePath, // This can be kept if you want to store the local image path as well
         'drive_image' => $googleDriveUrl, // Store the Google Drive URL
-        'date' => $request->date,
+        'date' => now(),
         'description' => $request->description,
     ]);
 
@@ -351,4 +365,32 @@ class CourseController extends Controller
             'message' => 'Course deleted successfully!',
         ], 200); 
     }
+    public function myCourses()
+{
+    $user = auth()->user();
+
+    // Get courses the user has booked
+    $courses = Course::whereHas('bookings', function ($query) use ($user) {
+        $query->where('user_id', $user->id);
+    })->get();
+
+    return response()->json([
+        'success' => true,
+        'courses' => $courses,
+    ]);
+}
+public function myWishlist()
+{
+    $user = auth()->user();
+
+    // Get courses the user has in their wishlist
+    $wishlist = Wishlist::where('user_id', $user->id)->with('course')->get();
+
+    return response()->json([
+        'success' => true,
+        'wishlist' => $wishlist,
+    ]);
+}
+
+
 }
