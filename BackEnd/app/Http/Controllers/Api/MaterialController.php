@@ -36,55 +36,61 @@ class MaterialController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-    {
-        // Validate the request data
-        $validator = Validator::make($request->all(), [
-            'url' => 'required|url',
-            'type' => 'required|in:pdf,video,audio,text',
-            'course_id' => 'required|exists:courses,id',
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'url' => 'required|url',
+        'type' => 'required|in:pdf,video,audio,text',
+        'course_id' => 'required|exists:courses,id',
+        'file' => 'nullable|file|mimes:pdf,mp4,mkv,avi,webm|max:102400', 
+    ]);
 
-        // Check for validation errors
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-            ], 400); // HTTP 400 for Bad Request
-        }
-
-        // Create a new material
-        $material = Material::create([
-            'url' => $request->url,
-            'type' => $request->type,
-            'course_id' => $request->course_id,
-        ]);
-
+    if ($validator->fails()) {
         return response()->json([
-            'success' => true,
-            'data' => $material,
-        ], 201); // HTTP 201 for Created
+            'success' => false,
+            'message' => $validator->errors(),
+        ], 400); 
     }
+
+   
+    $file_path = '';
+    if ($request->hasFile('file')) {
+        $path = $request->file('file')->store('materials', 'uploads'); 
+        $file_path = asset('uploads/' . $path); 
+    }
+
+    
+    $material = Material::create([
+        'url' => $request->url,
+        'type' => $request->type,
+        'course_id' => $request->course_id,
+        'file' => $file_path, 
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'data' => $material,
+    ], 201); 
+}
+    
 
     /**
      * Display the specified resource.
      */
     public function show(string $id)
     {
-        // Fetch a single material by ID
         $material = Material::find($id);
 
         if (!$material) {
             return response()->json([
                 'success' => false,
                 'message' => 'Material not found',
-            ], 404); // HTTP 404 for Not Found
+            ], 404); 
         }
 
         return response()->json([
             'success' => true,
             'data' => $material,
-        ], 200); // HTTP 200 for OK
-    }
+        ], 200);     }
 
     /**
      * Show the form for editing the specified resource.
@@ -98,40 +104,48 @@ class MaterialController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $id)
-    {
-        // Find the material by ID
-        $material = Material::find($id);
+{
+    $material = Material::find($id);
 
-        if (!$material) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Material not found',
-            ], 404); // HTTP 404 for Not Found
-        }
-
-        // Validate the request data
-        $validator = Validator::make($request->all(), [
-            'url' => 'sometimes|url',
-            'type' => 'sometimes|in:pdf,video,audio,text',
-            'course_id' => 'sometimes|exists:courses,id',
-        ]);
-
-        // Check for validation errors
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => $validator->errors(),
-            ], 400); // HTTP 400 for Bad Request
-        }
-
-        // Update the material with the request data
-        $material->update($request->only(['url', 'type', 'course_id']));
-
+    if (!$material) {
         return response()->json([
-            'success' => true,
-            'data' => $material,
-        ], 200); // HTTP 200 for OK
+            'success' => false,
+            'message' => 'Material not found',
+        ], 404);
     }
+
+    $validator = Validator::make($request->all(), [
+        'url' => 'sometimes|url',
+        'type' => 'sometimes|in:pdf,video,audio,text',
+        'course_id' => 'sometimes|exists:courses,id',
+        'file' => 'nullable|file|mimes:pdf,mp4,mkv,avi,webm|max:102400', 
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'message' => $validator->errors(),
+        ], 400); 
+    }
+
+   
+    if ($request->hasFile('file')) {
+    
+        $path = $request->file('file')->store('materials', 'uploads');
+        $file_path = asset('uploads/' . $path); 
+        $material->file = $file_path; 
+    }
+
+    $material->update($request->only(['url', 'type', 'course_id']));
+
+    $material->save();
+
+    return response()->json([
+        'success' => true,
+        'data' => $material,
+    ], 200); 
+}
+
 
     /**
      * Remove the specified resource from storage.
