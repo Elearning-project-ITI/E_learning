@@ -95,7 +95,7 @@ interface userAuth {
 export class AuthService {
   userData: any;
   userToken: any;
-  userRole:any;
+  userRole: string | null = null;
   userimage:any;
   private baseURL = environment.apiUrl;
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.checkToken());
@@ -173,6 +173,7 @@ export class AuthService {
         console.log('Logout successful:', response);
         // localStorage.removeItem('eToken');
         localStorage.removeItem('access_token');
+        this.userRole = null;
         this.isAuthenticatedSubject.next(false); // Emit false on logout
         this._Router.navigate(['/login']);
       },

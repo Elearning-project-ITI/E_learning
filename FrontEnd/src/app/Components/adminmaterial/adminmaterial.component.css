@@ -1,8 +1,7 @@
 #profile {
     font-family: Arial, sans-serif;
     background-color: #f4f6f9;
-    /* margin: 0; */
-    /* height: 100vh; */
+    
     margin-bottom: 20px;
     
 }
@@ -11,7 +10,7 @@
 }
 .sidebar {
     background-color: #D2E0FB;
-    /* height: 100vh; */
+   
     
    
     padding-top: 20px;
@@ -23,7 +22,7 @@
     font-weight: bold;
     padding: 15px;
     transition: all 0.3s ease;
-    /* background-color: #D2E0FB ; */
+   
 }
 
 .sidebar .nav-link:hover, .nav-link.active {

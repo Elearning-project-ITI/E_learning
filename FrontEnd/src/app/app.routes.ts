@@ -25,6 +25,14 @@ import { VerifyEmailComponent } from './Components/verify-email/verify-email.com
 import { AdminCourseComponent } from './Components/admin-course/admin-course.component';
 import { AdminmaterialComponent } from './Components/adminmaterial/adminmaterial.component';
 import { AdmimQuizeComponent } from './Components/admim-quize/admim-quize.component';
+import { AddCourseComponent } from './Components/add-course/add-course.component';
+import { EditCourseComponent } from './Components/edit-course/edit-course.component';
+import { AdminAddQuizeComponent } from './Components/admin-add-quize/admin-add-quize.component';
+import { AddAdminMaterialComponent } from './Components/add-admin-material/add-admin-material.component';
+import { EditAdminMaterialComponent } from './Components/edit-admin-material/edit-admin-material.component';
+import { ViewAdminMaterialComponent } from './Components/view-admin-material/view-admin-material.component';
+import { AdminUpdateQuizeComponent } from './Components/admin-update-quize/admin-update-quize.component';
+import { ViewAdminCourseComponent } from './Components/view-admin-course/view-admin-course.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -39,13 +47,40 @@ export const routes: Routes = [
     {path:"verify-email",component:VerifyEmailComponent},
     {path:"notification",component:NotificationComponent},
 
-    
+
     {path:"adminCourses",component:AdminCourseComponent},
-    {path:"adminMaterial",component:AdminmaterialComponent},
-    {path:"adminQuizes",component:AdmimQuizeComponent},
+    {path:"adminCourses/create",component:AddCourseComponent},
+    {path:"adminCourses/:id",component:CousreDetailsComponent,children:[
+        { path: "", component: ViewCourseDetailsComponent },
+        { path: "cousredetails", component: ViewCourseDetailsComponent },
+        { path: "cousrematerial", component: CoursematerialComponent },
+        { path: "quizes", component: QuizesComponent },
+        { path: "reviews", component: ReviwesComponent }
+    ]}
+    ,{path:"adminCourses/updatecourse/:id",component:EditCourseComponent}
+    //     ,children:[
+    //     {path:"viewcourse",component:ViewAdminCourseComponent},
+    //     {path:"addcourse",component:AddCourseComponent},
+    //     {path:"editcourse",component:EditCourseComponent}
+        
+    // ]},
+  
+    // {path:"adminMaterial",component:AdminmaterialComponent,children:[
+    //     {path:"addmaterial",component:AddAdminMaterialComponent},
+    //     {path:"editmaterial",component:EditAdminMaterialComponent},
+    //     {path:"viewmaterial",component:ViewAdminMaterialComponent}
+    // ]},
+     
+
+    // {path:"adminQuizes",component:AdmimQuizeComponent,children:[
+    //     {path:"addquiz",component:AdminAddQuizeComponent},
+    //     {path:"editquiz",component:AdminUpdateQuizeComponent},
+    //     {path:"viewquiz",component:QuizesComponent}
+    // ]
+    // },
    
    
-    {path:"wishlist",component:WishlistComponent},
+    ,{path:"wishlist",component:WishlistComponent},
     {path:"profile",component:ProfileComponent, children: [
         { path: "", component: ViewProfileComponent },
         { path: "viewProfile", component: ViewProfileComponent },

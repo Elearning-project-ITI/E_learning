@@ -84,7 +84,8 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn: boolean = false;
-  userProfileImage: string = 'images/user.jpeg'; // default user image
+  userProfileImage: string = 'images/user.jpeg'; 
+  userRole: string | null = null;
   private authSubscription!: Subscription;
 
   constructor(private _AuthService: AuthService) {}
@@ -95,6 +96,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.isLoggedIn = isAuthenticated;
         if (this.isLoggedIn) {
           this.userProfileImage = this._AuthService.getUserImage();
+          this.userRole = this._AuthService.userRole; // Get the user role
+        } else {
+          this.userRole = null; // Reset user role when logged out
         }
       }
     );

@@ -1,4 +1,6 @@
-
+#addCourse{
+    margin-top:140px;
+}
 .profile-avatar {
     width: 120px;
     height: 120px;
@@ -18,7 +20,7 @@
 }
 
 .card-header {
-    background-color: #73079e;
+    background-color: #073c9e;
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
@@ -26,25 +28,25 @@
 
 .btn-primary {
     margin-right: 5px;
-    background-color: #73079e;
+    background-color: #07169e;
     border: none;
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #b94fce !important;
-    border-color: #b94fce !important;
+    background-color: #4f71ce !important;
+    border-color: #4f5cce !important;
 }
 
 .btn-secondary {
-    background-color: #73079e;
+    background-color: #072f9e;
     border: none;
     transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background-color: #b94fce !important;
-    border-color: #b94fce !important;
+    background-color: #4f6dce !important;
+    border-color: #4f5cce !important;
 }
 
 .image-preview {
@@ -79,6 +81,6 @@
 label {
     font-style: italic;
     font-weight: bold;
-    color: #460b5e;
+    color: #0b175e;
     margin-top: 5px;
 }

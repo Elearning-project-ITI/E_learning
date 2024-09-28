@@ -47,63 +47,82 @@
   </nav> -->
   <div class="loading">
     <div class="loader"></div>
-  </div>
-  <nav id="navbar-example" class="navbar pt-4 pb-2 fixed-top navbar-expand-lg navbar-dark shadow">
-    <div class="container-fluid">
+</div>
+<nav id="navbar-example" class="navbar pt-4 pb-2 fixed-top navbar-expand-lg navbar-dark shadow">
+  <div class="container-fluid">
       <a class="navbar-brand fw-bold" [routerLinkActiveOptions]="{exact:true}" routerLinkActive="active" routerLink="/">
-        <img src="images/Hk logo gray-01.png" alt="logo" class="logo">
+          <img src="images/Hk logo gray-01.png" alt="logo" class="logo">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <i class="fa-solid fa-bars text-white "></i>
+          <i class="fa-solid fa-bars text-white"></i>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav m-auto mb-2 mb-lg-0">
-    
-          <li class="nav-item">
-            <a class="nav-link fw-bold active" aria-current="page" routerLinkActive="active" routerLink="/home">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="/about">About</a>
-          </li>
-          
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="/courses">Courses</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="/workPervious">Work Previous</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="/wishlist">WishList</a>
-          </li>
-        </ul>
-        
-        <form class="d-flex formsearch" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search.." aria-label="Search">
-          <i class="fa-solid fa-magnifying-glass"></i>
-        </form>
-  
-        <!-- Show Register and Login buttons if the user is not logged in -->
-        <div *ngIf="!isLoggedIn" class="d-flex justify-content-between">
-          <a class="nav-link" routerLink="/register">
-            <button class="btn btn-register">Register</button>
-          </a>
-          <a class="nav-link" routerLink="/login">
-            <button class="btn btn-register">Login</button>
-          </a>
-        </div>
-  
-        <!-- Show Logout button and Profile image if the user is logged in -->
-        <div *ngIf="isLoggedIn" class="d-flex align-items-center">
-          <a class="nav-link">
-            <button class="btn btn-register" (click)="logOutUser()">Logout</button>
-          </a>
-          <a class="nav-link" routerLink="/profile">
-            <img [src]="userProfileImage" class="imgprofile rounded-circle" alt="imgprofile"/>
-            <!-- <img [src]="userProfileImage" class="imgprofile rounded-circle" alt="imgprofile"/> -->
-          </a>
-          <i routerLink="/notification" class="fa-regular fa-bell fs-4 notifiaction" (click)="togglenotify($event)"></i>
-        </div>
+          <ul class="navbar-nav m-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                  <a class="nav-link fw-bold active" aria-current="page" routerLinkActive="active" routerLink="/home">Home</a>
+              </li>
+              <li class="nav-item" *ngIf="!isLoggedIn">
+                  <a class="nav-link" routerLinkActive="active" routerLink="/about">About</a>
+              </li>
+              <li class="nav-item" *ngIf="!isLoggedIn">
+                  <a class="nav-link" routerLinkActive="active" routerLink="/courses">Courses</a>
+              </li>
+              <li class="nav-item" *ngIf="!isLoggedIn">
+                <a class="nav-link" routerLinkActive="active" routerLink="/workPervious">Work Previous</a>
+            </li>
+
+              <!-- Admin links -->
+              <li class="nav-item" *ngIf="isLoggedIn && userRole === 'admin'">
+                  <a class="nav-link" routerLinkActive="active" routerLink="/adminCourses">Admin Courses</a>
+              </li>
+              <li class="nav-item" *ngIf="isLoggedIn && userRole === 'admin'">
+                  <a class="nav-link" routerLinkActive="active" routerLink="/adminMaterial">Admin Material</a>
+              </li>
+              <li class="nav-item" *ngIf="isLoggedIn && userRole === 'admin'">
+                  <a class="nav-link" routerLinkActive="active" routerLink="/adminQuizes">Admin Quizzes</a>
+              </li>
+
+              <!-- Student links -->
+              <li class="nav-item" *ngIf="isLoggedIn && userRole === 'student'">
+                  <a class="nav-link" routerLinkActive="active" routerLink="/about">About</a>
+              </li>
+              <li class="nav-item" *ngIf="isLoggedIn && userRole === 'student'">
+                  <a class="nav-link" routerLinkActive="active" routerLink="/courses">Courses</a>
+              </li>
+              <li class="nav-item" *ngIf="isLoggedIn && userRole === 'student'">
+                  <a class="nav-link" routerLinkActive="active" routerLink="/workPervious">Work Previous</a>
+              </li>
+              <li class="nav-item" *ngIf="isLoggedIn && userRole === 'student'">
+                  <a class="nav-link" routerLinkActive="active" routerLink="/wishlist">Wishlist</a>
+              </li>
+          </ul>
+
+          <!-- Search bar for all users -->
+          <form class="d-flex formsearch" role="search" *ngIf="!isLoggedIn || (isLoggedIn && userRole === 'student')">
+              <input class="form-control me-2" type="search" placeholder="Search.." aria-label="Search">
+              <i class="fa-solid fa-magnifying-glass"></i>
+          </form>
+
+          <!-- Show Register and Login buttons if the user is not logged in -->
+          <div *ngIf="!isLoggedIn" class="d-flex justify-content-between">
+              <a class="nav-link" routerLink="/register">
+                  <button class="btn btn-register">Register</button>
+              </a>
+              <a class="nav-link" routerLink="/login">
+                  <button class="btn btn-register">Login</button>
+              </a>
+          </div>
+
+          <!-- Show Logout button and Profile image if the user is logged in -->
+          <div *ngIf="isLoggedIn" class="d-flex align-items-center">
+              <a class="nav-link" (click)="logOutUser()">
+                  <button class="btn btn-register">Logout</button>
+              </a>
+              <a class="nav-link" routerLink="/profile">
+                  <img [src]="userProfileImage" class="imgprofile rounded-circle" alt="imgprofile"/>
+              </a>
+              <i routerLink="/notification" class="fa-regular fa-bell fs-4 notifiaction" (click)="togglenotify($event)"></i>
+          </div>
       </div>
-    </div>
-  </nav>
-  
+  </div>
+</nav>
