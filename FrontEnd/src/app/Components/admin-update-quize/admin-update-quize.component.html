@@ -4,23 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="update_quize.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <title>Update Quiz</title>
 </head>
 <body>
-    <header style="background-color: #73079e; padding: 10px; text-align: center;">
+    <header class="header">
         <h1 class="text-white">Update Quiz</h1>
     </header>
 
     <section id="quiz">
         <div class="container">
             <div class="mycontainer">
-                <h2 class="text-white" style="background-color: #73079e; padding: 10px;">Update Questions</h2>
+                <h2 class="section-title">Update Questions</h2>
                 <div id="questionsContainer" class="text-center">
                     <div class="question" id="question1">
                         <h4>Question 1</h4>
@@ -47,7 +41,7 @@
                                 <input type="text" id="choice1_2" class="form-control" value="False" required>
                             </div>
                             <div id="additionalChoices1"></div>
-                            <button type="button" class="btn" style="background-color: #73079e; color: white;" onclick="addChoice(1)">Add Choice</button>
+                            <button type="button" class="btn">Add Choice</button>
                         </div>
 
                         <div class="form-group">
@@ -61,82 +55,12 @@
                         </div>
                     </div>
                 </div>
-                <button type="button" class="btn" style="background-color: #73079e; color: white;" onclick="addQuestion()">Add Another Question</button>
+                <button type="button" class="btn" >Add Another Question</button>
                 <br> <br>
-                <button type="button" class="btn" style="background-color: #73079e; color: white;" onclick="submitQuestions()">Submit All Questions</button>
+                <button type="button" class="btn" >Submit All Questions</button>
             </div>
         </div>
     </section>
 
-    <script>
-        let questionCount = 1;
-
-        function addQuestion() {
-            questionCount++;
-            const questionDiv = document.createElement('div');
-            questionDiv.className = 'question';
-            questionDiv.id = 'question' + questionCount;
-            questionDiv.innerHTML = `
-                <h4>Question ${questionCount}</h4>
-                <div class="form-group">
-                    <label for="questionText${questionCount}">Question:</label>
-                    <input type="text" id="questionText${questionCount}" class="form-control" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="questionType${questionCount}">Type:</label>
-                    <select id="questionType${questionCount}" class="form-control" onchange="toggleChoices(${questionCount})">
-                        <option value="true_false">True/False</option>
-                        <option value="multiple_choice">Multiple Choice</option>
-                    </select>
-                </div>
-
-                <div id="choicesContainer${questionCount}">
-                    <div class="form-group">
-                        <label for="choice${questionCount}_1">Choice 1:</label>
-                        <input type="text" id="choice${questionCount}_1" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="choice${questionCount}_2">Choice 2:</label>
-                        <input type="text" id="choice${questionCount}_2" class="form-control" required>
-                    </div>
-                    <div id="additionalChoices${questionCount}"></div>
-                    <button type="button" class="btn" style="background-color: #73079e; color: white;" onclick="addChoice(${questionCount})">Add Choice</button>
-                </div>
-
-                <div class="form-group">
-                    <label for="correctAnswer${questionCount}">Correct Answer:</label>
-                    <input type="text" id="correctAnswer${questionCount}" class="form-control" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="score${questionCount}">Score:</label>
-                    <input type="number" id="score${questionCount}" class="form-control" value="1" min="1" required>
-                </div>
-            `;
-            document.getElementById('questionsContainer').appendChild(questionDiv);
-        }
-
-        function addChoice(questionId) {
-            const container = document.getElementById('additionalChoices' + questionId);
-            const index = container.children.length + 3; // Starting from 3 as we have 2 already
-            const newChoice = document.createElement('div');
-            newChoice.innerHTML = `<div class="form-group">
-                                   <label for="choice${questionId}_${index}">Choice ${index}:</label>
-                                   <input type="text" id="choice${questionId}_${index}" class="form-control">
-                                   </div>`;
-            container.appendChild(newChoice);
-        }
-
-        function toggleChoices(questionId) {
-            const type = document.getElementById('questionType' + questionId).value;
-            const additionalChoices = document.getElementById('additionalChoices' + questionId);
-            additionalChoices.style.display = type === 'true_false' ? 'none' : 'block';
-        }
-
-        function submitQuestions() {
-            alert('All questions updated!');
-        }
-    </script>
 </body>
 </html>
