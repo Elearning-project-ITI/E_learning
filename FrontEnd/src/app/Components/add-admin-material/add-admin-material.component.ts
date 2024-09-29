@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoursesService } from '../../shared/services/courses.service';
@@ -18,14 +18,17 @@ export class AddAdminMaterialComponent implements OnInit {
   msgSuccess = '';
   msgErrors: string[] = [];
   isLoading: boolean = false;
+  materials: any[] = [];
+
   constructor(
     private fb: FormBuilder, 
     private coursesService: CoursesService, 
     private http: HttpClient
   ) {
     this.materialForm = this.fb.group({
-      title: ['', [Validators.required, Validators.pattern('https?://.+')]], 
-      type: ['', [Validators.required, Validators.pattern('pdf|video|audio|text')]], 
+      title: ['', [Validators.required]], 
+      type: ['', [Validators.required, Validators.pattern('pdf|video|audio|text')]],
+      file: [null, [this.fileValidator()]]  // File validator for custom validation
     });
   }
 
@@ -33,14 +36,46 @@ export class AddAdminMaterialComponent implements OnInit {
     const course = this.coursesService.getCourse();
     if (course) {
       this.courseId = course.id;
+      this.getMaterialsForCourse();
     }
   }
+
+ 
+  getMaterialsForCourse() {
+    if (this.courseId) {
+      this.coursesService.getMaterialsByCourseId(this.courseId).subscribe(
+        (response) => {
+          this.materials = response.data;  // Adjust if response structure differs
+        },
+        (error) => {
+          console.error('Error fetching materials:', error);
+          this.msgErrors.push("Could not load materials. Please try again.");
+        }
+      );
+    }
+  }
+  deleteMaterial(materialId: number) {
+    if (confirm('Are you sure you want to delete this material?')) {
+      this.coursesService.deleteMaterial(materialId).subscribe(
+        (response) => {
+          console.log('Material deleted:', response);
+          this.getMaterialsForCourse();  // Refresh the material list after deletion
+        },
+        (error) => {
+          console.error('Error deleting material:', error);
+        }
+      );
+    }
+  }
+  
+
+  // Custom file validator
   fileValidator() {
     return (control: any) => {
       const file = control.value;
       if (file) {
         const allowedMimeTypes = ['application/pdf', 'video/mp4', 'video/mkv', 'video/x-msvideo', 'video/webm'];
-        const maxSizeInBytes = 102400000; 
+        const maxSizeInBytes = 102400000;  // Max size 100MB
 
         if (!allowedMimeTypes.includes(file.type)) {
           return { invalidFileType: true };
@@ -54,6 +89,7 @@ export class AddAdminMaterialComponent implements OnInit {
     };
   }
 
+  // Handle file change event
   onFileChange(event: any) {
     if (event.target.files.length > 0) {
       this.selectedFile = event.target.files[0];
@@ -61,46 +97,35 @@ export class AddAdminMaterialComponent implements OnInit {
     }
   }
 
+  // Submit form data
   onSubmit() {
-  
-    console.log("Form status:", this.materialForm.status);
-    console.log("Form value:", this.materialForm.value);
     this.isLoading = true;
-   
+
     if (this.materialForm.invalid) {
       console.error("Form is invalid");
-      this.isLoading = true;
-      
-      Object.keys(this.materialForm.controls).forEach(key => {
-        const controlErrors = this.materialForm.get(key)?.errors;
-        if (controlErrors) {
-          console.error(`Validation errors in ${key}:`, controlErrors);
-        }
-      });
-  
+      this.isLoading = false;
       return;
     }
-  
+
     if (!this.courseId) {
       console.error("Course ID is missing");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append('url', this.materialForm.get('title')?.value);
     formData.append('type', this.materialForm.get('type')?.value);
     formData.append('course_id', this.courseId.toString());
-  
+
     if (this.selectedFile) {
       formData.append('file', this.selectedFile);
     }
-  
+
     this.coursesService.addMaterial(formData).subscribe(
       (response) => {
         this.isLoading = false;
-        console.log(response)
         this.msgSuccess = "Material added Successfully";
-        console.log('Material added:', response);
+        this.getMaterialsForCourse();  // Refresh the material list
       },
       (error) => {
         console.error('Error adding material:', error);
@@ -109,9 +134,10 @@ export class AddAdminMaterialComponent implements OnInit {
       }
     );
   }
-  
 
+  // Reset form
   onCancel() {
     this.materialForm.reset();
+    this.selectedFile = null;
   }
 }

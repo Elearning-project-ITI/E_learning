@@ -80,13 +80,13 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('quizuser', QuizUserController::class);
     Route::resource('question', QuestionController::class);
     Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']);
-
+    Route::get('/course/{id}/materials', [MaterialController::class, 'getMaterialsByCourseId']);
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
     
     
     Route::middleware(StudentMiddleware::class)->group(function () {
-
+ 
     Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('success');
 Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');

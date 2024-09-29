@@ -123,5 +123,18 @@ export class CoursesService {
     );
   }
   
+  getMaterialsByCourseId(courseId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get(`${this.DB_URL}/course/${courseId}/materials`, { headers });
+  }
+  deleteMaterial(materialId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.delete(`${this.DB_URL}/material/${materialId}`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
   
 }
