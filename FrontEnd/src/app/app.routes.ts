@@ -55,7 +55,7 @@ export const routes: Routes = [
         { path: "", component: ViewAdminCourseComponent },
         { path: "cousredetailsadmin", component: ViewAdminCourseComponent },
         { path: "addmaterial", component: AddAdminMaterialComponent },
-        { path: "quizes", component: QuizesComponent },
+        { path: "addquizes", component: AdminAddQuizeComponent },
         { path: "reviews", component: ReviwesComponent }
     ]}
     ,{path:"adminCourses/updatecourse/:id",component:EditCourseComponent},
