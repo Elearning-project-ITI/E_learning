@@ -23,6 +23,7 @@ class CourseController extends Controller
                 'id' => $course->id,
                 'name' => $course->name,
                 'description' => $course->description,
+                'image'=> $course->image,
                 'number_of_students' => $course->bookings->count(),  // Number of students who booked the course
                 'price' =>$course->price,
                 'average_rating' => $course->reviews->avg('rating'),  // Average rating of the course
