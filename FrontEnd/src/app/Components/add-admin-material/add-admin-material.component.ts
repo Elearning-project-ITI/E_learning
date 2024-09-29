@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoursesService } from '../../shared/services/courses.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-admin-material',
@@ -23,7 +24,8 @@ export class AddAdminMaterialComponent implements OnInit {
   constructor(
     private fb: FormBuilder, 
     private coursesService: CoursesService, 
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {
     this.materialForm = this.fb.group({
       title: ['', [Validators.required]], 
@@ -139,5 +141,12 @@ export class AddAdminMaterialComponent implements OnInit {
   onCancel() {
     this.materialForm.reset();
     this.selectedFile = null;
+  }
+  navigateToUpdate(materialId: number) {
+    if (this.courseId) {
+      this.router.navigate([`/adminCourses/${this.courseId}/addmaterial/update/${materialId}`]);
+    } else {
+      console.error("Course ID is missing");
+    }
   }
 }

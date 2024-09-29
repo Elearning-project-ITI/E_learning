@@ -136,5 +136,25 @@ export class CoursesService {
       catchError(this.handleError)
     );
   }
+  updateMaterial(materialId: number, materialData: FormData): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    // Append '_method' with 'PUT' to make it work like an update.
+    materialData.append('_method', 'PUT');
+  
+    return this.http.post(`${this.DB_URL}/material/${materialId}`, materialData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  getMaterialById(materialId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.get(`${this.DB_URL}/material/${materialId}`, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
   
 }

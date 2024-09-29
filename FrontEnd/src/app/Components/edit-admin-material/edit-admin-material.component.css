@@ -1,69 +1,76 @@
 
 
-.sidebar {
-    background-color: #6b5fd9;
-    height: 100vh;
-    position: fixed;
-    padding-top: 20px;
-    border-right: 1px solid #ddd;
-}
-
-.sidebar .nav-link {
-    color: #333;
-    font-weight: bold;
-    padding: 15px;
-    transition: all 0.3s ease;
-}
-
-.sidebar .nav-link:hover, .nav-link.active {
-    background-color: #625ed3;
-    color: white;
-}
-
-.materials-content {
-    padding: 20px;
-    margin-left: 0; /* Default value for small screens */
-}
-
 .card {
     animation: fadeInUp 0.5s ease-in-out;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border-radius: 8px;
+    margin: 150px auto;
+    background-color: rgb(243, 246, 248);
+    width:100%;
+    transition: all 0.5s;
+}
+.form-group{
+    margin-top: 20px;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
 }
 
 .card-header {
-    background-color: #2535b2;
+    background-color: #3041be;
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: bold;
+    padding: 20px;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.card-body {
+    padding: 20px;
 }
 
 .btn-primary {
-    background-color: #3041be;
+    background-color: #4765e0;
     border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #4f51ce !important;
-    border-color: #4f62ce !important;
+    background-color: #5b74f6;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn-secondary {
-    background-color: #07099e;
+    background-color: #f04f47;
     border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background-color: #4f51ce !important;
-    border-color: #4f6ace !important;
+    background-color: #f15f56;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+}
+
+.alert {
+    margin-top: 15px;
+    border-radius: 8px;
 }
 
 @keyframes fadeInUp {
     0% {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
     100% {
         opacity: 1;
@@ -71,9 +78,24 @@
     }
 }
 
+/* Add subtle form control transitions */
+.form-control, .form-control-file {
+    border-radius: 6px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus, .form-control-file:focus {
+    border-color: #4765e0;
+    box-shadow: 0 0 6px rgba(71, 101, 224, 0.3);
+}
+
 /* Responsive Design */
 @media (min-width: 768px) {
     .materials-content {
         margin-left: 270px;
+    }
+
+    .card {
+        width: 60%;
     }
 }

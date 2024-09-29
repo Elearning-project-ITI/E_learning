@@ -3,7 +3,7 @@
       <div class="course-info text-center pt-5 pb-5">
         <h2>Our Courses</h2>
       </div>
-      <button class="btn btn-about mt-5 mb-5" routerLink="/adminCourses/create">Create </button>
+      <button class="btn btn-about mt-5 mb-5" routerLink="/adminCourses/create">Create New Course</button>
       <div *ngIf="!Courses || Courses.length === 0; else showCourses">
         <app-loader></app-loader>
       </div>

@@ -1,34 +1,13 @@
 
 
-.sidebar {
-    background-color: #5752d9;
-    height: 100vh;
-    position: fixed;
-    padding-top: 20px;
-    border-right: 1px solid #ddd;
-}
 
-.sidebar .nav-link {
-    color: #333;
-    font-weight: bold;
-    padding: 15px;
-    transition: all 0.3s ease;
-}
 
-.sidebar .nav-link:hover, .nav-link.active {
-    background-color: #3c41c7;
-    color: white;
-}
-
-.materials-content {
-    padding: 20px;
-    margin-left: 0; /* Default value for small screens */
-}
 
 .card {
     animation: fadeInUp 0.5s ease-in-out;
     box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     border-radius: 8px;
+    width: 100%;
 }
 
 .card-header {
