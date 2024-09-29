@@ -1,7 +1,7 @@
 
 
 .sidebar {
-    background-color: #73079e;
+    background-color: #5752d9;
     height: 100vh;
     position: fixed;
     padding-top: 20px;
@@ -16,7 +16,7 @@
 }
 
 .sidebar .nav-link:hover, .nav-link.active {
-    background-color: #73079e;
+    background-color: #3c41c7;
     color: white;
 }
 
@@ -32,34 +32,39 @@
 }
 
 .card-header {
-    background-color: #73079e;
+    background-color: #484de0;
     color: white;
     font-size: 1.5rem;
     font-weight: bold;
 }
 
 .btn-primary {
-    background-color: #73079e;
+    background-color: #5252c6;
     border: none;
     transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #b94fce !important;
-    border-color: #b94fce !important;
+    background-color: #574fce !important;
+    border-color: #604fce !important;
 }
 
 .btn-secondary {
-    background-color: #73079e;
+    background-color: #19079e;
     border: none;
     transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
-    background-color: #b94fce !important;
-    border-color: #b94fce !important;
+    background-color: #4f57ce !important;
+    border-color: #624fce !important;
 }
-
+input{
+    margin-top:10px;
+}
+button{
+    margin-top:10px;
+}
 @keyframes fadeInUp {
     0% {
         opacity: 0;

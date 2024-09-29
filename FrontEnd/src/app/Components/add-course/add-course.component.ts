@@ -18,8 +18,8 @@ export class AddCourseComponent {
   msgErrors: string[] = [];
   isLoading: boolean = false;
 
-  // Define max size for image
-  readonly maxImageSize = 2048 * 1024; // 2048 KB in bytes
+ 
+  readonly maxImageSize = 2048 * 1024; 
 
   courseForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
@@ -31,7 +31,7 @@ export class AddCourseComponent {
 
   selectedFile: File | null = null;
 
-  // Handle file selection
+ 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -40,7 +40,7 @@ export class AddCourseComponent {
     }
   }
 
-  // Custom Validator for Image File (check type and size)
+ 
   validateImage(control: AbstractControl): ValidationErrors | null {
     const file = this.selectedFile;
     if (file) {
@@ -48,20 +48,20 @@ export class AddCourseComponent {
       const fileSize = file.size;
       const allowedTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/gif'];
 
-      // Check file type
+      
       if (!allowedTypes.includes(fileType)) {
         return { invalidFileType: true };
       }
 
-      // Check file size
+     
       if (fileSize > this.maxImageSize) {
         return { fileTooLarge: true };
       }
     }
-    return null; // Return null if no errors
+    return null; 
   }
 
-  // Handle form submission
+ 
   handleForm() {
     if (this.courseForm.valid && this.selectedFile) {
       this.isLoading = true;

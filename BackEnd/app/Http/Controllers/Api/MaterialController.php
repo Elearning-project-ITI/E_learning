@@ -123,7 +123,7 @@ class MaterialController extends Controller
 public function store(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'url' => 'required|url',
+        'url' => 'required|string',
         'type' => 'required|in:pdf,video,audio,text',
         'course_id' => 'required|exists:courses,id',
         'file' => 'nullable|file|mimes:pdf,mp4,mkv,avi,webm|max:102400', // Limit file size to 100MB
@@ -250,7 +250,7 @@ public function update(Request $request, $id)
     }
 
     $validator = Validator::make($request->all(), [
-        'url' => 'sometimes|url',
+        'url' => 'sometimes|string',
         'type' => 'sometimes|in:pdf,video,audio,text',
         'course_id' => 'sometimes|exists:courses,id',
         'file' => 'nullable|file|mimes:pdf,mp4,mkv,avi,webm|max:102400', // Limit file size to 100MB
@@ -311,4 +311,10 @@ public function update(Request $request, $id)
             'message' => 'Material deleted successfully',
         ], 200); 
     }
+
+public function getMaterialsByCourseId($courseId)
+{
+    $materials = Material::where('course_id', $courseId)->get();
+    return response()->json(['data' => $materials]);
+}
 }

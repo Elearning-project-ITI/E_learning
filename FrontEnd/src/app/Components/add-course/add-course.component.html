@@ -18,7 +18,7 @@
                   </div>
                 </div>
   
-                <!-- Price -->
+               
                 <div class="form-group">
                   <label for="price"><i class="fa-solid fa-dollar-sign"></i> Price</label>
                   <input type="number" formControlName="price" class="form-control" id="price" placeholder="Enter Price" required>
@@ -66,18 +66,18 @@
                   </div>
                 </div>
   
-                <!-- Submit and Cancel Buttons -->
+               
                 <div class="text-center">
                   <button type="submit" class="btn btn-primary mr-2" [disabled]="courseForm.invalid">  <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>Add Course</button>
                   <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
                 </div>
   
-                <!-- Error Messages -->
+               
                 <div *ngFor="let error of msgErrors" class="alert alert-danger mt-3">
                   {{ error }}
                 </div>
   
-                <!-- Success Message -->
+                
                 <p *ngIf="msgSuccess" class="alert alert-success mt-2">{{ msgSuccess }}</p>
               </form>
             </div>
