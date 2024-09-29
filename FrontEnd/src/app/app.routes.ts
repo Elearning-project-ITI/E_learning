@@ -33,6 +33,7 @@ import { EditAdminMaterialComponent } from './Components/edit-admin-material/edi
 import { ViewAdminMaterialComponent } from './Components/view-admin-material/view-admin-material.component';
 import { AdminUpdateQuizeComponent } from './Components/admin-update-quize/admin-update-quize.component';
 import { ViewAdminCourseComponent } from './Components/view-admin-course/view-admin-course.component';
+import { CourseDetailsAdminComponent } from './course-details-admin/course-details-admin.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -50,10 +51,10 @@ export const routes: Routes = [
 
     {path:"adminCourses",component:AdminCourseComponent},
     {path:"adminCourses/create",component:AddCourseComponent},
-    {path:"adminCourses/:id",component:CousreDetailsComponent,children:[
-        { path: "", component: ViewCourseDetailsComponent },
-        { path: "cousredetails", component: ViewCourseDetailsComponent },
-        { path: "cousrematerial", component: CoursematerialComponent },
+    {path:"adminCourses/:id",component:CourseDetailsAdminComponent,children:[
+        { path: "", component: ViewAdminCourseComponent },
+        { path: "cousredetailsadmin", component: ViewAdminCourseComponent },
+        { path: "addmaterial", component: AddAdminMaterialComponent },
         { path: "quizes", component: QuizesComponent },
         { path: "reviews", component: ReviwesComponent }
     ]}

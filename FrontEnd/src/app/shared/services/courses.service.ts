@@ -57,7 +57,7 @@ export class CoursesService {
     }
   
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    const body = { id: courseId };  // Assuming 'course_id' is required by the API
+    const body = { id: courseId };  
   
     return this.http.post(this.DB_URL+`/payment`, body, { headers }).pipe(
    catchError(this.handleError)
@@ -108,5 +108,20 @@ export class CoursesService {
       catchError(this.handleError)
     );
   }
+  addMaterial(materialData: FormData): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    return this.http.post(this.DB_URL + '/material', materialData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  getAllMaterials(): Observable<any> {
+    return this.http.get(`${this.DB_URL}/material`).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
   
 }

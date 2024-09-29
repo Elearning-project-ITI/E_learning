@@ -59,7 +59,12 @@
     background-color: #4f57ce !important;
     border-color: #624fce !important;
 }
-
+input{
+    margin-top:10px;
+}
+button{
+    margin-top:10px;
+}
 @keyframes fadeInUp {
     0% {
         opacity: 0;
