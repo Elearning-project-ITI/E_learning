@@ -287,7 +287,7 @@ public function update(Request $request, $id)
         'success' => true,
         'data' => $material,
     ], 200);
-}
+    }
 
 
     /**
