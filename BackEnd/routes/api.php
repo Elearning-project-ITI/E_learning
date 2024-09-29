@@ -85,8 +85,13 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
     
     
-    Route::middleware(StudentMiddleware::class)->group(function () {
- 
+    Route::middleware(StudentMiddleware::class)->group(function () {    
+        Route::get('/my-courses', [CourseController::class, 'myCourses'])->name('student.myCourses');
+
+    // Route to get courses in the student's wishlist
+    Route::get('/my-wishlist', [WishlistController::class, 'myWishlist'])->name('student.myWishlist');
+
+        Route::get('/check-booking', [PaymentController::class, 'checkBooking']);
     Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('success');
 Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');

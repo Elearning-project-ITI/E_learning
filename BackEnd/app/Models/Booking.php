@@ -10,7 +10,7 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
-        'is_paid', 'user_id', 'course_id',
+        'is_paid', 'user_id', 'course_id','date'
     ];
 
     // Relationships
