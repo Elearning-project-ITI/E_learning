@@ -78,6 +78,9 @@ class AuthController extends BaseController
 
         }
 
+
+        
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,

@@ -80,6 +80,16 @@ class ReviewController extends Controller
     ]);
 }
 
+public function getAllReviewsForAdmin()
+    {
+        $reviews = Review::with(['user', 'course'])->get();
+    
+        return response()->json([
+            'success' => true,
+            'reviews' => $reviews,
+        ]);
+    }
+
     /**
      * Display the specified resource.
      */
@@ -112,15 +122,6 @@ class ReviewController extends Controller
         //
     }
 
-    public function getAllReviewsForAdmin()
-    {
-        $reviews = Review::with(['user', 'course'])->get();
-    
-        return response()->json([
-            'success' => true,
-            'reviews' => $reviews,
-        ]);
-    }
     
 }
 
