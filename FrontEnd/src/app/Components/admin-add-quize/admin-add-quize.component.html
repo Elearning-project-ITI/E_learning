@@ -1,61 +1,62 @@
 <section id="quiz">
     <div class="container">
-        <div class="mycontainer">
-            <h2 class="text-white section-title">Add Quiz Questions</h2>
-
-            <!-- Input for Quiz Name -->
-            <div class="form-group">
-                <label for="quizName">Quiz Name:</label>
-                <input type="text" [(ngModel)]="quizName" class="form-control" required>
-            </div>
-
-            <div id="questionsContainer">
-                <div class="question" *ngFor="let question of questions; let i = index">
-                    <h4>Question {{i + 1}}</h4>
-                    <div class="form-group">
-                        <label for="questionText{{i}}">Question:</label>
-                        <input type="text" [(ngModel)]="question.question" class="form-control" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="questionType{{i}}">Type:</label>
-                        <select [(ngModel)]="question.type" class="form-control" (change)="toggleChoices(i)">
-                            <option value="true_false">True/False</option>
-                            <option value="multiple_choice">Multiple Choice</option>
-                        </select>
-                    </div>
-
-                    <!-- Choices for Multiple Choice Questions -->
-                    <div *ngIf="question.type === 'multiple_choice'">
-                        <div *ngFor="let choice of question.choices; let j = index">
-                            <div class="form-group">
-                                <label for="choice{{i}}_{{j}}">Choice {{j + 1}}:</label>
-                                <input type="text" [(ngModel)]="choice.choice" class="form-control" required>
-                            </div>
-                            <div class="form-group">
-                                <label>
-                                    <input type="radio" [(ngModel)]="question.correctAnswer" [value]="j"> Correct
-                                </label>
-                            </div>
-                        </div>
-                        <button type="button" (click)="addChoice(i)" class="btn btn-custom">Add Choice</button>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="score{{i}}">Score:</label>
-                        <input type="number" [(ngModel)]="question.score" class="form-control" value="1" min="1" required>
-                    </div>
-
-                    <button type="button" (click)="removeQuestion(i)" class="btn btn-danger">Remove Question</button>
-                </div>
-            </div>
-
-            <button type="button" (click)="addQuestion()" class="btn btn-custom">Add Another Question</button>
-            <br> <br>
-            <button type="button" (click)="submitQuiz()" class="btn btn-custom">Submit Quiz</button>
+      <div class="mycontainer">
+        <h2 class="text-white section-title">Add Quiz Questions</h2>
+  
+        <!-- Input for Quiz Name -->
+        <div class="form-group">
+          <label for="quizName">Quiz Name:</label>
+          <input type="text" [(ngModel)]="quizName" class="form-control" required>
         </div>
+  
+        <div id="questionsContainer">
+          <div class="question" *ngFor="let question of questions; let i = index">
+            <h4>Question {{i + 1}}</h4>
+            <div class="form-group">
+              <label for="questionText{{i}}">Question:</label>
+              <input type="text" [(ngModel)]="question.question" class="form-control" required>
+            </div>
+  
+            <div class="form-group">
+              <label for="questionType{{i}}">Type:</label>
+              <select [(ngModel)]="question.type" class="form-control" (change)="toggleChoices(i)">
+                <option value="true_false">True/False</option>
+                <option value="multiple_choice">Multiple Choice</option>
+              </select>
+            </div>
+  
+            <!-- Choices for Multiple Choice Questions -->
+            <div *ngIf="question.type === 'multiple_choice'">
+              <div *ngFor="let choice of question.choices; let j = index">
+                <div class="form-group">
+                  <label for="choice{{i}}_{{j}}">Choice {{j + 1}}:</label>
+                  <input type="text" [(ngModel)]="choice.choice" class="form-control" required>
+                </div>
+                <div class="form-group">
+                  <label>
+                    <input type="radio" [(ngModel)]="question.correctAnswer" [value]="j"> Correct
+                  </label>
+                </div>
+              </div>
+              <button type="button" (click)="addChoice(i)" class="btn btn-custom">Add Choice</button>
+            </div>
+  
+            <div class="form-group">
+              <label for="score{{i}}">Score:</label>
+              <input type="number" [(ngModel)]="question.score" class="form-control" value="1" min="1" required>
+            </div>
+  
+            <button type="button" (click)="removeQuestion(i)" class="btn btn-danger">Remove Question</button>
+          </div>
+        </div>
+  
+        <button type="button" (click)="addQuestion()" class="btn btn-custom">Add Another Question</button>
+        <br><br>
+        <button type="button" (click)="submitQuiz()" class="btn btn-custom">Submit Quiz</button>
+      </div>
     </div>
-</section>
+  </section>
+  
  <!-- i want this vaildation in quiz    // Validate using Validator
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',

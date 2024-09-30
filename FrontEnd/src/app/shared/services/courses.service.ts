@@ -197,11 +197,11 @@ export class CoursesService {
     );
   }
   
-  addChoice(choiceData: any, quizId: number): Observable<any> {
+  addChoice(choiceData: any, quizId: number, questionId: number): Observable<any> {
     const token = localStorage.getItem('access_token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
-    return this.http.post(`${this.DB_URL}/quiz/${quizId}/choices`, choiceData, { headers }).pipe(
+    return this.http.post(`${this.DB_URL}/quiz/${quizId}/questions/${questionId}/choices`, choiceData, { headers }).pipe(
       catchError(this.handleError)
     );
   }

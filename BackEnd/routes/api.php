@@ -84,7 +84,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::get('/course/{id}/materials', [MaterialController::class, 'getMaterialsByCourseId']);
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
-    
+    Route::post('/quiz/{quiz_id}/questions/{question_id}/choices', [ChoiceController::class, 'store']);
     
     Route::middleware(StudentMiddleware::class)->group(function () {    
         Route::get('/my-courses', [CourseController::class, 'myCourses'])->name('student.myCourses');
