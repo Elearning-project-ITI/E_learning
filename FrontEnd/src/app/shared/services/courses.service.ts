@@ -81,7 +81,7 @@ export class CoursesService {
     this.courseData = course;
   }
 
-  getCourse() {
+  getCourse(): Course | null {
     return this.courseData;
   }
   addCourse(courseData: FormData): Observable<any> {
@@ -155,6 +155,58 @@ export class CoursesService {
       catchError(this.handleError)
     );
   }
+  // addQuiz(quizData: any): Observable<any> {
+  //   const token = localStorage.getItem('access_token');
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+  //   return this.http.post(this.DB_URL + '/quiz', quizData, { headers }).pipe(
+  //     catchError(this.handleError)
+  //   );
+  // }
+  // addQuestion(quizData: any): Observable<any> {
+  //   const token = localStorage.getItem('access_token');
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+  //   return this.http.post(this.DB_URL + '/quiz', quizData, { headers }).pipe(
+  //     catchError(this.handleError)
+  //   );
+  // }
+  // addChoice(quizData: any): Observable<any> {
+  //   const token = localStorage.getItem('access_token');
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+  //   return this.http.post(this.DB_URL + '/quiz', quizData, { headers }).pipe(
+  //     catchError(this.handleError)
+  //   );
+  // }
+  addQuiz(quizData: any): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
+    return this.http.post(`${this.DB_URL}/quiz`, quizData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  addQuestion(questionData: any, quizId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    return this.http.post(`${this.DB_URL}/quiz/${quizId}/questions`, questionData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  addChoice(choiceData: any, quizId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    return this.http.post(`${this.DB_URL}/quiz/${quizId}/choices`, choiceData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  
+
   
 }

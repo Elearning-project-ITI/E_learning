@@ -80,6 +80,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::resource('quizuser', QuizUserController::class);
     Route::resource('question', QuestionController::class);
     Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']);
+    Route::post('/quiz/{quiz_id}/questions', [QuestionController::class, 'store']);
     Route::get('/course/{id}/materials', [MaterialController::class, 'getMaterialsByCourseId']);
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
