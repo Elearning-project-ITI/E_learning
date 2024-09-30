@@ -131,7 +131,7 @@ class CourseController extends Controller
         'price' => $request->price,
         'image' => $imagePath, // This can be kept if you want to store the local image path as well
         'drive_image' => $googleDriveUrl, // Store the Google Drive URL
-        'date' => now(),
+        //'date' => now(),
         'description' => $request->description,
     ]);
 
@@ -181,7 +181,7 @@ class CourseController extends Controller
         'name' => 'sometimes|required|string|max:255',
         'price' => 'sometimes|required|numeric',
         'image' => 'sometimes|file|image|mimes:jpeg,png,jpg,gif|max:2048',
-        'date' => 'sometimes|required|date',
+        //'date' => 'sometimes|required|date',
         'description' => 'required|string',
     ]);
 
@@ -222,7 +222,7 @@ class CourseController extends Controller
             'name' => $course->name,
             'price' => $course->price,
             'image' => $course->image, 
-            'date' => $course->date,
+            //'date' => $course->date,
             'description' => $course->description,
             'created_at' => $course->created_at,
             'updated_at' => $course->updated_at,

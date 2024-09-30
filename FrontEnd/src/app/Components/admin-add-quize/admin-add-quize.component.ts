@@ -13,18 +13,21 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class AdminAddQuizeComponent implements OnInit {
     quizName: string = '';
-    courseId!: number; // Will be fetched from course data
+    courseId!: number; 
+    msgSuccess = '';
+    msgErrors: string[] = [];
+    isLoading: boolean = false;
     questions = [
       { question: '', type: 'multiple_choice', choices: [{ choice: '' }, { choice: '' }], correctAnswer: 0, score: 1 }
     ];
-    validationErrors: any = {}; // To capture validation errors
+    validationErrors: any = {};
   
     constructor(private coursesService: CoursesService, private route: ActivatedRoute) {}
   
     ngOnInit(): void {
       const course = this.coursesService.getCourse();
       if (course) {
-        this.courseId = course.id; // Assign the course ID from the service
+        this.courseId = course.id; 
       } else {
         console.error('Course data not found!');
       }
@@ -79,15 +82,18 @@ export class AdminAddQuizeComponent implements OnInit {
             };
   
             this.coursesService.addQuestion(questionPayload, response.data.id).subscribe((questionResponse) => {
-              if (question.type === 'multiple_choice') {
+                console.log(questionResponse)
+                if (question.type === 'multiple_choice') {
                 question.choices.forEach((choice, i) => {
                   const choicePayload = {
                     choice: choice.choice,
                     is_correct: i === question.correctAnswer ? 1 : 0,
-                    question_id: questionResponse.data.id // Pass question_id explicitly
+                    question_id: questionResponse.data.id 
                   };
   
-                  this.coursesService.addChoice(choicePayload, response.data.id, questionResponse.data.id).subscribe();
+                  this.coursesService.addChoice(choicePayload, response.data.id, questionResponse.data.id).subscribe((choiceresponse)=>{
+                    console.log(choiceresponse)
+                  });
                 });
               }
             });

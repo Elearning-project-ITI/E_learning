@@ -34,6 +34,7 @@ import { ViewAdminMaterialComponent } from './Components/view-admin-material/vie
 import { AdminUpdateQuizeComponent } from './Components/admin-update-quize/admin-update-quize.component';
 import { ViewAdminCourseComponent } from './Components/view-admin-course/view-admin-course.component';
 import { CourseDetailsAdminComponent } from './course-details-admin/course-details-admin.component';
+import { VerifyPaymentComponent } from './Components/verify-payment/verify-payment.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -47,7 +48,8 @@ export const routes: Routes = [
     {path:"resetpassword",component:ResetPasswordComponent},
     {path:"verify-email",component:VerifyEmailComponent},
     {path:"notification",component:NotificationComponent},
-
+    //verifypayment
+    {path:"verifypayment",component:VerifyPaymentComponent},
 
     {path:"adminCourses",component:AdminCourseComponent},
     {path:"adminCourses/create",component:AddCourseComponent},

@@ -24,7 +24,7 @@ export class AddCourseComponent {
   courseForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
     price: new FormControl(null, [Validators.required, Validators.pattern(/^\d+(\.\d{1,2})?$/)]), // Validate numeric (price)
-    date: new FormControl(null, [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]), // Date format YYYY-MM-DD
+    // date: new FormControl(null, [Validators.required, Validators.pattern(/^\d{4}-\d{2}-\d{2}$/)]), // Date format YYYY-MM-DD
     description: new FormControl(null, [Validators.required, Validators.maxLength(5000)]), // Optionally set max length
     image: new FormControl(null, [Validators.required, this.validateImage.bind(this)]), // Custom image validation
   });
@@ -69,7 +69,7 @@ export class AddCourseComponent {
       const courseData = new FormData();
       courseData.append('name', this.courseForm.get('name')?.value);
       courseData.append('price', this.courseForm.get('price')?.value);
-      courseData.append('date', this.courseForm.get('date')?.value);
+      // courseData.append('date', this.courseForm.get('date')?.value);
       courseData.append('description', this.courseForm.get('description')?.value);
       courseData.append('image', this.selectedFile); 
 
