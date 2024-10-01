@@ -1,42 +1,82 @@
-
 <section id="quizes">
-<div class="container">
-    <div class="quiz-container">
-      <h2 class="text-center">Course Quiz</h2>
-      
-    
-      
-      <form id="quizForm">
+  <div class="container">
+    <div *ngFor="let quiz of quizzes" class="quiz-container">
+      <h2 class="text-center">{{ quiz.name }}</h2>
+
+      <ng-container *ngFor="let question of questions[quiz.id]">
         <div class="quiz-item mb-5">
           <div class="d-flex justify-content-between align-items-center">
-            <p class="question">1. What does HTML stand for?</p>
-            <span class="badge-point">1 point</span>
+            <p class="question">{{ question.question }}</p>
+            <span class="badge-point">{{ question.score_question }} points</span>
           </div>
-          <div class="options">
-            <label class="option-item"><input type="radio" name="q1" value="Hyper Text Markup Language"> Hyper Text Markup Language</label>
-            <label class="option-item"><input type="radio" name="q1" value="Hyperlinks and Text Markup Language"> Hyperlinks and Text Markup Language</label>
-            <label class="option-item"><input type="radio" name="q1" value="High-Level Text Markup Language"> High-Level Text Markup Language</label>
-            <label class="option-item"><input type="radio" name="q1" value="Hyper Tool Markup Language"> Hyper Tool Markup Language</label>
-          </div>
-        </div>
-  
-        <div class="quiz-item mb-5">
-          <div class="d-flex justify-content-between align-items-center">
-            <p class="question">2. Which of the following is a JavaScript framework?</p>
-            <span class="badge-point">1 point</span>
-          </div>
-          <div class="options">
-            <label class="option-item"><input type="radio" name="q2" value="Django"> Django</label>
-            <label class="option-item"><input type="radio" name="q2" value="Flask"> Flask</label>
-            <label class="option-item"><input type="radio" name="q2" value="Angular"> Angular</label>
-            <label class="option-item"><input type="radio" name="q2" value="Ruby on Rails"> Ruby on Rails</label>
+
+          <div class="options" *ngFor="let choice of choices[question.id]">
+            <label class="option-item">
+              <input type="radio" name="q{{ question.id }}" [value]="choice.choice">
+              {{ choice.choice }}
+            </label>
           </div>
         </div>
-  
-        <div class="text-center">
-          <button type="submit" class="btn btn-primary btn-lg">Submit Quiz</button>
-        </div>
-      </form>
+      </ng-container>
     </div>
   </div>
 </section>
+<!-- <section id="quizes">
+  <div class="container">
+    <div *ngFor="let quiz of quizzes" class="quiz-container">
+      <h2 class="text-center">{{ quiz.name }}</h2>
+
+      <ng-container *ngFor="let question of questions[quiz.id]">
+        <div class="quiz-item mb-5">
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="question">{{ question.question }}</p>
+            <span class="badge-point">{{ question.score_question }} points</span>
+          </div>
+
+          <div class="options" *ngFor="let choice of choices[question.id]">
+            <label class="option-item">
+              <input type="radio" name="q{{ question.id }}" [(ngModel)]="userAnswers[question.id]" [value]="choice.choice">
+              {{ choice.choice }}
+            </label>
+          </div>
+        </div>
+      </ng-container>
+
+       Add a Submit button for each quiz -->
+      <!-- <div class="text-center">
+        <button class="btn btn-primary" (click)="submitQuiz(quiz.id)">Submit Quiz</button>
+      </div>
+    </div>
+  </div>
+</section> --> 
+<!-- <section id="quizes">
+  <div class="container">
+    <div *ngFor="let quiz of quizzes" class="quiz-container">
+      <h2 class="text-center">{{ quiz.name }}</h2>
+
+      <ng-container *ngFor="let question of questions[quiz.id]">
+        <div class="quiz-item mb-5">
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="question">{{ question.question }}</p>
+            <span class="badge-point">{{ question.score_question }} points</span>
+          </div>
+
+          <div class="options" *ngFor="let choice of choices[question.id]">
+            <label class="option-item">
+              <input type="radio" 
+                     name="q{{ question.id }}" 
+                     [(ngModel)]="userAnswers[question.id]" 
+                     [value]="choice.choice">
+              {{ choice.choice }}
+            </label>
+          </div>
+        </div>
+      </ng-container>
+
+       Add a Submit button for each quiz 
+      <div class="text-center">
+        <button class="btn btn-primary" (click)="submitQuiz(quiz.id)">Submit Quiz</button>
+      </div>
+    </div>
+  </div>
+</section> -->

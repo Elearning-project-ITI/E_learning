@@ -210,4 +210,9 @@ class QuestionController extends Controller
         'message' => 'Question deleted successfully'
     ], 200);
     }
+    // public function getQuestionsByQuiz($quiz_id)
+    // {
+    //     $questions = Question::where('quiz_id', $quiz_id)->get();
+    //     return response()->json(['success' => true, 'data' => $questions], 200);
+    // }
 }

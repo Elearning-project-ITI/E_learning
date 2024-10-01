@@ -166,4 +166,10 @@ class ChoiceController extends Controller
             'message' => 'Choice deleted successfully',
         ], 200);
     }
+     // Fetch choices by question ID
+     public function getChoicesByQuestion($question_id)
+     {
+         $choices = Choice::where('question_id', $question_id)->get();
+         return response()->json(['success' => true, 'data' => $choices], 200);
+     }
 }

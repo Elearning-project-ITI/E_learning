@@ -85,7 +85,19 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
     Route::post('/quiz/{quiz_id}/questions/{question_id}/choices', [ChoiceController::class, 'store']);
-    
+    //////////////////////////////////////////////////////////////////////////
+    // Fetch all quizzes for a specific course
+Route::get('/course/{course_id}/quizzes', [QuizController::class, 'getQuizzesByCourse']);
+
+// Fetch all questions for a specific quiz
+//Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getQuestionsByQuiz']);
+
+// Fetch all choices for a specific question
+Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoicesByQuestion']);
+//////////////////////////////////////////////////////////////////////////////////
+// Route::post('/quizzes/{quiz}/submit', [QuizController::class, 'submitAnswers']);
+
+//////////////////////////////////////////////////////////////////////////////////
     Route::middleware(StudentMiddleware::class)->group(function () {    
         Route::get('/my-courses', [CourseController::class, 'myCourses'])->name('student.myCourses');
 

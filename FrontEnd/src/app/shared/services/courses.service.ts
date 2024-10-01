@@ -23,6 +23,10 @@ interface GetCourseResponse {
   data: object;
   message?: string;
 }
+export interface Answer {
+  questionId: number; 
+  selectedChoice: string; 
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -206,7 +210,48 @@ export class CoursesService {
     );
   }
   
-  
+  getQuizzesByCourse(courseId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.get(`${this.DB_URL}/course/${courseId}/quizzes`, { headers }).pipe(
+        catchError(this.handleError)
+    );
+}
+
+// Fetch questions for a specific quiz
+getQuestionsByQuiz(quiz_id: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.get(`${this.DB_URL}/quiz/${quiz_id}/questions`, { headers }).pipe(
+        catchError(this.handleError)
+    );
+}
+//Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz'])
+// Fetch choices for a specific question
+getChoicesByQuestion(questionId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.get(`${this.DB_URL}/question/${questionId}/choices`, { headers }).pipe(
+        catchError(this.handleError)
+    );
+}
+// submitQuizAnswers(quizId: number, data: { answers: Answer[] }): Observable<any> {
+//   const token = localStorage.getItem('access_token');
+//   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+//   // Use the data parameter here
+//   const payload = { answers: data.answers };
+
+//   return this.http.post(`http://localhost:8000/api/quizzes/${quizId}/submit`, payload, { headers }).pipe(
+//       catchError(this.handleError)
+//   );
+// }
+
+
+}
 
   
-}
+

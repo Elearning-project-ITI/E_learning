@@ -144,4 +144,58 @@ class QuizController extends Controller
             'message' => 'Quiz deleted successfully',
         ], 200); // HTTP 200 for OK
     }
+    // Fetch quizzes by course ID
+    public function getQuizzesByCourse($course_id)
+    {
+        $quizzes = Quiz::where('course_id', $course_id)->get();
+        return response()->json(['success' => true, 'data' => $quizzes], 200);
+    }
+//     public function submitAnswers(Request $request, $quizId)
+// {
+//     // Validate the request
+//     $request->validate([
+//         'answers' => 'required|array',
+//         'answers.*.questionId' => 'required|exists:questions,id',
+//         'answers.*.selectedChoice' => 'nullable|exists:choices,choice',
+//     ]);
+
+//     // Get the quiz, questions, and correct answers
+//     $quiz = Quiz::findOrFail($quizId);
+//     $questions = $quiz->questions()->with('choices')->get();
+
+//     $score = 0;
+//     $totalQuestions = count($questions);
+
+//     foreach ($questions as $question) {
+//         $userAnswer = collect($request->answers)->firstWhere('questionId', $question->id);
+
+//         // If the user has selected an answer, check if it's correct
+//         if ($userAnswer && $userAnswer['selectedChoice']) {
+//             $correctChoice = $question->choices->where('is_correct', true)->first();
+
+//             if ($correctChoice && $correctChoice->choice === $userAnswer['selectedChoice']) {
+//                 $score++;
+//             }
+//         }
+//     }
+
+//     // Calculate the result
+//     $result = [
+//         'quizId' => $quizId,
+//         'score' => $score,
+//         'totalQuestions' => $totalQuestions,
+//         'percentage' => ($score / $totalQuestions) * 100,
+//     ];
+
+//     // Optionally save the result to the database (e.g., for future reference)
+//     $userQuizResult = new UserQuizResult();
+//     $userQuizResult->user_id = auth()->id();
+//     $userQuizResult->quiz_id = $quizId;
+//     $userQuizResult->score = $score;
+//     $userQuizResult->total_questions = $totalQuestions;
+//     $userQuizResult->save();
+
+//     // Return the result
+//     return response()->json(['message' => 'Quiz submitted successfully', 'result' => $result]);
+// }
 }
