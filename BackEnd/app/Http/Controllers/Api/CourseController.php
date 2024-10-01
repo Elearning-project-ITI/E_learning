@@ -201,7 +201,7 @@ class CourseController extends Controller
         }
 
         
-        $imagePath = $request->file('image')->store('course_images', 'uploads');
+        $imagePath = $request->file('image')->store('courses_images', 'uploads');
         $imagePath   =asset('uploads/'.  $imagePath );
         $course->image = $imagePath; 
         
