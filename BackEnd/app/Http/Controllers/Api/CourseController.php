@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Storage; // Add this for handling storage operations
+use Illuminate\Support\Facades\Storage; 
 
 
 class CourseController extends Controller
@@ -193,7 +193,6 @@ class CourseController extends Controller
         ], 422); 
     }
 
-   
     if ($request->hasFile('image')) {
         
         if ($course->image && Storage::exists($course->image)) {

@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Review;
+use Illuminate\Support\Facades\Validator;
+
 
 class ReviewController extends Controller
 {
@@ -28,7 +31,63 @@ class ReviewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make($request->all(), [
+            'rating' => 'required|integer|min:1|max:5', 
+            'comment' => 'required|string|max:500',
+            'course_id' => 'required|exists:courses,id',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        
+        $review = Review::create([
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+            'user_id' => auth()->id(),
+            'course_id' => $request->course_id,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'review' => $review,
+        ], 201);
+    }
+
+    public function getAllReviewsForStudent(Request $request)
+    {
+        $reviews = Review::with(['course']) 
+            ->where('user_id', $request->user()->id) 
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'reviews' => $reviews,
+        ]);
+    }
+
+    public function getAllReviewsForStudents()
+{
+    $reviews = Review::with(['user', 'course'])->get();
+    
+    return response()->json([
+        'success' => true,
+        'reviews' => $reviews,
+    ]);
+}
+
+public function getAllReviewsForAdmin()
+    {
+        $reviews = Review::with(['user', 'course'])->get();
+    
+        return response()->json([
+            'success' => true,
+            'reviews' => $reviews,
+        ]);
     }
 
     /**
@@ -62,4 +121,8 @@ class ReviewController extends Controller
     {
         //
     }
+
+    
 }
+
+

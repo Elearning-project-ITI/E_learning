@@ -98,6 +98,12 @@ Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoi
 // Route::post('/quizzes/{quiz}/submit', [QuizController::class, 'submitAnswers']);
 
 //////////////////////////////////////////////////////////////////////////////////
+    Route::get('/my-reviews', [ReviewController::class, 'getAllReviewsForStudent'])->name('reviews.myReviews'); // add my-review 
+    Route::get('/reviews', [ReviewController::class, 'getAllReviewsForStudents'])->name('reviews.all'); // add yours reviews
+
+
+    
+    
     Route::middleware(StudentMiddleware::class)->group(function () {    
         Route::get('/my-courses', [CourseController::class, 'myCourses'])->name('student.myCourses');
 
@@ -108,12 +114,16 @@ Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoi
     Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('success');
 Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
+
     });
     // Routes for admins only
     Route::middleware(AdminMiddleware::class)->group(function () {
         Route::get('/students', [UserController::class, 'index'])->name('students.index');
         Route::get('/students/{id}/profile', [UserController::class, 'showStudentProfile'])->name('students.profile.show');
         Route::post('course', [ CourseController::class, 'store']);
+
+        Route::get('/admin/reviews', [ReviewController::class, 'getAllReviewsForAdmin']); // add review by david
+
 
     });
 });
