@@ -19,7 +19,7 @@ export class VerifyPaymentComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
       this.status = params['status'];
-      this.courseId = +params['courseId']; 
+      this.courseId = +params['course']; 
       this.handlePaymentStatus(this.status);
     });
   }
@@ -36,7 +36,7 @@ export class VerifyPaymentComponent implements OnInit {
 
   goToCourses(): void {
     if (this.courseId) {
-      this.router.navigate([`/courses/${this.courseId}/coursedetails`]); 
+      this.router.navigate([`/cousres/${this.courseId}/cousrematerial`]); 
     } else {
       this.router.navigate(['/courses']); 
     }
