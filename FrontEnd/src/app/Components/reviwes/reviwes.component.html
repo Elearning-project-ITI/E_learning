@@ -9,6 +9,10 @@
                           <div class="col-md-6">
                             <label for="name" class="form-label">Name</label>
                             <input formControlName="name" type="text" class="form-control" id="name" placeholder="Enter your name" required>
+                            <div class="alert alert-danger" *ngIf="reviewForm.get('name')?.errors && reviewForm.get('name')?.touched">
+                                <p *ngIf="reviewForm.get('name')?.getError('required')">Name is Required</p>
+                                
+                              </div>
                           </div>
                           <div class="col-md-6">
                             <label for="rating" class="form-label">Rating</label>
@@ -20,14 +24,32 @@
                               <option value="4">Good</option>
                               <option value="5">Excellent</option>
                             </select>
+                            <div class="alert alert-danger" *ngIf="reviewForm.get('rating')?.errors && reviewForm.get('rating')?.touched">
+                                <p *ngIf="reviewForm.get('rating')?.getError('required')">Rating is Required</p>
+                                <p *ngIf="reviewForm.get('rating')?.getError('min')">Min must 1</p>
+                                <p *ngIf="reviewForm.get('rating')?.getError('max')">Max must 5</p>
+                                
+                              </div>
                           </div>
                         </div>
                         <div class="mb-3">
                           <label for="comments" class="form-label">Comments</label>
                           <textarea formControlName="comments" class="form-control" id="comments" rows="6" placeholder="Write your comments here..." required></textarea>
+                          <div class="alert alert-danger" *ngIf="reviewForm.get('comments')?.errors && reviewForm.get('comments')?.touched">
+                            <p *ngIf="reviewForm.get('comments')?.getError('required')">comments is Required</p>
+                            <p *ngIf="reviewForm.get('comments')?.getError('maxLength')">Max length is 500</p>
+                            
+                            
+                          </div>
                         </div>
                         <div class="d-grid">
-                          <button type="submit" class="btn btn-primary submit-btn" [disabled]="!reviewForm.valid">Submit Review</button>
+                          <button type="submit" class="btn btn-primary submit-btn" [disabled]="reviewForm.invalid"> <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>Submit Review</button>
+                          <div *ngIf="msgErrors" class="alert alert-danger mt-3">
+                            {{ msgErrors }}
+                          </div>
+                          
+                          <!-- Success message -->
+                          <p *ngIf="msgSuccess" class="alert alert-success mt-2">{{ msgSuccess }}</p>  
                         </div>
                       </form>
                       

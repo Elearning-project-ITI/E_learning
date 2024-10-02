@@ -14,7 +14,9 @@ export class ReviwesComponent implements OnInit {
   reviewForm: FormGroup;
   courseId: number | null = null; 
   reviews: any[] = []; 
-
+  msgSuccess=''
+  msgErrors= '';
+  isLoading:boolean=false;
   constructor(
     private fb: FormBuilder,
     private coursesService: CoursesService
@@ -53,14 +55,18 @@ export class ReviwesComponent implements OnInit {
 
   onSubmit() {
     if (this.reviewForm.valid && this.courseId) {
+      this.isLoading=true;
       const rating = this.reviewForm.value.rating;
       const comment = this.reviewForm.value.comments;
 
       this.coursesService.submitReview(this.courseId, rating, comment).subscribe({
         next: (response) => {
+          this.isLoading=false;
+          this.msgSuccess='Review submitted successfully';
           console.log('Review submitted successfully', response);
         },
         error: (error) => {
+          this.msgErrors = 'Error submitting review';
           console.error('Error submitting review', error);
         }
       });
