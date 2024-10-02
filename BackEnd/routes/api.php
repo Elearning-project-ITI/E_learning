@@ -110,10 +110,10 @@ Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoi
     // Route to get courses in the student's wishlist
     Route::get('/my-wishlist', [WishlistController::class, 'myWishlist'])->name('student.myWishlist');
 
-        Route::get('/check-booking', [PaymentController::class, 'checkBooking']);
+    Route::get('/check-booking', [PaymentController::class, 'checkBooking']);
     Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('success');
-Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
+    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
 
     });
     // Routes for admins only
