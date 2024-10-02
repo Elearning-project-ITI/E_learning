@@ -3,12 +3,12 @@
         <div class="wishlist-info text-center pt-5 pb-5">
       <h2>My Wishlist</h2>
         </div>
-      <!-- Display message when the wishlist is empty -->
+     
       <div *ngIf="wishlistCourses.length === 0">
         <p>No courses in your wishlist yet.</p>
       </div>
   
-      <!-- Display the wishlist courses -->
+     
       <div *ngIf="wishlistCourses.length > 0" class="row gy-3">
         <div class="col-md-4" *ngFor="let course of wishlistCourses">
           <div class="card h-100 shadow">
@@ -21,43 +21,13 @@
            
                 </div>
                 <p class="card-text text-dark">{{ course.description }}</p>
+                <div class="card-body d-flex justify-content-between align-items-center">
               <button class="btn btn-about" (click)="enroll(course.id)">Enroll Now</button>
-             
+              <i class="fs-3 heart-icon fa-heart fa-solid" (click)="removeFromWishlist(course.id)"> </i>
+                </div>
             </div>
           </div>
         </div>
       </div>
     </div>
   </section>
-  <!-- <section id="courses" class="courses">
-    <div class="container">
-      <div class="course-info text-center pt-5 pb-5">
-        <h2>Our Courses</h2>
-      </div>
-  
-      <div *ngIf="!Courses || Courses.length === 0; else showCourses">
-        <app-loader></app-loader>
-      </div>
-  
-      <ng-template #showCourses>
-        <div id="displaycourses" class="row gy-3">
-          <div class="col-md-4" *ngFor="let course of Courses">
-            <div class="card h-100 shadow">
-              <img [src]="course.image" class="card-img-top h-75" alt="{{ course.name }} image">
-              <div class="mt-3 card-head d-flex justify-content-around align-items-center">
-                <h4 class="card-title">{{ course.name }}</h4>
-                <span class="p-2 badge">{{ course.price }}</span>
-              </div>
-              <p class="card-text mt-3 text-center mb-1 small">
-                {{ course.description }}
-              </p>
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <button class="btn btn-about" (click)="enroll(course.id)">Enroll Now</button>
-                <i class="fs-3 fa-regular fa-heart heart-icon" (click)="toggleHeart($event, course.id)"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ng-template>
-    </div>
-  </section> -->
