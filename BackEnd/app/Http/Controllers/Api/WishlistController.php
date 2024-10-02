@@ -14,19 +14,40 @@ class WishlistController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index()
+    // {
+    //     $user = Auth::user();
+
+    //     $wishlistItems = Wishlist::with('course')
+    //         ->where('user_id', $user->id)
+    //         ->get();
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'wishlist' => $wishlistItems,
+    //     ]);
+    // }
     public function index()
-    {
-        $user = Auth::user();
-
-        $wishlistItems = Wishlist::with('course')
-            ->where('user_id', $user->id)
-            ->get();
-
+{
+    $user = Auth::user();
+    
+    if (!$user) {
         return response()->json([
-            'success' => true,
-            'wishlist' => $wishlistItems,
-        ]);
+            'success' => false,
+            'message' => 'User not authenticated'
+        ], 401);
     }
+
+    $wishlistItems = Wishlist::with('course')
+        ->where('user_id', $user->id)
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'wishlist' => $wishlistItems,
+    ]);
+}
+
 
     /**
      * Show the form for creating a new resource.

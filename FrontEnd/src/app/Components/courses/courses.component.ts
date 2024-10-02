@@ -88,16 +88,32 @@ export class CoursesComponent implements OnInit {
     });
   }
 
-  toggleHeart(event: Event): void {
+  toggleHeart(event: Event, courseId: number): void {
     const heartIcon = event.target as HTMLElement;
+    
+    // Toggle heart icon style
     if (heartIcon.classList.contains('fa-regular')) {
       heartIcon.classList.remove('fa-regular');
       heartIcon.classList.add('fa-solid');
+      
+      // Call the wishlist API to add the course to the wishlist
+      this.courseserv.addToWishlist(courseId).subscribe({
+        next: (response) => {
+          if (response.success) {
+            console.log('Course added to wishlist!');
+          }
+        },
+        error: (err) => {
+          console.log('Error adding course to wishlist', err);
+        }
+      });
     } else {
       heartIcon.classList.remove('fa-solid');
       heartIcon.classList.add('fa-regular');
+      // Optionally, you can implement a function to remove the course from the wishlist
     }
   }
+  
 
   enroll(courseId: number): void {
     const accessToken = localStorage.getItem('access_token');

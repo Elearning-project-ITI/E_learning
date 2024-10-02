@@ -249,7 +249,31 @@ getChoicesByQuestion(questionId: number): Observable<any> {
 //       catchError(this.handleError)
 //   );
 // }
+addToWishlist(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return throwError(() => new Error('User not authenticated'));
+  }
+  
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  const body = { course_id: courseId };
+  
+  return this.http.post(`${this.DB_URL}/wishlist`, body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
 
+getWishlist(): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return throwError(() => new Error('User not authenticated'));
+  }
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  return this.http.get(`${this.DB_URL}/my-wishlist`, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
 
 }
 
