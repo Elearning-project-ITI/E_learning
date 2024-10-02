@@ -14,19 +14,40 @@ class WishlistController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index()
+    // {
+    //     $user = Auth::user();
+
+    //     $wishlistItems = Wishlist::with('course')
+    //         ->where('user_id', $user->id)
+    //         ->get();
+
+    //     return response()->json([
+    //         'success' => true,
+    //         'wishlist' => $wishlistItems,
+    //     ]);
+    // }
     public function index()
-    {
-        $user = Auth::user();
-
-        $wishlistItems = Wishlist::with('course')
-            ->where('user_id', $user->id)
-            ->get();
-
+{
+    $user = Auth::user();
+    
+    if (!$user) {
         return response()->json([
-            'success' => true,
-            'wishlist' => $wishlistItems,
-        ]);
+            'success' => false,
+            'message' => 'User not authenticated'
+        ], 401);
     }
+
+    $wishlistItems = Wishlist::with('course')
+        ->where('user_id', $user->id)
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'wishlist' => $wishlistItems,
+    ]);
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -86,8 +107,38 @@ class WishlistController extends Controller
     /**
      * Remove the specified resource from storage.
      */
+    // public function destroy(string $id)
+    // {
+    //     //
+    // }
     public function destroy(string $id)
-    {
-        //
+{
+    $user = Auth::user();
+
+    if (!$user) {
+        return response()->json([
+            'success' => false,
+            'message' => 'User not authenticated'
+        ], 401);
     }
+
+    // Find the wishlist item by course_id and user_id
+    $wishlistItem = Wishlist::where('user_id', $user->id)->where('course_id', $id)->first();
+
+    if (!$wishlistItem) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Wishlist item not found'
+        ], 404);
+    }
+
+    // Delete the wishlist item
+    $wishlistItem->delete();
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Course removed from wishlist successfully!'
+    ]);
+}
+
 }

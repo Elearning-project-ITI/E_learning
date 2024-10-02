@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
-
-class Wishlist extends Pivot
+use Illuminate\Database\Eloquent\Model;
+class Wishlist extends Model
 {
     // Specify the table name if it doesn't follow Laravel's naming convention
     protected $table = 'wishlist';

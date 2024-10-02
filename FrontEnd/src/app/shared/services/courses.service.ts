@@ -249,6 +249,67 @@ getChoicesByQuestion(questionId: number): Observable<any> {
 //       catchError(this.handleError)
 //   );
 // }
+addToWishlist(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return throwError(() => new Error('User not authenticated'));
+  }
+  
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  const body = { course_id: courseId };
+  
+  return this.http.post(`${this.DB_URL}/wishlist`, body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+
+getWishlist(): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return throwError(() => new Error('User not authenticated'));
+  }
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  return this.http.get(`${this.DB_URL}/my-wishlist`, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+removeFromWishlist(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return throwError(() => new Error('User not authenticated'));
+  }
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.delete(`${this.DB_URL}/wishlist/${courseId}`, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+submitReview(courseId: number, rating: number, comment: string): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  const body = { course_id: courseId, rating: rating, comment: comment };
+
+  return this.http.post(this.DB_URL + `/review`, body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+getAllReviews(): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.get<any>(this.DB_URL + '/reviews', { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
 
 
 }

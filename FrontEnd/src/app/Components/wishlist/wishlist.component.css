@@ -1,0 +1,57 @@
+#wishlist .card {
+    background-color: transparent;
+    color: white;
+    filter: grayscale(0.8);
+    transition: all 0.5s;
+}
+
+#wishlist .card:hover {
+    filter: grayscale(0);
+    transform: scale(1.05);
+}
+
+.card-title {
+    color: #7695FF;
+}
+
+.badge {
+    background-color: #7695FF;
+}
+
+.wishlist-info {
+    color: #150a29;
+    margin-top: 80px !important;
+}
+
+.wishlist-info h2 {
+    position: relative;
+}
+
+.wishlist-info h2::before {
+    content: "";
+    width: 16%;
+    height: 3px;
+    background-image: linear-gradient(to right, #3A6D8C, #DEE5D4);
+    position: absolute;
+    left: 42%;
+    top: 100%;
+}
+
+.heart-icon {
+    color: #7695FF !important;
+}
+
+.btn-about {
+    background-color: #7695FF;
+}
+
+.btn-about:hover {
+    background-color: #9DBDFF;
+}
+
+@media screen and (max-width: 990px) {
+    .wishlist-info h2::before {
+        width: 28%;
+        left: 35%;
+    }
+}

@@ -35,6 +35,7 @@ import { AdminUpdateQuizeComponent } from './Components/admin-update-quize/admin
 import { ViewAdminCourseComponent } from './Components/view-admin-course/view-admin-course.component';
 import { CourseDetailsAdminComponent } from './course-details-admin/course-details-admin.component';
 import { VerifyPaymentComponent } from './Components/verify-payment/verify-payment.component';
+import { UserReviewsComponent } from './Components/user-reviews/user-reviews.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -58,7 +59,7 @@ export const routes: Routes = [
         { path: "cousredetailsadmin", component: ViewAdminCourseComponent },
         { path: "addmaterial", component: AddAdminMaterialComponent },
         { path: "addquizes", component: AdminAddQuizeComponent },
-        { path: "reviews", component: ReviwesComponent }
+        { path: "reviews", component: UserReviewsComponent }
     ]}
     ,{path:"adminCourses/updatecourse/:id",component:EditCourseComponent},
     {path:"adminCourses/:courseId/addmaterial/update/:materialId",component:EditAdminMaterialComponent}

@@ -108,7 +108,9 @@ Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoi
         Route::get('/my-courses', [CourseController::class, 'myCourses'])->name('student.myCourses');
 
     // Route to get courses in the student's wishlist
-    Route::get('/my-wishlist', [WishlistController::class, 'myWishlist'])->name('student.myWishlist');
+    // Route::get('/my-wishlist', [WishlistController::class, 'myWishlist'])->name('student.myWishlist');
+    Route::middleware('auth:api')->get('/my-wishlist', [WishlistController::class, 'index']);
+
 
     Route::get('/check-booking', [PaymentController::class, 'checkBooking']);
     Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
