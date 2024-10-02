@@ -91,7 +91,6 @@ export class CoursesComponent implements OnInit {
   toggleHeart(event: Event, courseId: number): void {
     const heartIcon = event.target as HTMLElement;
     
-    // Toggle heart icon style
     if (heartIcon.classList.contains('fa-regular')) {
       heartIcon.classList.remove('fa-regular');
       heartIcon.classList.add('fa-solid');
@@ -110,7 +109,18 @@ export class CoursesComponent implements OnInit {
     } else {
       heartIcon.classList.remove('fa-solid');
       heartIcon.classList.add('fa-regular');
-      // Optionally, you can implement a function to remove the course from the wishlist
+      
+      // Call the wishlist API to remove the course from the wishlist
+      this.courseserv.removeFromWishlist(courseId).subscribe({
+        next: (response) => {
+          if (response.success) {
+            console.log('Course removed from wishlist!');
+          }
+        },
+        error: (err) => {
+          console.log('Error removing course from wishlist', err);
+        }
+      });
     }
   }
   

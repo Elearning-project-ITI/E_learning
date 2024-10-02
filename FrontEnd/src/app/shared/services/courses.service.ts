@@ -274,6 +274,17 @@ getWishlist(): Observable<any> {
     catchError(this.handleError)
   );
 }
+removeFromWishlist(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return throwError(() => new Error('User not authenticated'));
+  }
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.delete(`${this.DB_URL}/wishlist/${courseId}`, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
 
 }
 
