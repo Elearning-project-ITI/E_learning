@@ -85,6 +85,7 @@ Route::middleware(['auth:sanctum'])->group( function () {
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
     Route::post('/quiz/{quiz_id}/questions/{question_id}/choices', [ChoiceController::class, 'store']);
+
     //////////////////////////////////////////////////////////////////////////
     // Fetch all quizzes for a specific course
 Route::get('/course/{course_id}/quizzes', [QuizController::class, 'getQuizzesByCourse']);
@@ -116,6 +117,8 @@ Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoi
     Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
     Route::get('/payment/success', [PaymentController::class, 'success'])->name('success');
     Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
+    Route::post('/quiz/{quiz}/submit', [QuizController::class, 'submit'])->name('quiz.submit');
+
 
     });
     // Routes for admins only

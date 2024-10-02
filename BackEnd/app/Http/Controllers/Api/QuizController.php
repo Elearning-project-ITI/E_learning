@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB; // <-- Add this line to use DB facade
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuizController extends Controller
@@ -125,7 +127,6 @@ class QuizController extends Controller
             'message' => 'Quiz deleted successfully',
         ], 200); 
     }
-    // Fetch quizzes by course ID
     public function getQuizzesByCourse($course_id)
     {
         $quizzes = Quiz::where('course_id', $course_id)->get();
@@ -179,4 +180,39 @@ class QuizController extends Controller
 //     // Return the result
 //     return response()->json(['message' => 'Quiz submitted successfully', 'result' => $result]);
 // }
+
+public function submit(Request $request, $quizId)
+{
+    $userId = auth()->user()->id; 
+    $submittedAnswers = $request->input('answers'); 
+
+    $questions = DB::table('questions')
+        ->where('quiz_id', $quizId)
+        ->get();
+
+    $totalScore = 0; 
+
+    foreach ($questions as $question) {
+        $correctChoice = DB::table('choices')
+            ->where('question_id', $question->id)
+            ->where('is_correct', 1)
+            ->first();
+
+        if (isset($submittedAnswers[$question->id]) && $submittedAnswers[$question->id] == $correctChoice->id) {
+            $totalScore += $question->score_question;
+        }
+    }
+
+    DB::table('quiz_user')->updateOrInsert(
+        ['user_id' => $userId, 'quiz_id' => $quizId],
+        ['final_result' => $totalScore, 'updated_at' => now()]
+    );
+
+    return response()->json([
+        'final_result' => $totalScore,
+        'message' => 'Quiz submitted successfully!',
+    ]);
+}
+
+
 }
