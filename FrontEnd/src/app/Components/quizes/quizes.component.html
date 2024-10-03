@@ -21,6 +21,9 @@
         </ng-container>
 
         <button type="submit" class="btn btn-primary mt-3" [disabled]="quizSubmitted[quiz.id]">Submit Quiz</button>
+        <div *ngIf="msgError" class="alert alert-danger mt-3">
+          {{ msgError }}
+        </div>
       </form>
 
       

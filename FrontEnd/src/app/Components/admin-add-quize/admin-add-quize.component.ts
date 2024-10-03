@@ -32,7 +32,7 @@ export class AdminAddQuizeComponent implements OnInit {
   isLoading: boolean = false;
 
   // Pre-fill with 10 empty questions
-  questions: Question[] = Array.from({ length: 10 }, () => ({
+  questions: Question[] = Array.from({ length: 1 }, () => ({
     question: '',
     type: 'multiple_choice',
     choices: [{ choice: '', iscorrect: false }, { choice: '', iscorrect: false }], // Initialize iscorrect

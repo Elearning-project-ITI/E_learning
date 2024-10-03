@@ -18,7 +18,7 @@ export class QuizesComponent implements OnInit {
   submittedAnswers: { [questionId: number]: number } = {}; 
   finalResults: { [quizId: number]: number } = {};
   quizSubmitted: { [quizId: number]: boolean } = {};  // Track if the quiz is submitted
-
+    msgError=''
   constructor(private coursesService: CoursesService) {}
 
   ngOnInit(): void {
@@ -96,6 +96,7 @@ export class QuizesComponent implements OnInit {
         this.quizSubmitted[quizId] = true; // Set submission flag to true
       },
       (error: any) => {
+        this.msgError = 'You have already submitted this quiz.You cannot retake this quiz.';
         console.error('Error submitting quiz:', error);
       }
     );
