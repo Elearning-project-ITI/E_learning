@@ -76,7 +76,7 @@
             </li>
 
               <!-- Admin links -->
-              <li class="nav-item" *ngIf="isLoggedIn && decodedData[0]?.role === 'admin'">
+              <li class="nav-item" *ngIf="isLoggedIn && decodedData?.length > 0 && decodedData[0]?.role  === 'admin'">
                   <a class="nav-link" routerLinkActive="active" routerLink="/adminCourses">Admin Courses</a>
               </li>
               <!-- <li class="nav-item" *ngIf="isLoggedIn && decodedData[0]?.role === 'admin'">
@@ -87,22 +87,22 @@
               </li> -->
 
               <!-- Student links -->
-              <li class="nav-item" *ngIf="isLoggedIn && decodedData[0]?.role === 'student'">
+              <li class="nav-item" *ngIf="isLoggedIn && decodedData?.length > 0 && decodedData[0]?.role  === 'student'">
                   <a class="nav-link" routerLinkActive="active" routerLink="/about">About</a>
               </li>
-              <li class="nav-item" *ngIf="isLoggedIn && decodedData[0]?.role === 'student'">
+              <li class="nav-item" *ngIf="isLoggedIn && decodedData?.length > 0 && decodedData[0]?.role  === 'student'">
                   <a class="nav-link" routerLinkActive="active" routerLink="/courses">Courses</a>
               </li>
-              <li class="nav-item" *ngIf="isLoggedIn && decodedData[0]?.role === 'student'">
+              <li class="nav-item" *ngIf="isLoggedIn && decodedData?.length > 0 && decodedData[0]?.role  === 'student'">
                   <a class="nav-link" routerLinkActive="active" routerLink="/workPervious">Work Previous</a>
               </li>
-              <li class="nav-item" *ngIf="isLoggedIn && decodedData[0]?.role === 'student'">
+              <li class="nav-item" *ngIf="isLoggedIn && decodedData?.length > 0 && decodedData[0]?.role  === 'student'">
                   <a class="nav-link" routerLinkActive="active" routerLink="/wishlist">Wishlist</a>
               </li>
           </ul>
 
           <!-- Search bar for all users -->
-          <form class="d-flex formsearch" role="search" *ngIf="!isLoggedIn || (isLoggedIn && decodedData[0]?.role === 'student')">
+          <form class="d-flex formsearch" role="search" *ngIf="!isLoggedIn || (isLoggedIn && decodedData?.length > 0 && decodedData[0]?.role  === 'student')">
               <input class="form-control me-2" type="search" placeholder="Search.." aria-label="Search">
               <i class="fa-solid fa-magnifying-glass"></i>
           </form>
@@ -123,7 +123,7 @@
                   <button class="btn btn-register">Logout</button>
               </a>
               <a class="nav-link" routerLink="/profile">
-                  <img [src]="decodedData[0]?.image" class="imgprofile rounded-circle" alt="imgprofile"/>
+                  <img [src]="decodedData?.length > 0 && decodedData[0]?.image" class="imgprofile rounded-circle" alt="imgprofile"/>
               </a>
               <i routerLink="/notification" class="fa-regular fa-bell fs-4 notifiaction" (click)="togglenotify($event)"></i>
           </div>
