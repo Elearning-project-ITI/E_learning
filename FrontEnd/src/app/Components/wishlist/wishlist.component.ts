@@ -34,6 +34,7 @@ import { Component, OnInit } from '@angular/core';
 import { CoursesService } from '../../shared/services/courses.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-wishlist',
@@ -45,7 +46,7 @@ import { Router } from '@angular/router';
 export class WishlistComponent implements OnInit {
   wishlistCourses: any[] = []; 
 
-  constructor(private coursesService: CoursesService, private router: Router) {}
+  constructor(private coursesService: CoursesService, private router: Router , private toastr: ToastrService) {}
 
   ngOnInit(): void {
     this.coursesService.getWishlist().subscribe({
@@ -67,7 +68,7 @@ export class WishlistComponent implements OnInit {
       alert('You need to log in before enrolling in a course.');
       this.router.navigate(['/login']);
     } else {
-      this.router.navigate(['/courses', courseId]);  // Fix the route here if necessary
+      this.router.navigate(['/courses', courseId]);  
     }
   }
 
@@ -76,7 +77,7 @@ export class WishlistComponent implements OnInit {
       next: (response) => {
         if (response.success) {
           console.log('Course removed from wishlist!');
-          
+          this.toastr.error(response.message)
           this.wishlistCourses = this.wishlistCourses.filter(course => course.id !== courseId);
         }
       },

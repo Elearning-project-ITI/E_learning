@@ -61,6 +61,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink, RouterModule } from '@angular/router';
 import { CoursesService } from '../../shared/services/courses.service';
 import { LoaderComponent } from "../loader/loader.component";
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-courses',
@@ -72,13 +73,14 @@ import { LoaderComponent } from "../loader/loader.component";
 export class CoursesComponent implements OnInit {
   Courses: any[] = [];
 
-  constructor(private courseserv: CoursesService, private router: Router) { }
+  constructor(private courseserv: CoursesService, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.courseserv.GetAllCourses().subscribe({
       next: (response) => {
         console.log(response);
         if (response.success) {
+          
           this.Courses = response.data;
         }
       },
@@ -99,6 +101,7 @@ export class CoursesComponent implements OnInit {
       this.courseserv.addToWishlist(courseId).subscribe({
         next: (response) => {
           if (response.success) {
+            this.toastr.success(response.message)
             console.log('Course added to wishlist!');
           }
         },
@@ -114,6 +117,8 @@ export class CoursesComponent implements OnInit {
       this.courseserv.removeFromWishlist(courseId).subscribe({
         next: (response) => {
           if (response.success) {
+            console.log(response)
+            this.toastr.error(response.message)
             console.log('Course removed from wishlist!');
           }
         },
