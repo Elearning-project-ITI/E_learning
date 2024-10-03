@@ -17,6 +17,7 @@ export class QuizesComponent implements OnInit {
   courseId: number | null = null;
   submittedAnswers: { [questionId: number]: number } = {}; 
   finalResults: { [quizId: number]: number } = {};
+  quizSubmitted: { [quizId: number]: boolean } = {};  // Track if the quiz is submitted
 
   constructor(private coursesService: CoursesService) {}
 
@@ -44,7 +45,10 @@ export class QuizesComponent implements OnInit {
       (response: any) => {
         console.log(response);
         this.quizzes = response.data;
-        this.quizzes.forEach(quiz => this.loadQuestions(quiz.id));
+        this.quizzes.forEach(quiz => {
+          this.loadQuestions(quiz.id);
+          this.quizSubmitted[quiz.id] = false;  // Initialize submission flag
+        });
       },
       (error: any) => {
         console.error('Error fetching quizzes:', error);
@@ -81,13 +85,15 @@ export class QuizesComponent implements OnInit {
     );
   }
 
-  
   submitQuiz(quizId: number) {
+    if (this.quizSubmitted[quizId]) return; // Prevent resubmission
+
     const submission = { answers: this.submittedAnswers };
     this.coursesService.submitQuiz(quizId, submission).subscribe(
       (response: any) => {
         console.log('Quiz submitted', response);
         this.finalResults[quizId] = response.final_result;
+        this.quizSubmitted[quizId] = true; // Set submission flag to true
       },
       (error: any) => {
         console.error('Error submitting quiz:', error);
