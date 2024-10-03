@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { CoursesService } from '../../shared/services/courses.service';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-quizes',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,ReactiveFormsModule,FormsModule],
   templateUrl: './quizes.component.html',
   styleUrl: './quizes.component.css'
 })
@@ -14,6 +15,8 @@ export class QuizesComponent implements OnInit {
   questions: { [quizId: number]: any[] } = {};
   choices: { [questionId: number]: any[] } = {};
   courseId: number | null = null;
+  submittedAnswers: { [questionId: number]: number } = {}; 
+  finalResults: { [quizId: number]: number } = {};
 
   constructor(private coursesService: CoursesService) {}
 
@@ -25,7 +28,7 @@ export class QuizesComponent implements OnInit {
     } else {
       this.coursesService.GetCoursetByID(1).subscribe(
         (response: any) => {
-          console.log(response)
+          console.log(response);
           this.courseId = response.data.id;
           this.getQuizzes(this.courseId as number);
         },
@@ -39,13 +42,9 @@ export class QuizesComponent implements OnInit {
   getQuizzes(courseId: number) {
     this.coursesService.getQuizzesByCourse(courseId).subscribe(
       (response: any) => {
-        console.log(response)
+        console.log(response);
         this.quizzes = response.data;
-
-        // Load questions for each quiz after fetching quizzes
-        this.quizzes.forEach(quiz => {
-          this.loadQuestions(quiz.id);
-        });
+        this.quizzes.forEach(quiz => this.loadQuestions(quiz.id));
       },
       (error: any) => {
         console.error('Error fetching quizzes:', error);
@@ -54,17 +53,13 @@ export class QuizesComponent implements OnInit {
   }
 
   loadQuestions(quizId: number) {
-    if (this.questions[quizId]) return; // If questions are already loaded, skip fetching
+    if (this.questions[quizId]) return;
 
     this.coursesService.getQuestionsByQuiz(quizId).subscribe(
       (response: any) => {
-        console.log("Questions for quiz", quizId, response);
+        console.log('Questions for quiz', quizId, response);
         this.questions[quizId] = response.data;
-
-        // Load choices for each question after loading questions
-        this.questions[quizId].forEach(question => {
-          this.loadChoices(question.id);
-        });
+        this.questions[quizId].forEach(question => this.loadChoices(question.id));
       },
       (error: any) => {
         console.error('Error fetching questions:', error);
@@ -73,15 +68,29 @@ export class QuizesComponent implements OnInit {
   }
 
   loadChoices(questionId: number) {
-    if (this.choices[questionId]) return; // If choices are already loaded, skip fetching
+    if (this.choices[questionId]) return;
 
     this.coursesService.getChoicesByQuestion(questionId).subscribe(
       (response: any) => {
-        console.log("Choices for question", questionId, response);
+        console.log('Choices for question', questionId, response);
         this.choices[questionId] = response.data;
       },
       (error: any) => {
         console.error('Error fetching choices:', error);
+      }
+    );
+  }
+
+  
+  submitQuiz(quizId: number) {
+    const submission = { answers: this.submittedAnswers };
+    this.coursesService.submitQuiz(quizId, submission).subscribe(
+      (response: any) => {
+        console.log('Quiz submitted', response);
+        this.finalResults[quizId] = response.final_result;
+      },
+      (error: any) => {
+        console.error('Error submitting quiz:', error);
       }
     );
   }

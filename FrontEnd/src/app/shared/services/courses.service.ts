@@ -238,6 +238,14 @@ getChoicesByQuestion(questionId: number): Observable<any> {
         catchError(this.handleError)
     );
 }
+submitQuiz(quizId: number, submission: any): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+  return this.http.post(`${this.DB_URL}/quiz/${quizId}/submit`, submission, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
 // submitQuizAnswers(quizId: number, data: { answers: Answer[] }): Observable<any> {
 //   const token = localStorage.getItem('access_token');
 //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

@@ -3,24 +3,33 @@
     <div *ngFor="let quiz of quizzes" class="quiz-container">
       <h2 class="text-center">{{ quiz.name }}</h2>
 
-      <ng-container *ngFor="let question of questions[quiz.id]">
-        <div class="quiz-item mb-5">
-          <div class="d-flex justify-content-between align-items-center">
-            <p class="question">{{ question.question }}</p>
-            <span class="badge-point">{{ question.score_question }} points</span>
-          </div>
+      <form (ngSubmit)="submitQuiz(quiz.id)" #quizForm="ngForm">
+        <ng-container *ngFor="let question of questions[quiz.id]">
+          <div class="quiz-item mb-5">
+            <div class="d-flex justify-content-between align-items-center">
+              <p class="question">{{ question.question }}</p>
+              <span class="badge-point">{{ question.score_question }} points</span>
+            </div>
 
-          <div class="options" *ngFor="let choice of choices[question.id]">
-            <label class="option-item">
-              <input type="radio" name="q{{ question.id }}" [value]="choice.choice">
-              {{ choice.choice }}
-            </label>
+            <div class="options" *ngFor="let choice of choices[question.id]">
+              <label class="option-item">
+                <input type="radio" name="q{{ question.id }}" [value]="choice.id" [(ngModel)]="submittedAnswers[question.id]" required>
+                {{ choice.choice }}
+              </label>
+            </div>
           </div>
-        </div>
-      </ng-container>
+        </ng-container>
+
+        <button type="submit" class="btn btn-primary mt-3">Submit Quiz</button>
+      </form>
+
+      <div *ngIf="finalResults[quiz.id]">
+        <p class="text-success">Final Score: {{ finalResults[quiz.id] }}</p>
+      </div>
     </div>
   </div>
 </section>
+
 <!-- <section id="quizes">
   <div class="container">
     <div *ngFor="let quiz of quizzes" class="quiz-container">
