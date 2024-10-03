@@ -6,17 +6,18 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-reviwes',
   standalone: true,
-  imports: [ReactiveFormsModule,FormsModule,CommonModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule],
   templateUrl: './reviwes.component.html',
-  styleUrl: './reviwes.component.css'
+  styleUrls: ['./reviwes.component.css'] // Corrected from styleUrl to styleUrls
 })
 export class ReviwesComponent implements OnInit {
   reviewForm: FormGroup;
   courseId: number | null = null; 
   reviews: any[] = []; 
-  msgSuccess=''
-  msgErrors= '';
-  isLoading:boolean=false;
+  msgSuccess = '';
+  msgErrors = '';
+  isLoading: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private coursesService: CoursesService
@@ -29,7 +30,6 @@ export class ReviwesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-  
     const course = this.coursesService.getCourse();
     if (course && course.id) {
       this.courseId = course.id; 
@@ -39,7 +39,6 @@ export class ReviwesComponent implements OnInit {
     }
   }
 
- 
   getReviewsForCourse(courseId: number) {
     this.coursesService.getAllReviews().subscribe({
       next: (response: any) => {
@@ -55,17 +54,29 @@ export class ReviwesComponent implements OnInit {
 
   onSubmit() {
     if (this.reviewForm.valid && this.courseId) {
-      this.isLoading=true;
-      const rating = this.reviewForm.value.rating;
-      const comment = this.reviewForm.value.comments;
+      this.isLoading = true;
+      const { name, rating, comments } = this.reviewForm.value;
 
-      this.coursesService.submitReview(this.courseId, rating, comment).subscribe({
+      this.coursesService.submitReview(this.courseId, rating, comments).subscribe({
         next: (response) => {
-          this.isLoading=false;
-          this.msgSuccess='Review submitted successfully';
+          this.isLoading = false;
+          this.msgSuccess = 'Review submitted successfully';
+
+          // Update the reviews array with the new review
+          const newReview = {
+            user: { name }, // Assuming user name comes from the form
+            rating,
+            comment: comments,
+            created_at: new Date().toISOString(), // Add a timestamp for display
+          };
+          this.reviews.push(newReview); // Add the new review to the reviews array
+
+          // Reset the form after submission
+          this.reviewForm.reset();
           console.log('Review submitted successfully', response);
         },
         error: (error) => {
+          this.isLoading = false;
           this.msgErrors = 'Error submitting review';
           console.error('Error submitting review', error);
         }
