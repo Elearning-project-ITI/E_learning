@@ -181,9 +181,53 @@ class QuizController extends Controller
 //     return response()->json(['message' => 'Quiz submitted successfully', 'result' => $result]);
 // }
 
+// public function submit(Request $request, $quizId)
+// {
+//     $userId = auth()->user()->id; 
+//     $submittedAnswers = $request->input('answers'); 
+
+//     $questions = DB::table('questions')
+//         ->where('quiz_id', $quizId)
+//         ->get();
+
+//     $totalScore = 0; 
+
+//     foreach ($questions as $question) {
+//         $correctChoice = DB::table('choices')
+//             ->where('question_id', $question->id)
+//             ->where('is_correct', 1)
+//             ->first();
+
+//         if (isset($submittedAnswers[$question->id]) && $submittedAnswers[$question->id] == $correctChoice->id) {
+//             $totalScore += $question->score_question;
+//         }
+//     }
+
+//     DB::table('quiz_user')->updateOrInsert(
+//         ['user_id' => $userId, 'quiz_id' => $quizId],
+//         ['final_result' => $totalScore, 'updated_at' => now()]
+//     );
+
+//     return response()->json([
+//         'final_result' => $totalScore,
+//         'message' => 'Quiz submitted successfully!',
+//     ]);
+// }
 public function submit(Request $request, $quizId)
 {
     $userId = auth()->user()->id; 
+
+    $quizUser = DB::table('quiz_user')
+        ->where('user_id', $userId)
+        ->where('quiz_id', $quizId)
+        ->first();
+
+    if ($quizUser && $quizUser->submitted) {
+        return response()->json([
+            'message' => 'You have already submitted this quiz.',
+        ], 403);
+    }
+
     $submittedAnswers = $request->input('answers'); 
 
     $questions = DB::table('questions')
@@ -205,7 +249,11 @@ public function submit(Request $request, $quizId)
 
     DB::table('quiz_user')->updateOrInsert(
         ['user_id' => $userId, 'quiz_id' => $quizId],
-        ['final_result' => $totalScore, 'updated_at' => now()]
+        [
+            'final_result' => $totalScore, 
+            'submitted' => true, 
+            'updated_at' => now()
+        ]
     );
 
     return response()->json([
