@@ -254,7 +254,7 @@ class AuthController extends BaseController
     private function checkEmailValidity($email)
 {
     $client = new Client();
-    $apiKey = 'b69e3f0b1d114d2880ce08fa1b7e3689';  // Use the API key provided by the service you're using
+    $apiKey = '799aafd5aeb2438fb0ef0e6b7b761b41';  // Use the API key provided by the service you're using
     
     try {
         $response = $client->request('GET', 'https://emailvalidation.abstractapi.com/v1/', [
