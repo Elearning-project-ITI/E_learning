@@ -36,6 +36,7 @@ import { ViewAdminCourseComponent } from './Components/view-admin-course/view-ad
 import { CourseDetailsAdminComponent } from './course-details-admin/course-details-admin.component';
 import { VerifyPaymentComponent } from './Components/verify-payment/verify-payment.component';
 import { UserReviewsComponent } from './Components/user-reviews/user-reviews.component';
+import { ReportComponent } from './Components/report/report.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -53,6 +54,7 @@ export const routes: Routes = [
     {path:"verifypayment",component:VerifyPaymentComponent},
 
     {path:"adminCourses",component:AdminCourseComponent},
+    {path:"report",component:ReportComponent},
     {path:"adminCourses/create",component:AddCourseComponent},
     {path:"adminCourses/:id",component:CourseDetailsAdminComponent,children:[
         { path: "", component: ViewAdminCourseComponent },

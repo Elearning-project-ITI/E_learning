@@ -362,6 +362,15 @@ paymentCancel(courseId: number): Observable<any> {
     catchError(this.handleError)
   );
 }
+getMostBookedCourses(): Observable<GetAllCoursesResponse> {
+  const token = localStorage.getItem('access_token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+  return this.http.get<GetAllCoursesResponse>(`${this.DB_URL}/courses/most-booked`, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+
 }
 
   
