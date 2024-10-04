@@ -2,28 +2,33 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CoursesService } from '../../shared/services/courses.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-reviwes',
   standalone: true,
-  imports: [ReactiveFormsModule, FormsModule, CommonModule],
+  imports: [ReactiveFormsModule, FormsModule, CommonModule,RouterModule],
   templateUrl: './reviwes.component.html',
-  styleUrls: ['./reviwes.component.css'] // Corrected from styleUrl to styleUrls
+  styleUrls: ['./reviwes.component.css'] 
 })
 export class ReviwesComponent implements OnInit {
   reviewForm: FormGroup;
   courseId: number | null = null; 
-  reviews: any[] = []; 
+  reviews: any[] = []; // All reviews fetched from the API
+  displayedReviews: any[] = []; // Reviews to display based on the current page
+  currentPage: number = 1; // The current page
+  reviewsPerPage: number = 3; // Number of reviews per page
+  totalPages: number = 1; // Total number of pages
   msgSuccess = '';
   msgErrors = '';
   isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
   ) {
     this.reviewForm = this.fb.group({
-      name: ['', Validators.required],
+      name: [''],
       rating: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       comments: ['', [Validators.required, Validators.maxLength(500)]],
     });
@@ -44,12 +49,27 @@ export class ReviwesComponent implements OnInit {
       next: (response: any) => {
         if (response.success) {
           this.reviews = response.reviews.filter((review: any) => review.course.id === courseId);
+          this.totalPages = Math.ceil(this.reviews.length / this.reviewsPerPage);
+          this.updateDisplayedReviews();
         }
       },
       error: (error) => {
         console.error('Error fetching reviews', error);
       }
     });
+  }
+
+  // Method to update the displayed reviews based on the current page
+  updateDisplayedReviews() {
+    const startIndex = (this.currentPage - 1) * this.reviewsPerPage;
+    const endIndex = startIndex + this.reviewsPerPage;
+    this.displayedReviews = this.reviews.slice(startIndex, endIndex);
+  }
+
+  // Method to handle page change
+  changePage(page: number) {
+    this.currentPage = page;
+    this.updateDisplayedReviews();
   }
 
   onSubmit() {
@@ -62,14 +82,15 @@ export class ReviwesComponent implements OnInit {
           this.isLoading = false;
           this.msgSuccess = 'Review submitted successfully';
 
-          // Update the reviews array with the new review
           const newReview = {
             user: { name }, // Assuming user name comes from the form
             rating,
             comment: comments,
-            created_at: new Date().toISOString(), // Add a timestamp for display
+            created_at: new Date().toISOString(),
           };
-          this.reviews.push(newReview); // Add the new review to the reviews array
+          this.reviews.push(newReview);
+          this.totalPages = Math.ceil(this.reviews.length / this.reviewsPerPage);
+          this.updateDisplayedReviews(); // Update displayed reviews
 
           // Reset the form after submission
           this.reviewForm.reset();

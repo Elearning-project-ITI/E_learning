@@ -217,6 +217,7 @@ public function submit(Request $request, $quizId)
 {
     $userId = auth()->user()->id; 
 
+    // Check if the user has already submitted the quiz
     $quizUser = DB::table('quiz_user')
         ->where('user_id', $userId)
         ->where('quiz_id', $quizId)
@@ -225,17 +226,21 @@ public function submit(Request $request, $quizId)
     if ($quizUser && $quizUser->submitted) {
         return response()->json([
             'message' => 'You have already submitted this quiz.',
+            'submitted' => true // Add this to indicate the submission status
         ], 403);
     }
 
+    // Get submitted answers from the request
     $submittedAnswers = $request->input('answers'); 
 
+    // Get the quiz questions
     $questions = DB::table('questions')
         ->where('quiz_id', $quizId)
         ->get();
 
     $totalScore = 0; 
 
+    // Calculate total score based on correct answers
     foreach ($questions as $question) {
         $correctChoice = DB::table('choices')
             ->where('question_id', $question->id)
@@ -247,18 +252,21 @@ public function submit(Request $request, $quizId)
         }
     }
 
+    // Update or insert the user's quiz submission details
     DB::table('quiz_user')->updateOrInsert(
         ['user_id' => $userId, 'quiz_id' => $quizId],
         [
             'final_result' => $totalScore, 
-            'submitted' => true, 
+            'submitted' => true,  // Mark quiz as submitted
             'updated_at' => now()
         ]
     );
 
+    // Return a response indicating successful submission
     return response()->json([
         'final_result' => $totalScore,
         'message' => 'Quiz submitted successfully!',
+        'submitted' => true  // Add submission status to the response
     ]);
 }
 

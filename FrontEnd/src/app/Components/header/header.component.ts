@@ -104,7 +104,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               this.profileData = response;
               if (this.profileData?.data) {
                 this.decodeProfileData(this.profileData.data);
-                this.router.navigate(['/']); // Navigate to root to refresh and update role-specific UI
+                // this.router.navigate(['/']); // Navigate to root to refresh and update role-specific UI
               }
             },
             error: (err) => {
