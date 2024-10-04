@@ -422,6 +422,18 @@ public function myWishlist()
         'wishlist' => $wishlist,
     ]);
 }
+public function mostBookedCourses()
+{
+    $courses = Course::withCount('bookings')
+        ->orderBy('bookings_count', 'desc')
+        ->take(5) // Get top 5 courses
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $courses,
+    ], 200);
+}
 
 
 }
