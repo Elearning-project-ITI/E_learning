@@ -113,10 +113,10 @@ Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoi
     Route::middleware('auth:api')->get('/my-wishlist', [WishlistController::class, 'index']);
 
 
-    Route::get('/check-booking', [PaymentController::class, 'checkBooking']);
+    Route::post('/check-booking', [PaymentController::class, 'checkBooking']);
     Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
-    Route::get('/payment/success', [PaymentController::class, 'success'])->name('success');
-    Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
+    Route::post('/payment/success', [PaymentController::class, 'success'])->name('success');
+    Route::post('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
     Route::post('/quiz/{quiz}/submit', [QuizController::class, 'submit'])->name('quiz.submit');
 
 

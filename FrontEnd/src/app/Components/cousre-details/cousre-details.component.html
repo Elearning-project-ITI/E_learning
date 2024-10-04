@@ -13,13 +13,13 @@
             <a class="nav-link" routerLinkActive="active" routerLink="cousredetails">View Course</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="cousrematerial">Material</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="cousrematerial" *ngIf="isBooked">Material</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="quizes">Quizes</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="quizes" *ngIf="isBooked">Quizes</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="reviews">Reviews</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="reviews" *ngIf="isBooked">Reviews</a>
           </li>
         </ul>
       </div>

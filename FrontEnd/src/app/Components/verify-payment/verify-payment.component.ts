@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CoursesService } from '../../shared/services/courses.service'; // Import the service
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-verify-payment',
@@ -14,7 +15,11 @@ export class VerifyPaymentComponent implements OnInit {
   status: string | null = null;
   courseId: number | null = null; 
 
-  constructor(private route: ActivatedRoute, private router: Router, private coursesService: CoursesService) {}
+  constructor(
+    private route: ActivatedRoute, 
+    private router: Router, 
+    private coursesService: CoursesService 
+  ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -26,11 +31,50 @@ export class VerifyPaymentComponent implements OnInit {
 
   private handlePaymentStatus(status: string | null): void {
     if (status === 'success') {
-      this.message = 'Payment was successful!';
+      
+      this.callPaymentSuccessApi();
+    
     } else if (status === 'cancel') {
-      this.message = 'Payment was canceled.';
+    
+      this.callPaymentCancelApi();
+    
     } else {
       this.message = 'No payment status provided.';
+     
+    }
+  }
+
+
+  private callPaymentSuccessApi(): void {
+    
+    if (this.courseId) {
+      this.message = 'Payment was successful!';
+      this.coursesService.paymentSuccess(this.courseId).subscribe({
+        next: (response) => {
+          console.log('Success API called:', response);
+          this.router.navigate([`/cousres/${this.courseId}/cousrematerial`]); 
+        },
+        error: (error) => {
+          console.error('Error calling success API:', error);
+        }
+      });
+    }
+  }
+
+ 
+  private callPaymentCancelApi(): void {
+    
+    if (this.courseId) {
+      this.message = 'Payment was canceled.';
+      this.coursesService.paymentCancel(this.courseId).subscribe({
+        next: (response) => {
+          console.log('Cancel API called:', response);
+          this.router.navigate([`/cousres/${this.courseId}`]); 
+        },
+        error: (error) => {
+          console.error('Error calling cancel API:', error);
+        }
+      });
     }
   }
 

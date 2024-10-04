@@ -318,8 +318,44 @@ getAllReviews(): Observable<any> {
     catchError(this.handleError)
   );
 }
+booking(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+  const body = { course_id: courseId};
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.post<any>(`${this.DB_URL}/check-booking`,body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+paymentSuccess(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
 
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+  const body = { course_id: courseId };
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.post<any>(`${this.DB_URL}/payment/success`, body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
 
+// Method for payment cancel
+paymentCancel(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+  const body = { course_id: courseId };
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.post<any>(`${this.DB_URL}/payment/cancel`, body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
 }
 
   
