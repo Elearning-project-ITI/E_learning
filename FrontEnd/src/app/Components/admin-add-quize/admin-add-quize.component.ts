@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CoursesService } from '../../shared/services/courses.service';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 interface Choice {
   choice: string;
@@ -41,7 +42,7 @@ export class AdminAddQuizeComponent implements OnInit {
   }));
   validationErrors: any = {};
   
-  constructor(private coursesService: CoursesService, private route: ActivatedRoute) {}
+  constructor(private coursesService: CoursesService, private route: ActivatedRoute,private toastr: ToastrService) {}
   
   ngOnInit(): void {
     const course = this.coursesService.getCourse();
@@ -130,6 +131,8 @@ export class AdminAddQuizeComponent implements OnInit {
             }
           });
         });
+        this.toastr.success("Question created successfully")
+        console.log("Question created successfully")
       },
       error: (errorResponse) => {
         console.log(errorResponse);
