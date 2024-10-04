@@ -53,7 +53,7 @@
 </div> -->
 <!-- <ng-template #showCourses> -->
 <nav id="navbar-example" class="navbar pt-4 pb-2 fixed-top navbar-expand-lg navbar-dark shadow">
-  <div class="container-fluid">
+  <div class="container">
       <a class="navbar-brand fw-bold" [routerLinkActiveOptions]="{exact:true}" routerLinkActive="active" routerLink="/">
           <img src="images/Hk logo gray-01.png" alt="logo" class="logo">
       </a>
@@ -102,10 +102,10 @@
           </ul>
 
           <!-- Search bar for all users -->
-          <form class="d-flex formsearch" role="search" *ngIf="!isLoggedIn || (isLoggedIn && decodedData?.length > 0 && decodedData[0]?.role  === 'student')">
+          <!-- <form class="d-flex formsearch" role="search" *ngIf="!isLoggedIn || (isLoggedIn && decodedData?.length > 0 && decodedData[0]?.role  === 'student')">
               <input class="form-control me-2" type="search" placeholder="Search.." aria-label="Search">
               <i class="fa-solid fa-magnifying-glass"></i>
-          </form>
+          </form> -->
 
           <!-- Show Register and Login buttons if the user is not logged in -->
           <div *ngIf="!isLoggedIn" class="d-flex justify-content-between">

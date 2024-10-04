@@ -53,6 +53,12 @@ export class CoursesService {
       catchError(this.handleError)
     );
   }
+  GetCoursesByName(searchTerm: string): Observable<GetAllCoursesResponse> {
+    const url = `${this.DB_URL}/course?name=${searchTerm}`;
+    return this.http.get<GetAllCoursesResponse>(url).pipe(
+      catchError(this.handleError)
+    );
+  }
   payment(courseId: number): Observable<any> {
     const token = localStorage.getItem('access_token');
   

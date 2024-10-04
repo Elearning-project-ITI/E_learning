@@ -62,7 +62,7 @@ import { Router, RouterLink, RouterModule } from '@angular/router';
 import { CoursesService } from '../../shared/services/courses.service';
 import { LoaderComponent } from "../loader/loader.component";
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs';
 import { AuthService } from '../../shared/services/auth.service';
 import { ProfileDataService } from '../../shared/services/profile-data.service';
 import { jwtDecode } from 'jwt-decode';
@@ -82,6 +82,8 @@ export class CoursesComponent implements OnInit {
   private authSubscription!: Subscription;
   profileData: any = null;
   decodedData: any = null;
+  searchTerm: string = '';
+  searchTermSubject: Subject<string> = new Subject<string>();
   constructor(private courseserv: CoursesService, private router: Router, private toastr: ToastrService,private _AuthService: AuthService, private profileDataService: ProfileDataService,) { }
 
   ngOnInit(): void {
@@ -138,6 +140,30 @@ export class CoursesComponent implements OnInit {
         },
       });
     }
+    this.searchTermSubject.pipe(
+      debounceTime(300),  // Wait 300ms before searching
+      distinctUntilChanged()  // Only trigger if the search term changes
+    ).subscribe(searchTerm => {
+      this.searchCourses(searchTerm);
+    });
+
+  }
+  onSearch(event: any): void {
+    const searchTerm = event.target.value;
+    this.searchTermSubject.next(searchTerm);  // Push the search term to the Subject
+  }
+
+  searchCourses(searchTerm: string): void {
+    this.courseserv.GetCoursesByName(searchTerm).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.Courses = response.data;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching courses by name:', err);
+      }
+    });
   }
 
   toggleHeart(event: Event, courseId: number): void {

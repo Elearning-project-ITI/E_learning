@@ -111,3 +111,21 @@ top:100%;
   .close {
     cursor: pointer;
   }
+  .formsearch .form-control{
+    background-color: rgba(30, 117, 189, 0.356);
+    border:none;
+    width:30%;
+    height: 50px;
+    margin-bottom: 100px;
+    /* border-radius: 0 !important;  */
+    
+}
+.formsearch .form-control::placeholder{
+    color:white;
+}
+/* .formsearch i{
+    background-color:  rgba(84, 170, 240, 0.555);
+    padding: 20px;
+  border-radius: 20%;
+  color:white;
+} */
