@@ -66,11 +66,12 @@ import { Subject, Subscription, debounceTime, distinctUntilChanged } from 'rxjs'
 import { AuthService } from '../../shared/services/auth.service';
 import { ProfileDataService } from '../../shared/services/profile-data.service';
 import { jwtDecode } from 'jwt-decode';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-courses',
   standalone: true,
-  imports: [CommonModule, RouterModule, LoaderComponent],
+  imports: [CommonModule, RouterModule, LoaderComponent , NgxPaginationModule],
   templateUrl: './courses.component.html',
   styleUrls: ['./courses.component.css']
 })
@@ -83,6 +84,8 @@ export class CoursesComponent implements OnInit {
   profileData: any = null;
   decodedData: any = null;
   searchTerm: string = '';
+  currentPage: number = 1;
+itemsPerPage: number = 6;
   searchTermSubject: Subject<string> = new Subject<string>();
   constructor(private courseserv: CoursesService, private router: Router, private toastr: ToastrService,private _AuthService: AuthService, private profileDataService: ProfileDataService,) { }
 

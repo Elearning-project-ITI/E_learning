@@ -3,17 +3,19 @@ import { Router, RouterModule } from '@angular/router';
 import { CoursesService } from '../../shared/services/courses.service';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from '../loader/loader.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-admin-course',
   standalone: true,
-  imports: [RouterModule,CommonModule,LoaderComponent],
+  imports: [RouterModule,CommonModule,LoaderComponent ,NgxPaginationModule],
   templateUrl: './admin-course.component.html',
   styleUrl: './admin-course.component.css'
 })
 export class AdminCourseComponent {
   Courses: any[] = [];
-
+  currentPage: number = 1;
+  itemsPerPage: number = 6;
   constructor(private courseserv: CoursesService, private router: Router) { }
 
   ngOnInit(): void {
