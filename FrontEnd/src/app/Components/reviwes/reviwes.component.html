@@ -6,15 +6,15 @@
                     <h2 class="text-center mb-4">Submit Your Review</h2>
                     <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
                         <div class="row mb-3">
-                          <div class="col-md-6">
+                          <!-- <div class="col-md-6" >
                             <label for="name" class="form-label">Name</label>
                             <input formControlName="name" type="text" class="form-control" id="name" placeholder="Enter your name" required>
                             <div class="alert alert-danger" *ngIf="reviewForm.get('name')?.errors && reviewForm.get('name')?.touched">
                                 <p *ngIf="reviewForm.get('name')?.getError('required')">Name is Required</p>
                                 
                               </div>
-                          </div>
-                          <div class="col-md-6">
+                          </div> -->
+                          <div class="col-md-12">
                             <label for="rating" class="form-label">Rating</label>
                             <select formControlName="rating" class="form-select" id="rating" required>
                               <option value="" disabled>Choose rating</option>

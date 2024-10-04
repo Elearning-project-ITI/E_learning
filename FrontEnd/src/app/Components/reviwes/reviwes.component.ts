@@ -20,10 +20,11 @@ export class ReviwesComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private coursesService: CoursesService
+    private coursesService: CoursesService,
+    
   ) {
     this.reviewForm = this.fb.group({
-      name: ['', Validators.required],
+      name: [''],
       rating: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       comments: ['', [Validators.required, Validators.maxLength(500)]],
     });

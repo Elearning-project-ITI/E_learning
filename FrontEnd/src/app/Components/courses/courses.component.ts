@@ -210,9 +210,13 @@ export class CoursesComponent implements OnInit {
     const accessToken = localStorage.getItem('access_token');
     if (!accessToken) {
       // Show an alert or modal to the user
-      alert('You need to log in before enrolling in a course.');
+      // alert('You need to log in before enrolling in a course.');
+      this.toastr.warning('You need to log in before enrolling in a course.')
       // Optionally, you can redirect to the login page
-      this.router.navigate(['/login']);
+      setTimeout(() => {
+        this.router.navigate(['/login']); 
+      }, 2000);
+      
     } else {
       // If the user is logged in, navigate to the course details or perform the enrollment
       this.router.navigate(['/cousres', courseId]);
