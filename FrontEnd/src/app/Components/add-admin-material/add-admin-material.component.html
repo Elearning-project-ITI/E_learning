@@ -19,8 +19,8 @@
               <option value="">Select Type</option>
               <option value="pdf">PDF</option>
               <option value="video">Video</option>
-              <option value="audio">Audio</option>
-              <option value="text">Text</option>
+              <!-- <option value="audio">Audio</option>
+              <option value="text">Text</option> -->
             </select>
             <div class="alert alert-danger" *ngIf="materialForm.get('type')?.errors && materialForm.get('type')?.touched">
               <p *ngIf="materialForm.get('type')?.getError('required')">Type is required</p>

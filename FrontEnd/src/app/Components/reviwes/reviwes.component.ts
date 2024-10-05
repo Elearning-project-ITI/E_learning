@@ -14,11 +14,11 @@ import { RouterModule } from '@angular/router';
 export class ReviwesComponent implements OnInit {
   reviewForm: FormGroup;
   courseId: number | null = null; 
-  reviews: any[] = []; // All reviews fetched from the API
-  displayedReviews: any[] = []; // Reviews to display based on the current page
-  currentPage: number = 1; // The current page
-  reviewsPerPage: number = 3; // Number of reviews per page
-  totalPages: number = 1; // Total number of pages
+  reviews: any[] = [];
+  displayedReviews: any[] = [];
+  currentPage: number = 1;
+  reviewsPerPage: number = 3;
+  totalPages: number = 1;
   msgSuccess = '';
   msgErrors = '';
   isLoading: boolean = false;
@@ -59,17 +59,20 @@ export class ReviwesComponent implements OnInit {
     });
   }
 
-  // Method to update the displayed reviews based on the current page
   updateDisplayedReviews() {
     const startIndex = (this.currentPage - 1) * this.reviewsPerPage;
     const endIndex = startIndex + this.reviewsPerPage;
     this.displayedReviews = this.reviews.slice(startIndex, endIndex);
   }
 
-  // Method to handle page change
   changePage(page: number) {
     this.currentPage = page;
     this.updateDisplayedReviews();
+  }
+
+  // Method to handle star click and set the rating value
+  setRating(rating: number) {
+    this.reviewForm.patchValue({ rating });
   }
 
   onSubmit() {
@@ -90,7 +93,7 @@ export class ReviwesComponent implements OnInit {
           };
           this.reviews.push(newReview);
           this.totalPages = Math.ceil(this.reviews.length / this.reviewsPerPage);
-          this.updateDisplayedReviews(); // Update displayed reviews
+          this.updateDisplayedReviews();
 
           // Reset the form after submission
           this.reviewForm.reset();
@@ -107,6 +110,7 @@ export class ReviwesComponent implements OnInit {
     }
   }
 }
+
 
 // export class ReviwesComponent implements OnInit {
 //   reviewForm: FormGroup;

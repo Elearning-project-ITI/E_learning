@@ -129,3 +129,11 @@ top:100%;
   border-radius: 20%;
   color:white;
 } */
+.star-rating {
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+  color: gold; /* Change star color */
+}
+
+

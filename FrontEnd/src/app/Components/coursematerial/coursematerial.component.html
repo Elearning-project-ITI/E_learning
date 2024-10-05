@@ -1,5 +1,4 @@
 <div class="container course-material-container mt-5">
-
   <!-- Course Description Section -->
   <section class="course-description">
     <div class="card course-card animated-card">
@@ -11,7 +10,7 @@
         </h2>
       </div>
       <div *ngIf="descriptionVisible" class="card-body description-content">
-        <p class="description-text">This is a detailed description of the course. Click the checkbox below once you have read it.</p>
+        <p class="description-text">{{coursedescription}} Click the checkbox below once you have read it.</p>
         <div class="form-check description-check">
           <input class="form-check-input" type="checkbox" [(ngModel)]="descriptionCompleted" (change)="onDescriptionCompleted()" id="description-check" />
           <label class="form-check-label" for="description-check">Course Description Completed</label>
@@ -34,7 +33,9 @@
             </button>
           </div>
           <div class="card-body video-body" *ngIf="video.visible">
-            <video class="video-player advanced-video" controls (ended)="onVideoEnded(i)">
+            <div class="watermark">Watermarked</div> <!-- Watermark -->
+            <video class="video-player advanced-video" controls (ended)="onVideoEnded(i)" controlsList="nodownload">
+              <!-- Using controlsList="nodownload" to disable download options -->
               <source [src]="video.url" type="video/mp4">
               Your browser does not support the video tag.
             </video>
@@ -56,7 +57,7 @@
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-6" *ngFor="let pdf of pdfs; let i = index">
         <div class="d-flex align-items-center">
-          <button class="btn btn-warning advanced-btn me-2" (click)="togglePdf(i)">
+          <button class="btn btn-warning advanced-btn me-2 mt-4" (click)="togglePdf(i)">
             <i class="fas fa-download"></i> {{ pdf.title }}
           </button>
           <a *ngIf="pdf.visible" [href]="pdf.url" target="_blank" class="advanced-pdf-link">{{ pdf.title }}</a>
@@ -64,5 +65,4 @@
       </div>
     </div>
   </section>
-
 </div>

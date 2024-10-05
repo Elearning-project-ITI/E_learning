@@ -50,6 +50,8 @@ top:100%;
 }
 .btn-about {
     background-color: #7695FF;
+    color:white;
+    
   }
   
   .btn-about:hover {
@@ -111,3 +113,21 @@ top:100%;
   .close {
     cursor: pointer;
   }
+  .star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 3px;
+    color: gold; /* Change star color */
+  }
+  .formsearch .form-control{
+    background-color: rgba(30, 117, 189, 0.356);
+    border:none;
+    /* width:50%; */
+    /* height: 50px; */
+    margin-bottom: 60px; 
+    /* border-radius: 0 !important;  */
+    
+}
+.formsearch .form-control::placeholder{
+    color:white;
+}
