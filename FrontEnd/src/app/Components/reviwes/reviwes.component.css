@@ -81,3 +81,18 @@ h2 {
         transform: translateY(0);
     }
 }
+.star-rating {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+  
+  .star-rating i {
+    font-size: 24px;
+    transition: color 0.3s ease;
+  }
+  
+  .star-rating i:hover {
+    color: #ffcc00;
+  }

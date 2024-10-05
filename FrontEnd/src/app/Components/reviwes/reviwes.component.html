@@ -8,18 +8,17 @@
             <div class="row mb-3">
               <div class="col-md-12">
                 <label for="rating" class="form-label">Rating</label>
-                <select formControlName="rating" class="form-select" id="rating" required>
-                  <option value="" disabled>Choose rating</option>
-                  <option value="1">Very Poor</option>
-                  <option value="2">Poor</option>
-                  <option value="3">Average</option>
-                  <option value="4">Good</option>
-                  <option value="5">Excellent</option>
-                </select>
+                <div class="star-rating">
+                  <ng-container *ngFor="let star of [].constructor(5); let i = index">
+                    <i (click)="setRating(i + 1)" class="fa" 
+                       [ngClass]="reviewForm.get('rating')?.value >= i + 1 ? 'fa-solid fa-star text-warning' : 'fa-regular fa-star text-warning'">
+                    </i>
+                  </ng-container>
+                </div>
                 <div class="alert alert-danger" *ngIf="reviewForm.get('rating')?.errors && reviewForm.get('rating')?.touched">
                   <p *ngIf="reviewForm.get('rating')?.getError('required')">Rating is Required</p>
-                  <p *ngIf="reviewForm.get('rating')?.getError('min')">Min must 1</p>
-                  <p *ngIf="reviewForm.get('rating')?.getError('max')">Max must 5</p>
+                  <p *ngIf="reviewForm.get('rating')?.getError('min')">Min must be 1</p>
+                  <p *ngIf="reviewForm.get('rating')?.getError('max')">Max must be 5</p>
                 </div>
               </div>
             </div>
@@ -54,7 +53,13 @@
             <div class="d-flex justify-content-between align-items-center mb-2">
               <div>
                 <h5 class="card-title mb-2">{{ review.user.name }}</h5>
-                <h6 class="card-subtitle text-muted">Rating: {{ review.rating }}/5</h6>
+                <h6 class="card-subtitle text-muted">Rating: 
+                  <ng-container *ngFor="let star of [].constructor(5); let i = index">
+                    <i *ngIf="i < review.rating" class="fa-solid fa-star text-warning"></i>
+                    <i *ngIf="i >= review.rating" class="fa-regular fa-star text-warning"></i>
+                  </ng-container>
+                  <!-- {{ review.rating }}/5 -->
+                </h6>
               </div>
               <small class="text-muted">Posted on: {{ review.created_at | date: 'yyyy-MM-dd' }}</small>
             </div>
