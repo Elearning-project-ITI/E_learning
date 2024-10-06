@@ -2,12 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 use Google_Service_Drive;
+use Illuminate\Support\Facades\Notification;
+use App\Events\CourseAddedEvent;
 use Google_Service_Drive_DriveFile;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage; 
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
+
+use App\Notifications\CourseNotification;
 
 
 class CourseController extends Controller
@@ -134,7 +140,13 @@ class CourseController extends Controller
         //'date' => now(),
         'description' => $request->description,
     ]);
+ //   $action = $courseId ? 'edited' : 'added';
 
+    // Notify all users
+    $users = User::all();
+    Notification::send($users, new CourseNotification($course, 'added'));
+    $admin = Auth::user();
+    event(new CourseAddedEvent($course, $admin));
     return response()->json([
         'success' => true,
         'message' => 'Course created successfully!',
@@ -212,7 +224,8 @@ class CourseController extends Controller
         ['image' => $course->image] 
     ));
 
-   
+    $users = User::all();
+    Notification::send($users, new CourseNotification($course, 'edited'));
     return response()->json([
         'success' => true,
         'message' => 'Course updated successfully!',
@@ -227,6 +240,7 @@ class CourseController extends Controller
             'updated_at' => $course->updated_at,
         ]
     ], 200); 
+    
 }
 
     // public function update(Request $request, $id)
