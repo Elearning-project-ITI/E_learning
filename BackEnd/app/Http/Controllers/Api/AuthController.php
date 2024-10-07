@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use App\Events\NewUserRegistered;
 
 //use App\Http\Controllers\Controller;
 use App\Http\Controllers\Api\BaseController;
@@ -18,6 +19,10 @@ use Validator;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\LoginUserRequest;
 use App\Mail\VerifyEmail;  // Make sure this is at the top of your controller
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\WelcomeNotification;
+use App\Notifications\NewUserNotification;
+use App\Notifications\VerificationNotification;
 
 class AuthController extends BaseController
 {
@@ -64,13 +69,13 @@ class AuthController extends BaseController
         //     $image = $request->file('image');
         //     $imagePath = $image->store('images', 'user_images');
         // }
-        $isValidEmail = $this->checkEmailValidity($request->email);
+        // $isValidEmail = $this->checkEmailValidity($request->email);
 
-        if (!$isValidEmail) {
-            return $this->sendError(['The provided email does not real.'], [], 401);        
+        // if (!$isValidEmail) {
+        //     return $this->sendError(['The provided email does not real.'], [], 401);        
 
-           // return $this->sendError('Invalid Email', ['error' => 'The provided email does not real.']);
-        }
+        //    // return $this->sendError('Invalid Email', ['error' => 'The provided email does not real.']);
+        // }
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('user_images', 'uploads');
@@ -101,6 +106,11 @@ class AuthController extends BaseController
        // $token['name'] =  $user->name;
        Mail::to($user->email)->send(new VerifyEmail($user));
        
+       $user->notify(new WelcomeNotification($user));
+       $admins = User::where('role', 'admin')->get();
+       Notification::send($admins, new NewUserNotification($user));
+       broadcast(new NewUserRegistered($user));
+
        return $this->sendResponse(
         [],
             'Registration successful. Please verify your email.',
@@ -248,7 +258,8 @@ class AuthController extends BaseController
         $user->email_verification_token = null; // Clear the token
         $user->verification_token_created_at = null; // Clear the timestamp
         $user->save();
-    
+     //   $user->notify(new VerificationNotification());
+
         return $this->sendResponse([], 'Your email has been verified.');
     }
     private function checkEmailValidity($email)

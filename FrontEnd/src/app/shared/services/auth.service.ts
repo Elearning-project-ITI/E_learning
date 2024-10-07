@@ -215,5 +215,16 @@ export class AuthService {
 
     return this._HttpClient.post(`${this.baseURL}/profile`, userData, { headers });
   }
+  getUserRole(): Observable<{ role: string }> {
+    const token = localStorage.getItem('access_token');
+  
+    if (!token) {
+      console.error('No access token found.');
+      return throwError(() => new Error('No access token found.'));
+    }
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this._HttpClient.get<{ role: string }>(`${this.baseURL}/user/role`, { headers });
+  }
 }
 

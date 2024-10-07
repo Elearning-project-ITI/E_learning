@@ -1,15 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
+use App\Events\CourseBookedEvent;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Checkout\Session; // Import the Stripe Checkout Session class
 use Exception;
-use App\Models\Course;  // Assuming courses are stored in a Course model
+use App\Models\Course; 
+use App\Models\User;
+// Assuming courses are stored in a Course model
 use App\Models\Booking;  // Import the Booking model
-
+use App\Notifications\CourseBookedNotification;
+use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\Api\BaseController;
 use Google\Client as GoogleClient;
 use Google\Service\Drive as GoogleDrive;
@@ -60,7 +63,7 @@ class PaymentController extends BaseController
                     ],
                 ],
                 'mode' => 'payment',
-                'success_url' => config('app.frontend_url') . '/verifypayment?status=success&course=' . $course->id,
+                'success_url' => config('app.frontend_url') . '/verifypayment?session_id={CHECKOUT_SESSION_ID}&status=success&course=' . $course->id,
                 'cancel_url' => config('app.frontend_url') . '/verifypayment?status=cancel&course=' . $course->id,
             ]);
 
@@ -85,7 +88,10 @@ class PaymentController extends BaseController
         try {
             $user = auth()->user();
             $courseId = $request->course_id;
-
+            $sessionId = $request->get('session_id');
+            Stripe::setApiKey(env('STRIPE_SECRET'));
+            $session = StripeSession::retrieve($sessionId);
+          //  $customer = $session->customer_details;
             // Find the course
             $course = Course::find($courseId);
             if (!$course) {
@@ -106,8 +112,13 @@ class PaymentController extends BaseController
                 'course_id' => $courseId,
                 'date' => now(), // Store the current date and time
             ]);
-
+            $admins = User::where('role', 'admin')->get();
+            Notification::send($admins, new CourseBookedNotification($course, $user));
+        
+            $user->notify(new CourseBookedNotification($course, $user,$session));
             // Return success response with the course name
+            $token = $user->currentAccessToken();
+            event(new CourseBookedEvent($user, $course,$token));
             return response()->json([
                 'success' => true,
                 'message' => 'Payment successful, '.$course->name.' booked!',

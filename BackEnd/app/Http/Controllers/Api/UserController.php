@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 
 class UserController extends BaseController
@@ -123,5 +124,10 @@ class UserController extends BaseController
             'profile' => $student,
             'courses' =>  $student->bookings()->where('is_payed', true)->with('course')->get()->pluck('course'),
         ], 'Student profile and paid courses retrieved successfully.');
+    }
+    public function getRole()
+    {
+        $user = Auth::user();
+        return response()->json(['role' => $user->role]);
     }
 }
