@@ -252,6 +252,43 @@ submitQuiz(quizId: number, submission: any): Observable<any> {
     catchError(this.handleError)
   );
 }
+updateQuiz(quizId: number, quizData: FormData): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  quizData.append('_method', 'PUT');
+  return this.http.post(`${this.DB_URL}/quiz/${quizId}`, quizData, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+deleteQuiz(quizId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+ 
+  return this.http.delete(`${this.DB_URL}/quiz/${quizId}`,{ headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+
+updateQuestion(questionId: number, questionData: FormData): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  questionData.append('_method', 'PUT');
+  return this.http.post(`${this.DB_URL}/question/${questionId}`, questionData, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+
+updateChoice(choiceId: number, choiceData: FormData, questionId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  choiceData.append('_method', 'PUT');
+  return this.http.post(`${this.DB_URL}/question/${questionId}/choices/${choiceId}`, choiceData, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+
+
+
 // submitQuizAnswers(quizId: number, data: { answers: Answer[] }): Observable<any> {
 //   const token = localStorage.getItem('access_token');
 //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);

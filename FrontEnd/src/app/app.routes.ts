@@ -64,7 +64,8 @@ export const routes: Routes = [
         { path: "reviews", component: UserReviewsComponent }
     ]}
     ,{path:"adminCourses/updatecourse/:id",component:EditCourseComponent},
-    {path:"adminCourses/:courseId/addmaterial/update/:materialId",component:EditAdminMaterialComponent}
+    {path:"adminCourses/:courseId/addmaterial/update/:materialId",component:EditAdminMaterialComponent},
+    {path:"adminCourses/:courseId/addquizes/update/:quizid",component:AdminUpdateQuizeComponent}
     //     ,children:[
     //     {path:"viewcourse",component:ViewAdminCourseComponent},
     //     {path:"addcourse",component:AddCourseComponent},
