@@ -4,6 +4,8 @@ import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { LoaderComponent } from './Components/loader/loader.component';
 import { RegisterationComponent } from "./Components/registeration/registeration.component";
+import { PusherService } from './shared/services/notification.service';
+
 
 @Component({
   selector: 'app-root',
@@ -15,6 +17,10 @@ import { RegisterationComponent } from "./Components/registeration/registeration
 export class AppComponent implements OnInit{
   title = 'finalProject';
   isLoading: boolean = true;
+
+  constructor(
+    private pusherService: PusherService, // Inject PusherService
+  ) {}
 
   ngOnInit(): void {
    
