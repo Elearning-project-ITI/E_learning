@@ -52,10 +52,11 @@
     }
 
     subscribeToChannels(pusher: Pusher) {
-      this.authService.getUserRole().subscribe({
+      this.authService.getUserInfo().subscribe({
         next: (response) => {
+          const userName = response.name;
           const userRole = response.role;
-
+         console.log(userName);
         // Subscribe to the admin notifications channel only if the user is an admin
         if (userRole === 'admin') {
 
@@ -75,21 +76,27 @@
             this.snackbarService.showMessage(data.adminMessage);
           });
         }
-        else{       
-          const token = localStorage.getItem('access_token');
-          const userChannel = pusher.subscribe('private-user-notifications');
-          const personalChannel = pusher.subscribe(`private-user-notifications.${token}`);
-      
-          userChannel.bind('CourseAddedEvent', (data: any) => {
-            console.log('Course added:', data);
-            this.snackbarService.showMessage(data.studentMessage);
-          });
-      
-          personalChannel.bind('CourseBookedEvent', (data: any) => {
-            console.log('Course booked:', data);
-            this.snackbarService.showMessage(data.studentMessage);
-          });
-        } 
+        else {
+          // Fetch user name from AuthService (assumes your AuthService provides user info)
+        
+        
+              // Replace token with user name for the channel subscription
+              const personalChannel = pusher.subscribe(`private-user-notifications.${response.name}`);
+              const userChannel = pusher.subscribe('private-user-notifications');
+              console.log(personalChannel);
+
+              userChannel.bind('CourseAddedEvent', (data: any) => {
+                console.log('Course added:', data);
+                this.snackbarService.showMessage(data.studentMessage);
+              });
+        
+              userChannel.bind('CourseBookedEvent', (data: any) => {
+                console.log('Course booked:', data);
+                this.snackbarService.showMessage(data.studentMessage);
+              });
+          
+           
+        }
       },
         error: (err) => {
           console.error('Error:', err);

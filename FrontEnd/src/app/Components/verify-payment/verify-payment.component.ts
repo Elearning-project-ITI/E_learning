@@ -14,6 +14,8 @@ export class VerifyPaymentComponent implements OnInit {
   message: string = '';
   status: string | null = null;
   courseId: number | null = null; 
+  session_id:string | null = null;
+  isLoading: boolean = false;
 
   constructor(
     private route: ActivatedRoute, 
@@ -25,6 +27,8 @@ export class VerifyPaymentComponent implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.status = params['status'];
       this.courseId = +params['course']; 
+      this.session_id = params['session_id']; 
+
       this.handlePaymentStatus(this.status);
     });
   }
@@ -46,18 +50,23 @@ export class VerifyPaymentComponent implements OnInit {
 
 
   private callPaymentSuccessApi(): void {
-    
-    if (this.courseId) {
+    if (this.courseId && this.session_id) {
       this.message = 'Payment was successful!';
-      this.coursesService.paymentSuccess(this.courseId).subscribe({
+      this.isLoading = true;
+
+      setTimeout(() => this.coursesService.paymentSuccess(this.courseId, this.session_id).subscribe({
         next: (response) => {
           console.log('Success API called:', response);
-          this.router.navigate([`/cousres/${this.courseId}/cousrematerial`]); 
+          this.isLoading = false;
+          this.router.navigate([`/courses/${this.courseId}/coursematerial`]);
         },
         error: (error) => {
           console.error('Error calling success API:', error);
+          this.isLoading = false;
         }
-      });
+      }), 3000);
+    } else {
+      console.error('Course ID or Session ID is missing.');
     }
   }
 
