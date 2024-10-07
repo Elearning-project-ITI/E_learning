@@ -15,7 +15,7 @@ import { LoaderComponent } from "../loader/loader.component";
 export class CousreDetailsComponent {
   ID = 0;
   course: any;
-
+  isBooked: boolean = false;
   constructor(
     private myRoute: ActivatedRoute,
     private courseserve: CoursesService,
@@ -31,6 +31,18 @@ export class CousreDetailsComponent {
         this.course = data.data;
         console.log(this.course);
         this.courseserve.setCourse(this.course); // Set the course in the service
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+    this.courseserve.booking(this.ID).subscribe({
+      next: (data) => {
+        console.log("booking data",data)
+        this.isBooked = data.success;
+        // this.course = data.data;
+        // console.log(this.course);
+        // this.courseserve.setCourse(this.course); // Set the course in the service
       },
       error: (err) => {
         console.log(err);

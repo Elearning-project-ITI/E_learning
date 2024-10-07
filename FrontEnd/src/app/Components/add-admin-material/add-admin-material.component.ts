@@ -4,11 +4,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CoursesService } from '../../shared/services/courses.service';
 import { Router } from '@angular/router';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-add-admin-material',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule,NgxPaginationModule],
   templateUrl: './add-admin-material.component.html',
   styleUrls: ['./add-admin-material.component.css']
 })
@@ -20,7 +21,7 @@ export class AddAdminMaterialComponent implements OnInit {
   msgErrors: string[] = [];
   isLoading: boolean = false;
   materials: any[] = [];
-
+  p: number = 1;
   constructor(
     private fb: FormBuilder, 
     private coursesService: CoursesService, 

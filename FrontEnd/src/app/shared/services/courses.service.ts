@@ -23,6 +23,10 @@ interface GetCourseResponse {
   data: object;
   message?: string;
 }
+export interface Answer {
+  questionId: number; 
+  selectedChoice: string; 
+}
 @Injectable({
   providedIn: 'root'
 })
@@ -46,6 +50,12 @@ export class CoursesService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
     return this.http.get<GetCourseResponse>(this.DB_URL+"/course/"+id, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  GetCoursesByName(searchTerm: string): Observable<GetAllCoursesResponse> {
+    const url = `${this.DB_URL}/course?name=${searchTerm}`;
+    return this.http.get<GetAllCoursesResponse>(url).pipe(
       catchError(this.handleError)
     );
   }
@@ -81,7 +91,7 @@ export class CoursesService {
     this.courseData = course;
   }
 
-  getCourse() {
+  getCourse(): Course | null {
     return this.courseData;
   }
   addCourse(courseData: FormData): Observable<any> {
@@ -155,6 +165,213 @@ export class CoursesService {
       catchError(this.handleError)
     );
   }
+  // addQuiz(quizData: any): Observable<any> {
+  //   const token = localStorage.getItem('access_token');
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+  //   return this.http.post(this.DB_URL + '/quiz', quizData, { headers }).pipe(
+  //     catchError(this.handleError)
+  //   );
+  // }
+  // addQuestion(quizData: any): Observable<any> {
+  //   const token = localStorage.getItem('access_token');
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+  //   return this.http.post(this.DB_URL + '/quiz', quizData, { headers }).pipe(
+  //     catchError(this.handleError)
+  //   );
+  // }
+  // addChoice(quizData: any): Observable<any> {
+  //   const token = localStorage.getItem('access_token');
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+  //   return this.http.post(this.DB_URL + '/quiz', quizData, { headers }).pipe(
+  //     catchError(this.handleError)
+  //   );
+  // }
+  addQuiz(quizData: any): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   
+    return this.http.post(`${this.DB_URL}/quiz`, quizData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
   
+  addQuestion(questionData: any, quizId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    return this.http.post(`${this.DB_URL}/quiz/${quizId}/questions`, questionData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  addChoice(choiceData: any, quizId: number, questionId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+    return this.http.post(`${this.DB_URL}/quiz/${quizId}/questions/${questionId}/choices`, choiceData, { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
+  
+  getQuizzesByCourse(courseId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.get(`${this.DB_URL}/course/${courseId}/quizzes`, { headers }).pipe(
+        catchError(this.handleError)
+    );
 }
+
+// Fetch questions for a specific quiz
+getQuestionsByQuiz(quiz_id: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.get(`${this.DB_URL}/quiz/${quiz_id}/questions`, { headers }).pipe(
+        catchError(this.handleError)
+    );
+}
+//Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz'])
+// Fetch choices for a specific question
+getChoicesByQuestion(questionId: number): Observable<any> {
+    const token = localStorage.getItem('access_token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this.http.get(`${this.DB_URL}/question/${questionId}/choices`, { headers }).pipe(
+        catchError(this.handleError)
+    );
+}
+submitQuiz(quizId: number, submission: any): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+  return this.http.post(`${this.DB_URL}/quiz/${quizId}/submit`, submission, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+// submitQuizAnswers(quizId: number, data: { answers: Answer[] }): Observable<any> {
+//   const token = localStorage.getItem('access_token');
+//   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+//   // Use the data parameter here
+//   const payload = { answers: data.answers };
+
+//   return this.http.post(`http://localhost:8000/api/quizzes/${quizId}/submit`, payload, { headers }).pipe(
+//       catchError(this.handleError)
+//   );
+// }
+addToWishlist(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return throwError(() => new Error('User not authenticated'));
+  }
+  
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  const body = { course_id: courseId };
+  
+  return this.http.post(`${this.DB_URL}/wishlist`, body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+
+getWishlist(): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return throwError(() => new Error('User not authenticated'));
+  }
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  return this.http.get(`${this.DB_URL}/my-wishlist`, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+removeFromWishlist(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  if (!token) {
+    return throwError(() => new Error('User not authenticated'));
+  }
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.delete(`${this.DB_URL}/wishlist/${courseId}`, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+submitReview(courseId: number, rating: number, comment: string): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  const body = { course_id: courseId, rating: rating, comment: comment };
+
+  return this.http.post(this.DB_URL + `/review`, body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+getAllReviews(): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.get<any>(this.DB_URL + '/reviews', { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+booking(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+  const body = { course_id: courseId};
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.post<any>(`${this.DB_URL}/check-booking`,body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+paymentSuccess(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+  const body = { course_id: courseId };
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.post<any>(`${this.DB_URL}/payment/success`, body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+
+// Method for payment cancel
+paymentCancel(courseId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+  const body = { course_id: courseId };
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.post<any>(`${this.DB_URL}/payment/cancel`, body, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+getMostBookedCourses(): Observable<GetAllCoursesResponse> {
+  const token = localStorage.getItem('access_token');
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  
+  return this.http.get<GetAllCoursesResponse>(`${this.DB_URL}/courses/most-booked`, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
+
+}
+
+  
+

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB; // <-- Add this line to use DB facade
+
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class QuizController extends Controller
@@ -125,4 +127,148 @@ class QuizController extends Controller
             'message' => 'Quiz deleted successfully',
         ], 200); 
     }
+    public function getQuizzesByCourse($course_id)
+    {
+        $quizzes = Quiz::where('course_id', $course_id)->get();
+        return response()->json(['success' => true, 'data' => $quizzes], 200);
+    }
+//     public function submitAnswers(Request $request, $quizId)
+// {
+//     // Validate the request
+//     $request->validate([
+//         'answers' => 'required|array',
+//         'answers.*.questionId' => 'required|exists:questions,id',
+//         'answers.*.selectedChoice' => 'nullable|exists:choices,choice',
+//     ]);
+
+//     // Get the quiz, questions, and correct answers
+//     $quiz = Quiz::findOrFail($quizId);
+//     $questions = $quiz->questions()->with('choices')->get();
+
+//     $score = 0;
+//     $totalQuestions = count($questions);
+
+//     foreach ($questions as $question) {
+//         $userAnswer = collect($request->answers)->firstWhere('questionId', $question->id);
+
+//         // If the user has selected an answer, check if it's correct
+//         if ($userAnswer && $userAnswer['selectedChoice']) {
+//             $correctChoice = $question->choices->where('is_correct', true)->first();
+
+//             if ($correctChoice && $correctChoice->choice === $userAnswer['selectedChoice']) {
+//                 $score++;
+//             }
+//         }
+//     }
+
+//     // Calculate the result
+//     $result = [
+//         'quizId' => $quizId,
+//         'score' => $score,
+//         'totalQuestions' => $totalQuestions,
+//         'percentage' => ($score / $totalQuestions) * 100,
+//     ];
+
+//     // Optionally save the result to the database (e.g., for future reference)
+//     $userQuizResult = new UserQuizResult();
+//     $userQuizResult->user_id = auth()->id();
+//     $userQuizResult->quiz_id = $quizId;
+//     $userQuizResult->score = $score;
+//     $userQuizResult->total_questions = $totalQuestions;
+//     $userQuizResult->save();
+
+//     // Return the result
+//     return response()->json(['message' => 'Quiz submitted successfully', 'result' => $result]);
+// }
+
+// public function submit(Request $request, $quizId)
+// {
+//     $userId = auth()->user()->id; 
+//     $submittedAnswers = $request->input('answers'); 
+
+//     $questions = DB::table('questions')
+//         ->where('quiz_id', $quizId)
+//         ->get();
+
+//     $totalScore = 0; 
+
+//     foreach ($questions as $question) {
+//         $correctChoice = DB::table('choices')
+//             ->where('question_id', $question->id)
+//             ->where('is_correct', 1)
+//             ->first();
+
+//         if (isset($submittedAnswers[$question->id]) && $submittedAnswers[$question->id] == $correctChoice->id) {
+//             $totalScore += $question->score_question;
+//         }
+//     }
+
+//     DB::table('quiz_user')->updateOrInsert(
+//         ['user_id' => $userId, 'quiz_id' => $quizId],
+//         ['final_result' => $totalScore, 'updated_at' => now()]
+//     );
+
+//     return response()->json([
+//         'final_result' => $totalScore,
+//         'message' => 'Quiz submitted successfully!',
+//     ]);
+// }
+public function submit(Request $request, $quizId)
+{
+    $userId = auth()->user()->id; 
+
+    // Check if the user has already submitted the quiz
+    $quizUser = DB::table('quiz_user')
+        ->where('user_id', $userId)
+        ->where('quiz_id', $quizId)
+        ->first();
+
+    if ($quizUser && $quizUser->submitted) {
+        return response()->json([
+            'message' => 'You have already submitted this quiz.',
+            'submitted' => true // Add this to indicate the submission status
+        ], 403);
+    }
+
+    // Get submitted answers from the request
+    $submittedAnswers = $request->input('answers'); 
+
+    // Get the quiz questions
+    $questions = DB::table('questions')
+        ->where('quiz_id', $quizId)
+        ->get();
+
+    $totalScore = 0; 
+
+    // Calculate total score based on correct answers
+    foreach ($questions as $question) {
+        $correctChoice = DB::table('choices')
+            ->where('question_id', $question->id)
+            ->where('is_correct', 1)
+            ->first();
+
+        if (isset($submittedAnswers[$question->id]) && $submittedAnswers[$question->id] == $correctChoice->id) {
+            $totalScore += $question->score_question;
+        }
+    }
+
+    // Update or insert the user's quiz submission details
+    DB::table('quiz_user')->updateOrInsert(
+        ['user_id' => $userId, 'quiz_id' => $quizId],
+        [
+            'final_result' => $totalScore, 
+            'submitted' => true,  // Mark quiz as submitted
+            'updated_at' => now()
+        ]
+    );
+
+    // Return a response indicating successful submission
+    return response()->json([
+        'final_result' => $totalScore,
+        'message' => 'Quiz submitted successfully!',
+        'submitted' => true  // Add submission status to the response
+    ]);
+}
+
+
 }

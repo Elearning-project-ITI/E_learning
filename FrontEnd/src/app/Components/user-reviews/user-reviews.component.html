@@ -1,0 +1,44 @@
+<section id="userReviews">
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">User Reviews</h2>
+
+    <div *ngIf="displayedReviews.length > 0; else noReviews">
+      <div *ngFor="let review of displayedReviews" class="card review-card mb-4 shadow-sm">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div>
+              <h5 class="card-title mb-2">{{ review.user.name }}</h5>
+              <h6 class="card-subtitle text-muted">Rating: 
+                <ng-container *ngFor="let star of [].constructor(5); let i = index">
+                  <i *ngIf="i < review.rating" class="fa-solid fa-star text-warning"></i>
+                  <i *ngIf="i >= review.rating" class="fa-regular fa-star text-warning"></i>
+                </ng-container>
+                <!-- {{ review.rating }}/5 -->
+              </h6>
+            </div>
+            <small class="text-muted">Posted on: {{ review.created_at | date: 'yyyy-MM-dd' }}</small>
+          </div>
+          <p class="card-text">{{ review.comment }}</p>
+        </div>
+      </div>
+
+      <!-- Pagination controls -->
+      <nav *ngIf="totalPages > 1">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="changePage(currentPage - 1)" >Previous</a>
+          </li>
+          <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="i + 1 === currentPage">
+            <a class="page-link" (click)="changePage(i + 1)" >{{ i + 1 }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="changePage(currentPage + 1)" >Next</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+    <ng-template #noReviews>
+      <p class="text-center">No reviews available for this course.</p>
+    </ng-template>
+  </div>
+</section>

@@ -86,9 +86,25 @@ Route::post('/notifications/mark-all-read', [NotificationController::class, 'mar
     Route::resource('quizuser', QuizUserController::class);
     Route::resource('question', QuestionController::class);
     Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getByQuiz']);
+    Route::post('/quiz/{quiz_id}/questions', [QuestionController::class, 'store']);
     Route::get('/course/{id}/materials', [MaterialController::class, 'getMaterialsByCourseId']);
     Route::get('/profile', [UserController::class, 'showProfile'])->name('profile.show');
     Route::put('/profile', [UserController::class, 'update'])->name('profile.update');
+    Route::post('/quiz/{quiz_id}/questions/{question_id}/choices', [ChoiceController::class, 'store']);
+    Route::get('/courses/most-booked', [CourseController::class, 'mostBookedCourses']);
+    //////////////////////////////////////////////////////////////////////////
+    // Fetch all quizzes for a specific course
+Route::get('/course/{course_id}/quizzes', [QuizController::class, 'getQuizzesByCourse']);
+
+// Fetch all questions for a specific quiz
+//Route::get('/quiz/{quiz_id}/questions', [QuestionController::class, 'getQuestionsByQuiz']);
+
+// Fetch all choices for a specific question
+Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoicesByQuestion']);
+//////////////////////////////////////////////////////////////////////////////////
+// Route::post('/quizzes/{quiz}/submit', [QuizController::class, 'submitAnswers']);
+
+//////////////////////////////////////////////////////////////////////////////////
     Route::get('/my-reviews', [ReviewController::class, 'getAllReviewsForStudent'])->name('reviews.myReviews'); // add my-review 
     Route::get('/reviews', [ReviewController::class, 'getAllReviewsForStudents'])->name('reviews.all'); // add yours reviews
 
@@ -99,12 +115,16 @@ Route::post('/notifications/mark-all-read', [NotificationController::class, 'mar
         Route::get('/my-courses', [CourseController::class, 'myCourses'])->name('student.myCourses');
 
     // Route to get courses in the student's wishlist
-    Route::get('/my-wishlist', [WishlistController::class, 'myWishlist'])->name('student.myWishlist');
+    // Route::get('/my-wishlist', [WishlistController::class, 'myWishlist'])->name('student.myWishlist');
+    Route::middleware('auth:api')->get('/my-wishlist', [WishlistController::class, 'index']);
 
-        Route::get('/check-booking', [PaymentController::class, 'checkBooking']);
+
+    Route::post('/check-booking', [PaymentController::class, 'checkBooking']);
     Route::post('/payment', [PaymentController::class, 'handlePayment'])->name('payment.handle');
-    Route::get('/payment/success', [PaymentController::class, 'success'])->name('success');
-Route::get('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
+    Route::post('/payment/success', [PaymentController::class, 'success'])->name('success');
+    Route::post('/payment/cancel', [PaymentController::class, 'cancel'])->name('cancel');
+    Route::post('/quiz/{quiz}/submit', [QuizController::class, 'submit'])->name('quiz.submit');
+
 
     });
     // Routes for admins only

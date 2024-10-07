@@ -1,72 +1,90 @@
 <div class="review-section">
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-8 col-md-10">
-                <div class="card review-card p-4 shadow-lg">
-                    <h2 class="text-center mb-4">Submit Your Review</h2>
-                    <form>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" class="form-control" id="name" placeholder="Enter your name" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="rating" class="form-label">Rating</label>
-                                <select class="form-select" id="rating" required>
-                                    <option value="" selected disabled>Choose rating</option>
-                                    <option value="1"> Very Poor</option>
-                                    <option value="2"> Poor</option>
-                                    <option value="3"> Average</option>
-                                    <option value="4"> Good</option>
-                                    <option value="5"> Excellent</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="comments" class="form-label">Comments</label>
-                            <textarea class="form-control" id="comments" rows="6" placeholder="Write your comments here..." required></textarea>
-                        </div>
-                        <div class="d-grid">
-                            <button type="submit" class="btn btn-primary submit-btn">Submit Review</button>
-                        </div>
-                    </form>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-8 col-md-10">
+        <div class="card review-card p-4 shadow-lg">
+          <h2 class="text-center mb-4">Submit Your Review</h2>
+          <form [formGroup]="reviewForm" (ngSubmit)="onSubmit()">
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <label for="rating" class="form-label">Rating</label>
+                <div class="star-rating">
+                  <ng-container *ngFor="let star of [].constructor(5); let i = index">
+                    <i (click)="setRating(i + 1)" class="fa" 
+                       [ngClass]="reviewForm.get('rating')?.value >= i + 1 ? 'fa-solid fa-star text-warning' : 'fa-regular fa-star text-warning'">
+                    </i>
+                  </ng-container>
                 </div>
+                <div class="alert alert-danger" *ngIf="reviewForm.get('rating')?.errors && reviewForm.get('rating')?.touched">
+                  <p *ngIf="reviewForm.get('rating')?.getError('required')">Rating is Required</p>
+                  <p *ngIf="reviewForm.get('rating')?.getError('min')">Min must be 1</p>
+                  <p *ngIf="reviewForm.get('rating')?.getError('max')">Max must be 5</p>
+                </div>
+              </div>
             </div>
-        </div>
-
-        <!-- Existing Reviews Section -->
-        <div class="row justify-content-center mt-5">
-            <div class="col-lg-10">
-                <h2 class="text-center mb-4">User Reviews</h2>
-
-                <!-- Example Review -->
-                <div class="card review-card mb-4 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div>
-                                <h5 class="card-title mb-0">Meray Hosam</h5>
-                                <h6 class="card-subtitle text-muted">Rating: 4/5</h6>
-                            </div>
-                            <small class="text-muted">Posted on: 2024-09-23</small>
-                        </div>
-                        <p class="card-text">This course is really good! I enjoyed it, but there are some improvements to be made.</p>
-                    </div>
-                </div>
-
-                <!-- Example Review -->
-                <div class="card review-card mb-4 shadow-sm">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <div>
-                                <h5 class="card-title mb-0">John Doe</h5>
-                                <h6 class="card-subtitle text-muted">Rating: 5/5</h6>
-                            </div>
-                            <small class="text-muted">Posted on: 2024-09-20</small>
-                        </div>
-                        <p class="card-text">Excellent course with well-structured material and great instructor support.</p>
-                    </div>
-                </div>
+            <div class="mb-3">
+              <label for="comments" class="form-label">Comments</label>
+              <textarea formControlName="comments" class="form-control" id="comments" rows="6" placeholder="Write your comments here..." required></textarea>
+              <div class="alert alert-danger" *ngIf="reviewForm.get('comments')?.errors && reviewForm.get('comments')?.touched">
+                <p *ngIf="reviewForm.get('comments')?.getError('required')">Comments are Required</p>
+                <p *ngIf="reviewForm.get('comments')?.getError('maxLength')">Max length is 500</p>
+              </div>
             </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-primary submit-btn" [disabled]="reviewForm.invalid">
+                <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>Submit Review
+              </button>
+              <div *ngIf="msgErrors" class="alert alert-danger mt-3">
+                {{ msgErrors }}
+              </div>
+              <p *ngIf="msgSuccess" class="alert alert-success mt-2">{{ msgSuccess }}</p>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
+
+    <div class="container mt-5">
+      <h2 class="text-center mb-4">User Reviews</h2>
+
+      <div *ngIf="displayedReviews.length > 0; else noReviews">
+        <div *ngFor="let review of displayedReviews" class="card review-card mb-4 shadow-sm">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <h5 class="card-title mb-2">{{ review.user.name }}</h5>
+                <h6 class="card-subtitle text-muted">Rating: 
+                  <ng-container *ngFor="let star of [].constructor(5); let i = index">
+                    <i *ngIf="i < review.rating" class="fa-solid fa-star text-warning"></i>
+                    <i *ngIf="i >= review.rating" class="fa-regular fa-star text-warning"></i>
+                  </ng-container>
+                  <!-- {{ review.rating }}/5 -->
+                </h6>
+              </div>
+              <small class="text-muted">Posted on: {{ review.created_at | date: 'yyyy-MM-dd' }}</small>
+            </div>
+            <p class="card-text">{{ review.comment }}</p>
+          </div>
+        </div>
+
+        <!-- Pagination controls -->
+        <nav *ngIf="totalPages > 1">
+          <ul class="pagination justify-content-center">
+            <li class="page-item" [class.disabled]="currentPage === 1">
+              <a class="page-link" (click)="changePage(currentPage - 1)" >Previous</a>
+            </li>
+            <li class="page-item" *ngFor="let page of [].constructor(totalPages); let i = index" [class.active]="i + 1 === currentPage">
+              <a class="page-link" (click)="changePage(i + 1)" >{{ i + 1 }}</a>
+            </li>
+            <li class="page-item" [class.disabled]="currentPage === totalPages">
+              <a class="page-link" (click)="changePage(currentPage + 1)" >Next</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <ng-template #noReviews>
+        <p class="text-center">No reviews available for this course.</p>
+      </ng-template>
+    </div>
+  </div>
 </div>

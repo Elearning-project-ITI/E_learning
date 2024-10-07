@@ -74,8 +74,10 @@ export class ViewCourseDetailsComponent {
         next: (response) => {
           console.log('Payment Successful:', response);
           window.location.href = response.url;
+          // window.location.href = `${response.url}?status=success`;
         },
         error: (err) => {
+          // window.location.href = `http://localhost:4200/verifypayment?status=cancel`;
           console.error('Payment Failed:', err);
           alert('Payment Failed: ' + err.message);
         }

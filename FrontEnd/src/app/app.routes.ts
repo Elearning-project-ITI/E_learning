@@ -34,6 +34,9 @@ import { ViewAdminMaterialComponent } from './Components/view-admin-material/vie
 import { AdminUpdateQuizeComponent } from './Components/admin-update-quize/admin-update-quize.component';
 import { ViewAdminCourseComponent } from './Components/view-admin-course/view-admin-course.component';
 import { CourseDetailsAdminComponent } from './course-details-admin/course-details-admin.component';
+import { VerifyPaymentComponent } from './Components/verify-payment/verify-payment.component';
+import { UserReviewsComponent } from './Components/user-reviews/user-reviews.component';
+import { ReportComponent } from './Components/report/report.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -47,16 +50,18 @@ export const routes: Routes = [
     {path:"resetpassword",component:ResetPasswordComponent},
     {path:"verify-email",component:VerifyEmailComponent},
     {path:"notification",component:NotificationComponent},
-
+    //verifypayment
+    {path:"verifypayment",component:VerifyPaymentComponent},
 
     {path:"adminCourses",component:AdminCourseComponent},
+    {path:"report",component:ReportComponent},
     {path:"adminCourses/create",component:AddCourseComponent},
     {path:"adminCourses/:id",component:CourseDetailsAdminComponent,children:[
         { path: "", component: ViewAdminCourseComponent },
         { path: "cousredetailsadmin", component: ViewAdminCourseComponent },
         { path: "addmaterial", component: AddAdminMaterialComponent },
         { path: "addquizes", component: AdminAddQuizeComponent },
-        { path: "reviews", component: ReviwesComponent }
+        { path: "reviews", component: UserReviewsComponent }
     ]}
     ,{path:"adminCourses/updatecourse/:id",component:EditCourseComponent},
     {path:"adminCourses/:courseId/addmaterial/update/:materialId",component:EditAdminMaterialComponent}

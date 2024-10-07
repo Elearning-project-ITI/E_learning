@@ -19,31 +19,62 @@ use App\Notifications\CourseNotification;
 class CourseController extends Controller
 {
     
-    public function index()
-    {
-        $courses = Course::with('bookings', 'reviews')->get();
+    // public function index()
+    // {
+    //     $courses = Course::with('bookings', 'reviews')->get();
 
-        // Modify the course data to include number of students and average rating
-        $courses = $courses->map(function ($course) {
-            return [
-                'id' => $course->id,
-                'name' => $course->name,
-                'description' => $course->description,
-                'image'=> $course->image,
-                'number_of_students' => $course->bookings->count(),  // Number of students who booked the course
-                'price' =>$course->price,
-                'average_rating' => $course->reviews->avg('rating'),  // Average rating of the course
-                'created_at' => $course->created_at,
-                'updated_at' => $course->updated_at,
-            ];
-        });
+    //     // Modify the course data to include number of students and average rating
+    //     $courses = $courses->map(function ($course) {
+    //         return [
+    //             'id' => $course->id,
+    //             'name' => $course->name,
+    //             'description' => $course->description,
+    //             'image'=> $course->image,
+    //             'number_of_students' => $course->bookings->count(),  // Number of students who booked the course
+    //             'price' =>$course->price,
+    //             'average_rating' => $course->reviews->avg('rating'),  // Average rating of the course
+    //             'created_at' => $course->created_at,
+    //             'updated_at' => $course->updated_at,
+    //         ];
+    //     });
 
-        return response()->json([
-            'success' => true,
-            'data' => $courses,
-        ], 200);
-    }
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $courses,
+    //     ], 200);
+    // }
+    public function index(Request $request)
+{
+    // Get the search term from the query parameter
+    $searchTerm = $request->query('name');
 
+    // Query courses, optionally filtering by name if the search term is provided
+    $courses = Course::with('bookings', 'reviews')
+        ->when($searchTerm, function ($query, $searchTerm) {
+            return $query->where('name', 'LIKE', '%' . $searchTerm . '%');
+        })
+        ->get();
+
+    // Modify the course data to include the number of students and average rating
+    $courses = $courses->map(function ($course) {
+        return [
+            'id' => $course->id,
+            'name' => $course->name,
+            'description' => $course->description,
+            'image' => $course->image,
+            'number_of_students' => $course->bookings->count(),  // Number of students who booked the course
+            'price' => $course->price,
+            'average_rating' => $course->reviews->avg('rating'),  // Average rating of the course
+            'created_at' => $course->created_at,
+            'updated_at' => $course->updated_at,
+        ];
+    });
+
+    return response()->json([
+        'success' => true,
+        'data' => $courses,
+    ], 200);
+}
     
     // public function store(Request $request)
     // {
@@ -404,6 +435,18 @@ public function myWishlist()
         'success' => true,
         'wishlist' => $wishlist,
     ]);
+}
+public function mostBookedCourses()
+{
+    $courses = Course::withCount('bookings')
+        ->orderBy('bookings_count', 'desc')
+        ->take(5) // Get top 5 courses
+        ->get();
+
+    return response()->json([
+        'success' => true,
+        'data' => $courses,
+    ], 200);
 }
 
 

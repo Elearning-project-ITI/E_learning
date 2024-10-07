@@ -99,10 +99,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
       (isAuthenticated: boolean) => {
         this.isLoggedIn = isAuthenticated;
         if (this.isLoggedIn) {
-          // this.userProfileImage = this._AuthService.getUserImage();
-          // this.userRole = this._AuthService.userRole; // Get the user role
-        } else {
-          // this.userRole = null; // Reset user role when logged out
+          this._AuthService.getProfile().subscribe({
+            next: (response) => {
+              this.profileData = response;
+              if (this.profileData?.data) {
+                this.decodeProfileData(this.profileData.data);
+                // this.router.navigate(['/']); // Navigate to root to refresh and update role-specific UI
+              }
+            },
+            error: (err) => {
+              console.error('Error fetching profile:', err);
+            },
+          });
         }
       }
     );
@@ -150,6 +158,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logOutUser(): void {
     this._AuthService.logout();
     this.isLoggedIn = false;
+    this.router.navigate(['/login']);
     // this.userProfileImage = 'images/user.jpeg'; // reset to default after logout
   }
   decodeProfileData(token: string): void {

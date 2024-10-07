@@ -3,17 +3,22 @@ import { Router, RouterModule } from '@angular/router';
 import { CoursesService } from '../../shared/services/courses.service';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from '../loader/loader.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-admin-course',
   standalone: true,
-  imports: [RouterModule,CommonModule,LoaderComponent],
+  imports: [RouterModule,CommonModule,LoaderComponent ,NgxPaginationModule],
   templateUrl: './admin-course.component.html',
   styleUrl: './admin-course.component.css'
 })
 export class AdminCourseComponent {
   Courses: any[] = [];
-
+  currentPage: number = 1;
+  itemsPerPage: number = 6;
+  searchTerm: string = '';
+  searchTermSubject: Subject<string> = new Subject<string>();
   constructor(private courseserv: CoursesService, private router: Router) { }
 
   ngOnInit(): void {
@@ -27,6 +32,12 @@ export class AdminCourseComponent {
       error: (err) => {
         console.log(err);  
       }
+    });
+    this.searchTermSubject.pipe(
+      debounceTime(300),  // Wait 300ms before searching
+      distinctUntilChanged()  // Only trigger if the search term changes
+    ).subscribe(searchTerm => {
+      this.searchCourses(searchTerm);
     });
   }
   deleteCourse(courseId: number): void {
@@ -57,6 +68,23 @@ export class AdminCourseComponent {
       },
       error: (err) => {
         console.log(err);  
+      }
+    });
+  }
+  onSearch(event: any): void {
+    const searchTerm = event.target.value;
+    this.searchTermSubject.next(searchTerm);  // Push the search term to the Subject
+  }
+
+  searchCourses(searchTerm: string): void {
+    this.courseserv.GetCoursesByName(searchTerm).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.Courses = response.data;
+        }
+      },
+      error: (err) => {
+        console.error('Error fetching courses by name:', err);
       }
     });
   }

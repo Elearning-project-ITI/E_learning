@@ -19,7 +19,7 @@ export class EditProfileComponent implements OnInit {
   msgSuccess = '';
   msgErrors: string[] = [];
   profileData: any = null; 
-  currentProfileImage: string | null = null; // New property for image URL
+  currentProfileImage: string | null = null; 
 
   editProfileForm: FormGroup = new FormGroup({
     name: new FormControl(null, [Validators.required, Validators.maxLength(255)]),
@@ -45,7 +45,7 @@ export class EditProfileComponent implements OnInit {
         email: this.profileData.email,
         phone: this.profileData.phone,
       });
-      this.currentProfileImage = this.profileData.image; // Set the current image URL
+      this.currentProfileImage = this.profileData.image; 
     }
   }
 
@@ -56,7 +56,7 @@ export class EditProfileComponent implements OnInit {
     formData.append('email', this.editProfileForm.get('email')?.value);
     formData.append('phone', this.editProfileForm.get('phone')?.value);
     formData.append('password', this.editProfileForm.get('password')?.value);
-    formData.append('password_confirmation', this.editProfileForm.get('password')?.value);
+    formData.append('password_confirmation', this.editProfileForm.get('password_confirmation')?.value);
     if (this.editProfileForm.get('image')?.value) {
       formData.append('image', this.editProfileForm.get('image')?.value);
     }
@@ -66,7 +66,15 @@ export class EditProfileComponent implements OnInit {
         console.log(response);
         this.msgSuccess = 'Profile updated successfully!';
         this.isLoading = false;
+
         
+        this.profileDataService.setProfileData({
+          name: this.editProfileForm.get('name')?.value,
+          email: this.editProfileForm.get('email')?.value,
+          phone: this.editProfileForm.get('phone')?.value,
+          image: this.currentProfileImage
+        });
+
         this._Router.navigate(['/profile']); 
       },
       error: (err: HttpErrorResponse) => {

@@ -1,174 +1,187 @@
 /* General Container */
 .course-material-container {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 40px;
-    border-radius: 16px;
-    background-color: #f5f9fc;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-    animation: fadeInContainer 1s ease-in-out;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 16px;
+  background-color: #f5f9fc;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  animation: fadeInContainer 1s ease-in-out;
+  user-select: none; /* Disable text selection */
+  /* pointer-events: none; Disable content interaction */
+}
+/* Animation for the container */
+@keyframes fadeInContainer {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
   }
-  
-  /* Animation for the container */
-  @keyframes fadeInContainer {
-    0% {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1);
-    }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
-  
-  /* Advanced Card Design */
-  .advanced-card {
-    background: linear-gradient(145deg, #e3efff, #ffffff);
-    border-radius: 16px;
-    padding: 20px;
-    margin-bottom: 20px;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  
-  .advanced-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-  }
-  
-  .card-header h2 {
-    color: #365b99;
-    font-size: 1.6rem;
-    font-weight: bold;
-  }
-  
-  .toggle-btn {
-    background-color: #5472d3;
+}
+
+/* Advanced Card Design */
+.advanced-card {
+  background: linear-gradient(145deg, #e3efff, #ffffff);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+  /* Watermark */
+  .watermark {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    opacity: 0.5;
+    font-size: 14px;
     color: white;
-    font-size: 1.2rem;
-    padding: 10px 20px;
-    border-radius: 50px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 5px;
+    border-radius: 5px;
   }
-  
-  .toggle-btn:hover {
-    background-color: #365b99;
-    transform: scale(1.05);
-  }
-  
-  .description-content {
-    padding-top: 20px;
-  }
-  
-  .description-text {
-    font-size: 1.1rem;
-    color: #6a7b8b;
-  }
-  
-  .description-check {
-    display: flex;
-    align-items: center;
-    margin-top: 15px;
-  }
-  
-  .description-check input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
-  }
-  
-  .description-check label {
-    font-size: 1rem;
-    color: #365b99;
-  }
-  
-  /* Video Card Section */
-  .video-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
-  }
-  
-  .video-header button {
-    background: none;
-    font-size: 1.2rem;
-    color: #365b99;
-    border: none;
-    display: flex;
-    align-items: center;
-    transition: color 0.3s ease;
-  }
-  
-  .video-header button:hover {
-    color: #5472d3;
-  }
-  
-  .video-body {
-    background-color: #f1f8ff;
-    padding: 15px;
-    border-radius: 10px;
-    margin-top: 10px;
-  }
-  
-  .video-player {
-    width: 100%;
-    border-radius: 8px;
-  }
-  
-  .video-completed {
-    display: flex;
-    align-items: center;
-    margin-top: 10px;
-  }
-  
-  .video-completed input[type="checkbox"] {
-    margin-right: 10px;
-    transform: scale(1.2);
-  }
-  
-  /* PDFs Section */
+.advanced-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+}
+
+.card-header h2 {
+  color: #365b99;
+  font-size: 1.6rem;
+  font-weight: bold;
+}
+
+.toggle-btn {
+  background-color: #5472d3;
+  color: white;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.toggle-btn:hover {
+  background-color: #365b99;
+  transform: scale(1.05);
+}
+
+.description-content {
+  padding-top: 20px;
+}
+
+.description-text {
+  font-size: 1.1rem;
+  color: #6a7b8b;
+}
+
+.description-check {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.description-check input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+.description-check label {
+  font-size: 1rem;
+  color: #365b99;
+}
+
+/* Video Card Section */
+.video-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.video-header button {
+  background: none;
+  font-size: 1.2rem;
+  color: #365b99;
+  border: none;
+  display: flex;
+  align-items: center;
+  transition: color 0.3s ease;
+}
+
+.video-header button:hover {
+  color: #5472d3;
+}
+
+.video-body {
+  background-color: #f1f8ff;
+  padding: 15px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.video-player {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.video-completed {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.video-completed input[type="checkbox"] {
+  margin-right: 10px;
+  transform: scale(1.2);
+}
+
+/* PDFs Section */
+.pdf-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 20px;
+}
+
+.advanced-btn {
+  background-color: #ffa502;
+  color: white;
+  font-size: 1rem;
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: none;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+}
+
+.advanced-btn:hover {
+  background-color: #ff7f0a;
+  transform: translateY(-5px);
+}
+
+.advanced-pdf-link {
+  font-size: 1rem;
+  color: #365b99;
+  text-decoration: none;
+  margin-left: 10px;
+}
+
+.advanced-pdf-link:hover {
+  text-decoration: underline;
+  color: #5472d3;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .video-cards,
   .pdf-list {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 20px;
+    grid-template-columns: 1fr;
   }
-  
-  .advanced-btn {
-    background-color: #ffa502;
-    color: white;
-    font-size: 1rem;
-    padding: 10px 20px;
-    border-radius: 50px;
-    border: none;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    cursor: pointer;
+
+  .course-material-container {
+    padding: 20px;
   }
-  
-  .advanced-btn:hover {
-    background-color: #ff7f0a;
-    transform: translateY(-5px);
-  }
-  
-  .advanced-pdf-link {
-    font-size: 1rem;
-    color: #365b99;
-    text-decoration: none;
-    margin-left: 10px;
-  }
-  
-  .advanced-pdf-link:hover {
-    text-decoration: underline;
-    color: #5472d3;
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .video-cards,
-    .pdf-list {
-      grid-template-columns: 1fr;
-    }
-  
-    .course-material-container {
-      padding: 20px;
-    }
-  }
+}
