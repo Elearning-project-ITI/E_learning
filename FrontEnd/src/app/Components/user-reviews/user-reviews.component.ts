@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CoursesService } from '../../shared/services/courses.service';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-user-reviews',
@@ -17,7 +18,7 @@ export class UserReviewsComponent implements OnInit {
   reviewsPerPage: number = 3;
   totalPages: number = 1;
 
-  constructor(private coursesService: CoursesService) {}
+  constructor(private coursesService: CoursesService , private toastr: ToastrService) {}
 
   ngOnInit(): void {
     const course = this.coursesService.getCourse();
@@ -63,6 +64,7 @@ export class UserReviewsComponent implements OnInit {
       this.coursesService.deleteReview(reviewId).subscribe({
         next: (response) => {
           if (response.success) {
+            this.toastr.error("Review Deleted successfully!")
             // Remove the deleted review from the list
             this.reviews = this.reviews.filter((review) => review.id !== reviewId);
             this.totalPages = Math.ceil(this.reviews.length / this.reviewsPerPage);
