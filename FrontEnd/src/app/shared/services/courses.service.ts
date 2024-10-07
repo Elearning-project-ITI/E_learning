@@ -324,6 +324,18 @@ getAllReviews(): Observable<any> {
     catchError(this.handleError)
   );
 }
+deleteReview(reviewId: number): Observable<any> {
+  const token = localStorage.getItem('access_token');
+  
+  if (!token) {
+    return throwError(() => new Error('Token not found'));
+  }
+
+  const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  return this.http.delete(`${this.DB_URL}/review/${reviewId}`, { headers }).pipe(
+    catchError(this.handleError)
+  );
+}
 booking(courseId: number): Observable<any> {
   const token = localStorage.getItem('access_token');
   
