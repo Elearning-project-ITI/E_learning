@@ -4,7 +4,7 @@
   import { SnackbarService } from './snackbar.service';
   import { HttpClient } from '@angular/common/http';
   import { AuthService } from './auth.service'; // Import your AuthService
-
+  
   @Injectable({
     providedIn: 'root',
   })

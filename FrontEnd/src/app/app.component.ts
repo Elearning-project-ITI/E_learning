@@ -1,25 +1,30 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
 import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { LoaderComponent } from './Components/loader/loader.component';
 import { RegisterationComponent } from "./Components/registeration/registeration.component";
 import { PusherService } from './shared/services/notification.service';
-
+import { AuthInterceptor } from './auth.interceptor';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, HeaderComponent, FooterComponent, LoaderComponent, RegisterationComponent],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrl: './app.component.css',
+  // providers: [
+  //   { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+  // ]
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
   title = 'finalProject';
   isLoading: boolean = true;
 
   constructor(
-    private pusherService: PusherService, // Inject PusherService
+    private pusherService: PusherService // Inject PusherService
   ) {}
 
   ngOnInit(): void {

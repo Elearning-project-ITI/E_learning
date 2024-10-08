@@ -83,7 +83,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, throwError } from 'rxjs';
 
 interface userAuth {
   user: any;
@@ -228,5 +228,59 @@ export class AuthService {
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this._HttpClient.get<{name: string;role: string }>(`${this.baseURL}/user/name`, { headers });
   }
+  getUnreadNotifications(): Observable<{ message: string }[]> {
+    const token = localStorage.getItem('access_token');
+  
+    if (!token) {
+      console.error('No access token found.');
+      return throwError(() => new Error('No access token found.'));
+    }
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this._HttpClient.get<{ status: string, unread_notifications: { message: string }[] }>(
+      `${this.baseURL}/notifications/unread`, 
+      { headers }
+    ).pipe(map(response => {
+        if (response.status === 'success') {
+          return response.unread_notifications;
+        } else {
+          console.error('Failed to fetch unread notifications.');
+          return [];
+        }
+      }),
+      catchError(err => {
+        console.error('Error fetching unread notifications', err);
+        return throwError(() => new Error('Error fetching unread notifications'));
+      })
+    );
+  }
+  viewAllNotifications(): Observable<{ message: string }[]> {
+    const token = localStorage.getItem('access_token');
+  
+    if (!token) {
+      console.error('No access token found.');
+      return throwError(() => new Error('No access token found.'));
+    }
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this._HttpClient.get<{ status: string, notifications: { message: string }[] }>(
+      `${this.baseURL}/notifications`, 
+      { headers }
+    ).pipe(
+      map(response => {
+        if (response.status === 'success') {
+          return response.notifications;
+        } else {
+          console.error('Failed to fetch notifications.');
+          return [];
+        }
+      }),
+      catchError(err => {
+        console.error('Error fetching notifications', err);
+        return throwError(() => new Error('Error fetching notifications'));
+      })
+    );
+  }
+    
 }
 
