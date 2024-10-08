@@ -30,7 +30,7 @@ class CourseAddedEvent implements ShouldBroadcastNow
     }
 
       public function broadcastOn()
-    {
+    { 
         return [
             new PrivateChannel('user-notifications'), // For students
             new PrivateChannel('admin-notifications'), // For admin

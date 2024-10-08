@@ -125,7 +125,10 @@
               <a class="nav-link" routerLink="/profile">
                   <img [src]="decodedData?.length > 0 && decodedData[0]?.image" class="imgprofile rounded-circle" alt="imgprofile"/>
               </a>
-              <i routerLink="/notification" class="fa-regular fa-bell fs-4 notifiaction" (click)="togglenotify($event)"></i>
+              <a routerLink="/notification" class="position-relative">
+              <i  class="fa-regular fa-bell fs-1 notifiaction" (click)="togglenotify($event)"></i>
+              <span class="badge spanBadge position-absolute top-1">{{ unreadNotifications.length }}</span>
+            </a>
           </div>
       </div>
   </div>

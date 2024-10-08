@@ -5,6 +5,7 @@ import { FooterComponent } from './Components/footer/footer.component';
 import { LoaderComponent } from './Components/loader/loader.component';
 import { RegisterationComponent } from "./Components/registeration/registeration.component";
 import { PusherService } from './shared/services/notification.service';
+import { AuthService } from './shared/services/auth.service';
 
 
 @Component({
@@ -19,7 +20,9 @@ export class AppComponent implements OnInit{
   isLoading: boolean = true;
 
   constructor(
-    private pusherService: PusherService, // Inject PusherService
+    private pusherService: PusherService, 
+    private authsevice: AuthService,
+    // Inject PusherService
   ) {}
 
   ngOnInit(): void {

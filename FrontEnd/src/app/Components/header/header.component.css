@@ -151,3 +151,8 @@ opacity: 0;
 .notifiaction{
     color: #6A9AB0 !important;
 }
+.spanBadge{
+   background-color: #78a7bd; 
+   /* bottom:20 !important; */
+   left: 15px;
+}

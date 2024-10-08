@@ -92,6 +92,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private authSubscription!: Subscription;
   profileData: any = null;
   decodedData: any = null;
+  unreadNotifications: { message: string }[] = [];
   constructor(private _AuthService: AuthService, private profileDataService: ProfileDataService, private router: Router) {}
 
   ngOnInit(): void {
@@ -129,6 +130,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   
           if (this.profileData?.data) {
             this.decodeProfileData(this.profileData.data);
+            this.fetchUnreadNotifications();
           }
         },
         error: (err) => {
@@ -153,6 +155,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
       notification.classList.remove('fa-solid');
       notification.classList.add('fa-regular');
     }
+  }
+  fetchUnreadNotifications(): void {
+    this._AuthService.getUnreadNotifications().subscribe({
+      next: (notifications) => {
+        console.log(notifications)
+        this.unreadNotifications = notifications; // Store notifications
+        console.log('Unread notifications:', this.unreadNotifications);
+      },
+      error: (err) => {
+        console.error('Error fetching unread notifications:', err);
+      }
+    });
   }
 
   logOutUser(): void {

@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-add-course',
@@ -13,7 +14,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './add-course.component.css'
 })
 export class AddCourseComponent {
-  constructor(private courseserv: CoursesService, private _Router: Router) { }
+  constructor(private courseserv: CoursesService, private _Router: Router , private toastr: ToastrService) { }
   msgSuccess = '';
   msgErrors: string[] = [];
   isLoading: boolean = false;
@@ -79,6 +80,7 @@ export class AddCourseComponent {
             this.isLoading = false;
             console.log(response)
             this.msgSuccess = response.message;
+            this.toastr.success("Course Created Successfully")
             setTimeout(() => {
               this._Router.navigate(['/adminCourses']);
             }, 2000);
@@ -86,7 +88,9 @@ export class AddCourseComponent {
         },
         error: (err: HttpErrorResponse) => {
           this.isLoading = false;
+          
           this.msgErrors = err.error.message;
+          this.toastr.error("course faild created")
         }
       });
     }
