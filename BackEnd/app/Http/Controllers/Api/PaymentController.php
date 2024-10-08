@@ -11,7 +11,7 @@ use App\Models\Course;
 use App\Models\User;
 // Assuming courses are stored in a Course model
 use App\Models\Booking;  // Import the Booking model
-use App\Notifications\CourseBookedNotification;
+use App\Notifications\CourseBookingNotification;
 use Illuminate\Support\Facades\Notification;
 use App\Http\Controllers\Api\BaseController;
 use Google\Client as GoogleClient;
@@ -90,7 +90,17 @@ class PaymentController extends BaseController
             $courseId = $request->course_id;
             $sessionId = $request->get('session_id');
             Stripe::setApiKey(env('STRIPE_SECRET'));
-            $session = StripeSession::retrieve($sessionId);
+            $session = \Stripe\Checkout\Session::retrieve($sessionId, [
+                'expand' => ['payment_intent']
+            ]);
+            $paymentIntent = \Stripe\PaymentIntent::retrieve($session->payment_intent);
+            $charges=  \Stripe\Charge::all(['payment_intent' => $paymentIntent->id]);
+// Now you can access the details of the PaymentIntent
+           // dd($charges);
+
+            $receiptUrl = $charges->data[0]->receipt_url;
+            
+            //dd($receiptUrl);
           //  $customer = $session->customer_details;
             // Find the course
             $course = Course::find($courseId);
@@ -102,23 +112,24 @@ class PaymentController extends BaseController
                 ->where('course_id', $courseId)
                 ->first();
 
-            if ($existingBooking) {
-                return response()->json(['success' => false, 'error' => 'Already booked'], 400);
-            }
+            // if ($existingBooking) {
+            //     return response()->json(['success' => false, 'error' => 'Already booked'], 400);
+            // }
 
             // Create the booking
             Booking::create([
                 'user_id' => $user->id,
                 'course_id' => $courseId,
-                'date' => now(), // Store the current date and time
+                //'date' => now(), // Store the current date and time
             ]);
             $admins = User::where('role', 'admin')->get();
-            Notification::send($admins, new CourseBookedNotification($course, $user));
-        
-            $user->notify(new CourseBookedNotification($course, $user,$session));
+            
+            Notification::send($admins, new CourseBookingNotification($course, $user,null));
+           
+            $user->notify(new CourseBookingNotification($course, $user,$receiptUrl));
             // Return success response with the course name
-            $token = $user->currentAccessToken();
-            event(new CourseBookedEvent($user, $course,$token));
+           // $token = $user->currentAccessToken();
+            event(new CourseBookedEvent($user, $course));
             return response()->json([
                 'success' => true,
                 'message' => 'Payment successful, '.$course->name.' booked!',

@@ -15,6 +15,6 @@ Broadcast::channel('private-user-notifications', function ($user) {
 });
 
 // Personal user notifications channel
-Broadcast::channel('private-user-notifications.{userId}', function ($user, $userId) {
-    return (int) $user->id === (int) $userId;
+Broadcast::channel('private-user-notifications.{username}', function ($user, $username) {
+    return $user->name === $username;
 });

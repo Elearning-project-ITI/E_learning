@@ -35,7 +35,8 @@ Route::get('/verify-email', [AuthController::class, 'verifyEmail']);
 // Protected routes that require authentication (using sanctum middleware)
 Route::middleware(['auth:sanctum'])->group( function () {
 Route::post('/broadcasting/auth', [BroadcastController::class, 'authenticate']);
-Route::get('/user/role', [UserController::class, 'getRole']);
+Route::get('/user/name', [UserController::class, 'getRole']);
+
 Route::get('/notifications', [NotificationController::class, 'getAllNotifications']);
 Route::get('/notifications/unread', [NotificationController::class, 'getUnreadNotifications']);
 Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
