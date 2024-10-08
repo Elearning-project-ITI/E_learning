@@ -58,7 +58,7 @@ export class VerifyPaymentComponent implements OnInit {
         next: (response) => {
           console.log('Success API called:', response);
           this.isLoading = false;
-          this.router.navigate([`/courses/${this.courseId}/coursematerial`]);
+          this.router.navigate([`/cousres/${this.courseId}/cousrematerial`]);
         },
         error: (error) => {
           console.error('Error calling success API:', error);

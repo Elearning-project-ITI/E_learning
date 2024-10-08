@@ -90,7 +90,7 @@
                 this.snackbarService.showMessage(data.studentMessage);
               });
         
-              userChannel.bind('CourseBookedEvent', (data: any) => {
+              personalChannel.bind('CourseBookedEvent', (data: any) => {
                 console.log('Course booked:', data);
                 this.snackbarService.showMessage(data.studentMessage);
               });
