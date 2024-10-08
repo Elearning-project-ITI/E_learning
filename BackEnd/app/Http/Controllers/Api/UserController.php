@@ -128,6 +128,6 @@ class UserController extends BaseController
     public function getRole()
     {
         $user = Auth::user();
-        return response()->json(['role' => $user->role]);
+        return response()->json(['name'=>$user->name ,'role' => $user->role]);
     }
 }

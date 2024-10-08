@@ -1,6 +1,7 @@
 <?php 
 namespace App\Events;
-
+use App\Models\Course; 
+use App\Models\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
@@ -16,18 +17,20 @@ class CourseBookedEvent implements ShouldBroadcastNow
     public $adminMessage;
     public $studentMessage;
     public $course;
-
-    public function __construct(User $user, Course $course,$token)
+    public $user;
+    public function __construct( $user, $course)
     {
         $this->adminMessage = "Student {$user->name} booked the course '{$course->name}'";
         $this->studentMessage = "You have successfully booked the course '{$course->name}' and invoice sent to your mail";
         $this->course = $course;
+        $this->user = $user;
+
     }
 
     public function broadcastOn()
-    {
+    {  
         return [
-        new PrivateChannel('user-notifications.{$this->token}'), // For students
+        new PrivateChannel("user-notifications.{$this->user->name}"), // For students
         new PrivateChannel('admin-notifications'),
         ];
     }

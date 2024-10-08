@@ -52,10 +52,11 @@
     }
 
     subscribeToChannels(pusher: Pusher) {
-      this.authService.getUserRole().subscribe({
+      this.authService.getUserInfo().subscribe({
         next: (response) => {
+          const userName = response.name;
           const userRole = response.role;
-
+         console.log(userName);
         // Subscribe to the admin notifications channel only if the user is an admin
         if (userRole === 'admin') {
 

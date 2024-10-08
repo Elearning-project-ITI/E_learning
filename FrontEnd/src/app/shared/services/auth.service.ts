@@ -95,6 +95,7 @@ interface userAuth {
 export class AuthService {
   userData: any;
   userToken: any;
+  username:any;
   userRole: string | null = null;
   userimage:any;
   private baseURL = environment.apiUrl;
@@ -114,6 +115,7 @@ export class AuthService {
         // Assuming user is an object, not an array
         this.userData = decodedToken;
         const accessToken = decodedToken?.access_token;
+        const  username=decodedToken?.user.name
         const myRole = decodedToken?.user.role; // Corrected to access role from user object
         const myimage=decodedToken?.user.image;
         if (accessToken) {
@@ -215,7 +217,7 @@ export class AuthService {
 
     return this._HttpClient.post(`${this.baseURL}/profile`, userData, { headers });
   }
-  getUserRole(): Observable<{ role: string }> {
+  getUserInfo(): Observable<{name: string; role: string }> {
     const token = localStorage.getItem('access_token');
   
     if (!token) {
@@ -224,7 +226,7 @@ export class AuthService {
     }
   
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this._HttpClient.get<{ role: string }>(`${this.baseURL}/user/role`, { headers });
+    return this._HttpClient.get<{name: string;role: string }>(`${this.baseURL}/user/name`, { headers });
   }
 }
 
