@@ -132,6 +132,8 @@ Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoi
         Route::get('/students', [UserController::class, 'index'])->name('students.index');
         Route::get('/students/{id}/profile', [UserController::class, 'showStudentProfile'])->name('students.profile.show');
         Route::post('course', [ CourseController::class, 'store']);
+        Route::put('/question/{question_id}/choices/{choice_id}', [ChoiceController::class, 'update']);
+
 
         Route::get('/admin/reviews', [ReviewController::class, 'getAllReviewsForAdmin']); // add review by david
         Route::post('/trigger-user-registered', function (Request $request) {

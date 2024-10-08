@@ -102,44 +102,79 @@ class ChoiceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
-    {
-        // Find the choice by ID
-        $choice = Choice::find($id);
+    // public function update(Request $request, string $id)
+    // {
+    //     // Find the choice by ID
+    //     $choice = Choice::find($id);
 
-        // Check if the choice exists
-        if (!$choice) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Choice not found',
-            ], 404);
-        }
+    //     // Check if the choice exists
+    //     if (!$choice) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Choice not found',
+    //         ], 404);
+    //     }
 
-        // Validate the incoming request data
-        $validator = Validator::make($request->all(), [
-            'choice' => 'required|string|max:255',
-            'is_correct' => 'required|boolean',
-        ]);
+    //     // Validate the incoming request data
+    //     $validator = Validator::make($request->all(), [
+    //         'choice' => 'required|string|max:255',
+    //         'is_correct' => 'required|boolean',
+    //     ]);
 
-        if ($validator->fails()) {
-            return response()->json([
-                'success' => false,
-                'errors' => $validator->errors(),
-            ], 422);
-        }
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'errors' => $validator->errors(),
+    //         ], 422);
+    //     }
 
-        // Update the choice with the validated data
-        $choice->update([
-            'choice' => $request->input('choice'),
-            'is_correct' => $request->input('is_correct'),
-        ]);
+    //     // Update the choice with the validated data
+    //     $choice->update([
+    //         'choice' => $request->input('choice'),
+    //         'is_correct' => $request->input('is_correct'),
+    //     ]);
 
-        // Return the updated choice data
+    //     // Return the updated choice data
+    //     return response()->json([
+    //         'success' => true,
+    //         'data' => $choice,
+    //     ], 200);
+    // }
+    public function update(Request $request, $question_id, $choice_id)
+{
+    $choice = Choice::where('id', $choice_id)
+                    ->where('question_id', $question_id)
+                    ->first();
+
+    if (!$choice) {
         return response()->json([
-            'success' => true,
-            'data' => $choice,
-        ], 200);
+            'success' => false,
+            'message' => 'Choice not found or does not belong to the specified question',
+        ], 404);
     }
+
+    $validator = Validator::make($request->all(), [
+        'choice' => 'required|string|max:255',
+        'is_correct' => 'required|boolean',
+    ]);
+
+    if ($validator->fails()) {
+        return response()->json([
+            'success' => false,
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    $choice->update([
+        'choice' => $request->input('choice'),
+        'is_correct' => $request->input('is_correct'),
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'data' => $choice,
+    ], 200);
+}
 
     /**
      * Remove the specified resource from storage.

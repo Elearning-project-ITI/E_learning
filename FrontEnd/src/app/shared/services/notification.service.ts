@@ -78,6 +78,7 @@
         else{       
           const token = localStorage.getItem('access_token');
           const userChannel = pusher.subscribe('private-user-notifications');
+          console.log(111)
           const personalChannel = pusher.subscribe(`private-user-notifications.${token}`);
       
           userChannel.bind('CourseAddedEvent', (data: any) => {
