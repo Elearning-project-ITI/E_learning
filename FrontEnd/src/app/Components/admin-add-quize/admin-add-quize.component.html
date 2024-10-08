@@ -28,7 +28,7 @@
         </div>
         <div class="form-group">
           <label>
-            <input type="radio" name="correctAnswer{{i}}" [(ngModel)]="question.correctAnswer" [value]="j" (change)="choice.is_correct= (j === question.correctAnswer)"> Correct
+            <input type="radio" name="correctAnswer{{i}}" [(ngModel)]="question.correctAnswer" [value]="j" (change)="choice.is_correct = (j === question.correctAnswer)"> Correct
           </label>
         </div>
       </div>
@@ -48,7 +48,6 @@
         </label>
       </div>
     </div>
-    
 
     <div class="form-group">
       <label for="score{{i}}">Score:</label>
@@ -62,3 +61,23 @@
 <button type="button" (click)="addQuestion()" class="btn btn-custom">Add Another Question</button>
 <br><br>
 <button type="button" (click)="submitQuiz()" class="btn btn-custom">Submit Quiz</button>
+
+<!-- Table to display added quizzes -->
+<h3 class="mt-5">Added Quizzes</h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Quiz Name</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let quiz of quizzes">
+      <td>{{ quiz.name }}</td>
+      <td>
+        <button class="btn btn-warning" (click)="editQuiz(quiz.id)">Edit</button>
+        <button class="btn btn-danger" (click)="deleteQuiz(quiz.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

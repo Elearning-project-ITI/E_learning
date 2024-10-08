@@ -117,11 +117,24 @@ public function getAllReviewsForAdmin()
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $review = Review::find($id);
+    
+        if (!$review) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Review not found',
+            ], 404);
+        }
+    
+        $review->delete();
+    
+        return response()->json([
+            'success' => true,
+            'message' => 'Review deleted successfully',
+        ], 200);
     }
-
     
 }
 
