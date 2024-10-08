@@ -103,7 +103,6 @@ Route::get('/course/{course_id}/quizzes', [QuizController::class, 'getQuizzesByC
 Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoicesByQuestion']);
 //////////////////////////////////////////////////////////////////////////////////
 // Route::post('/quizzes/{quiz}/submit', [QuizController::class, 'submitAnswers']);
-
 //////////////////////////////////////////////////////////////////////////////////
     Route::get('/my-reviews', [ReviewController::class, 'getAllReviewsForStudent'])->name('reviews.myReviews'); // add my-review 
     Route::get('/reviews', [ReviewController::class, 'getAllReviewsForStudents'])->name('reviews.all'); // add yours reviews
@@ -134,6 +133,10 @@ Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoi
         Route::post('course', [ CourseController::class, 'store']);
         Route::put('/question/{question_id}/choices/{choice_id}', [ChoiceController::class, 'update']);
 
+
+        Route::put('/quiz/{quiz_id}', [QuizController::class, 'update']);
+        Route::put('/question/{question_id}', [QuestionController::class, 'update']);
+        Route::put('/question/{question_id}/choices/{choice_id}', [ChoiceController::class, 'update']);
 
         Route::get('/admin/reviews', [ReviewController::class, 'getAllReviewsForAdmin']); // add review by david
         Route::post('/trigger-user-registered', function (Request $request) {

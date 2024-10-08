@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { LoaderComponent } from '../loader/loader.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-course',
@@ -19,7 +20,7 @@ export class AdminCourseComponent {
   itemsPerPage: number = 6;
   searchTerm: string = '';
   searchTermSubject: Subject<string> = new Subject<string>();
-  constructor(private courseserv: CoursesService, private router: Router) { }
+  constructor(private courseserv: CoursesService, private router: Router , private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.courseserv.GetAllCourses().subscribe({
@@ -45,7 +46,7 @@ export class AdminCourseComponent {
       this.courseserv.deleteCourse(courseId).subscribe({
         next: (response) => {
           if (response.success) {
-            alert('Course deleted successfully!');
+            this.toastr.error("course Deleted successfully!")
             this.router.navigate(['/adminCourses']); // Navigate to courses list
             // Optionally, reload the courses without a full page navigation
             this.loadCourses(); // Call the method to reload courses
