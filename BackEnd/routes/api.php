@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ChoiceController;
 use App\Http\Controllers\Api\MaterialController;
 use App\Http\Controllers\Api\QuizUserController;
 use App\Http\Controllers\Api\QuestionController;
+use App\Http\Controllers\Api\BroadcastController;
 
 
 
@@ -33,6 +34,12 @@ Route::get('/verify-email', [AuthController::class, 'verifyEmail']);
 
 // Protected routes that require authentication (using sanctum middleware)
 Route::middleware(['auth:sanctum'])->group( function () {
+Route::post('/broadcasting/auth', [BroadcastController::class, 'authenticate']);
+Route::get('/user/name', [UserController::class, 'getRole']);
+
+Route::get('/notifications', [NotificationController::class, 'getAllNotifications']);
+Route::get('/notifications/unread', [NotificationController::class, 'getUnreadNotifications']);
+Route::post('/notifications/mark-all-read', [NotificationController::class, 'markAllAsRead']);
 
     Route::post('/logout', [AuthController::class, 'logout']);
    // Route::get('/user', [AuthController::class, 'user']);
@@ -131,7 +138,19 @@ Route::get('/question/{question_id}/choices', [ChoiceController::class, 'getChoi
         Route::put('/question/{question_id}/choices/{choice_id}', [ChoiceController::class, 'update']);
 
         Route::get('/admin/reviews', [ReviewController::class, 'getAllReviewsForAdmin']); // add review by david
-
+        Route::post('/trigger-user-registered', function (Request $request) {
+            // Ensure the user is authenticated
+            $user = User::find($request->input('user_id'));
+        
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+        
+            // Trigger the UserRegistered event
+            event(new UserRegistered($user));
+        
+            return response()->json(['message' => 'UserRegistered event triggered']);
+        });
 
     });
 });

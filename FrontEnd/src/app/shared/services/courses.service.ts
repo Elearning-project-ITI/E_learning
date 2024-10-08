@@ -385,13 +385,13 @@ booking(courseId: number): Observable<any> {
     catchError(this.handleError)
   );
 }
-paymentSuccess(courseId: number): Observable<any> {
+paymentSuccess(courseId: number | null , sessionid: string |null): Observable<any> {
   const token = localStorage.getItem('access_token');
 
   if (!token) {
     return throwError(() => new Error('Token not found'));
   }
-  const body = { course_id: courseId };
+  const body = { course_id: courseId , session_id:sessionid };
   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
   return this.http.post<any>(`${this.DB_URL}/payment/success`, body, { headers }).pipe(
     catchError(this.handleError)

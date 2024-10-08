@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+//use Illuminate\Notifications\Notification;
 use App\Notifications\CustomResetPasswordNotification;
 
 class User extends Authenticatable
@@ -19,6 +20,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+  //  protected $guarded = [];
     protected $fillable = [
         'name',
         'email',
@@ -63,10 +65,11 @@ class User extends Authenticatable
         return $this->hasMany(Booking::class);
     }
 
-    public function notifications()
-    {
-        return $this->hasMany(Notification::class);
-    }
+    // public function notifications()
+    // {
+    //     return $this->morphMany(Notification::class, 'notifiable')->orderBy('created_at', 'desc');
+    
+    // }
 
     public function quizzes()
     {
