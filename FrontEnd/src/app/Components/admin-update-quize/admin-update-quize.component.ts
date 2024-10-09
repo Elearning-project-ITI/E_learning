@@ -376,8 +376,9 @@ export class AdminUpdateQuizeComponent implements OnInit {
       },
       error: (errorResponse) => {
         console.log(errorResponse);
+        this.toastr.error("please fill all data!");
         if (errorResponse.error && errorResponse.error.errors) {
-          this.toastr.error("Validation errors occurred!");
+          this.toastr.error("please fill all data!");
         }
       }
     });
