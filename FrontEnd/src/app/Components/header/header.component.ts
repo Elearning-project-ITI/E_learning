@@ -93,6 +93,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   profileData: any = null;
   decodedData: any = null;
   unreadNotifications: { message: string }[] = [];
+  allNotifications: { message: string }[] = [];
+  showNotifications: boolean = false;
+  displayUnread: boolean = true;
+  successMessage: string = '';  
+  errorMessage: string = '';   
   constructor(private _AuthService: AuthService, private profileDataService: ProfileDataService, private router: Router) {}
 
   ngOnInit(): void {
@@ -105,6 +110,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               this.profileData = response;
               if (this.profileData?.data) {
                 this.decodeProfileData(this.profileData.data);
+                this.fetchAllNotifications();
+                this.fetchUnreadNotifications();
                 // this.router.navigate(['/']); // Navigate to root to refresh and update role-specific UI
               }
             },
@@ -146,16 +153,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   }
 
-  togglenotify(event: Event) {
-    const notification = event.target as HTMLElement;
-    if (notification.classList.contains('fa-regular')) {
-      notification.classList.remove('fa-regular');
-      notification.classList.add('fa-solid');
-    } else {
-      notification.classList.remove('fa-solid');
-      notification.classList.add('fa-regular');
-    }
-  }
+  // togglenotify(event: Event) {
+  //   const notification = event.target as HTMLElement;
+  //   if (notification.classList.contains('fa-regular')) {
+  //     notification.classList.remove('fa-regular');
+  //     notification.classList.add('fa-solid');
+  //   } else {
+  //     notification.classList.remove('fa-solid');
+  //     notification.classList.add('fa-regular');
+  //   }
+  // }
   fetchUnreadNotifications(): void {
     this._AuthService.getUnreadNotifications().subscribe({
       next: (notifications) => {
@@ -168,6 +175,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
       }
     });
   }
+  fetchAllNotifications(): void {
+    this._AuthService.viewAllNotifications().subscribe({
+      next: (notifications) => {
+        this.allNotifications = notifications;
+      },
+      error: (err) => {
+        console.error('Error fetching all notifications:', err);
+      }
+    });
+  }
+  markAllAsRead(): void {
+    this._AuthService.markAllNotificationsAsRead().subscribe({
+      next: (response) => {
+        this.successMessage = response.message;
+        this.unreadNotifications = [];  // Clear unread notifications
+        this.fetchAllNotifications();   // Refresh all notifications
+      },
+      error: (err) => {
+        console.error('Error marking notifications as read:', err);
+        this.errorMessage = 'Failed to mark notifications as read';
+      }
+    });
+  }
+
 
   logOutUser(): void {
     this._AuthService.logout();
@@ -183,5 +214,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
     } catch (error) {
       console.error('Failed to decode token:', error);
     }
+  }
+  togglenotify(event: Event): void {
+    event.preventDefault();
+    this.showNotifications = !this.showNotifications;
+  }
+
+
+  // Show unread notifications
+  showUnreadNotifications(): void {
+    this.displayUnread = true;
+  }
+
+  // Show all notifications
+  showAllNotifications(): void {
+    this.displayUnread = false;
   }
 }

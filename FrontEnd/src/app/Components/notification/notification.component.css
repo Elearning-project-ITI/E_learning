@@ -6,8 +6,8 @@
     gap: 15px; 
     padding: 20px;
     background-color: #f9f9f9; 
-    border-radius: 15px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); 
+    /* border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);  */
     
 }
 
@@ -30,7 +30,13 @@
     font-weight: bold;
 }
 
-#notification:hover {
+/* #notification:hover {
     background-color: #f1f1f1;
     transition: background-color 0.3s ease-in-out; 
-}
+} */
+ .buttons{
+    display: flex;
+    justify-content: center;
+    gap:10px;
+    /* align-items: center; */
+ }

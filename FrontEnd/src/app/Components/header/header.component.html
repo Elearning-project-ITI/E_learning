@@ -125,12 +125,45 @@
               <a class="nav-link" routerLink="/profile">
                   <img [src]="decodedData?.length > 0 && decodedData[0]?.image" class="imgprofile rounded-circle" alt="imgprofile"/>
               </a>
-              <a routerLink="/notification" class="position-relative">
-              <i  class="fa-regular fa-bell fs-1 notifiaction" (click)="togglenotify($event)"></i>
-              <span class="badge spanBadge position-absolute top-1">{{ unreadNotifications.length }}</span>
-            </a>
+              <a href="#" class="position-relative" (click)="togglenotify($event)">
+                <i class="fa-regular fa-bell fs-1 notifiaction"></i>
+                <span class="badge spanBadge position-absolute top-1">{{ unreadNotifications.length }}</span>
+              </a>
+              
+              <!-- Notification dropdown -->
+              <div class="notification-dropdown" *ngIf="showNotifications">
+                <div class="dropdown-header">
+                  <button class="btn btn-primary rounded" (click)="showAllNotifications()">All</button>
+                  <button class="btn btn-primary rounded" (click)="showUnreadNotifications()">Unread</button>
+                </div>
+              
+                <!-- Show unread notifications if displayUnread is true -->
+                <ul *ngIf="displayUnread && unreadNotifications.length > 0" class="dropdown-list">
+                  <li *ngFor="let notification of unreadNotifications">
+                    {{ notification.message }}
+                  </li>
+                  <li class="mt-2">
+                    <button class="btn btn-success btn-sm" (click)="markAllAsRead()">Mark All as Read</button>
+                  </li>
+                </ul>
+                <p *ngIf="displayUnread && unreadNotifications.length === 0" class="text-muted">No unread notifications</p>
+              
+                <!-- Show all notifications if displayUnread is false -->
+                <ul *ngIf="!displayUnread && allNotifications.length > 0" class="dropdown-list">
+                  <li *ngFor="let notification of allNotifications">
+                    {{ notification.message }}
+                  </li>
+                </ul>
+                <p *ngIf="!displayUnread && allNotifications.length === 0" class="text-muted">No notifications</p>
+              
+                <!-- Display success or error messages -->
+                <div *ngIf="successMessage" class="alert alert-success mt-2">{{ successMessage }}</div>
+                <div *ngIf="errorMessage" class="alert alert-danger mt-2">{{ errorMessage }}</div>
+              
+              </div>
+              </div>
           </div>
       </div>
-  </div>
+  
 </nav>
 <!-- </ng-template> -->
