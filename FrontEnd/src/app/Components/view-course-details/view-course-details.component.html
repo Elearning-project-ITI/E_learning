@@ -45,7 +45,7 @@
       </div> -->
       <div class="w-25 m-auto">
        
-        <button class="btn btn-outline-warning w-100" (click)="makePayment()">Pay</button>
+        <button  *ngIf="!isBooked"class="btn btn-outline-warning w-100" (click)="makePayment()">Pay</button>
       </div>
     </div>
   </div>

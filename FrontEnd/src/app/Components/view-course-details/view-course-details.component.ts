@@ -60,11 +60,23 @@ import { CommonModule } from '@angular/common';
 })
 export class ViewCourseDetailsComponent {
   course: any;
-
+  isBooked: boolean = false;
   constructor(private courseserv: CoursesService) {}
 
   ngOnInit(): void {
     this.course = this.courseserv.getCourse(); 
+    this.courseserv.booking(this.course.id).subscribe({
+      next: (data) => {
+        console.log("booking data",data)
+        this.isBooked = data.success;
+        // this.course = data.data;
+        // console.log(this.course);
+        // this.courseserve.setCourse(this.course); // Set the course in the service
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
 
  
