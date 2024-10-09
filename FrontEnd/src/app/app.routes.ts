@@ -100,7 +100,11 @@ export const routes: Routes = [
     {path:"profile",component:ProfileComponent, children: [
         { path: "", component: ViewProfileComponent },
         { path: "viewProfile", component: ViewProfileComponent },
-        { path: "notification", component: NotificationComponent },
+        { path: "notification", component: NotificationComponent ,children:[
+            {path:"",component:AllnotificationComponent},
+            {path:"allnotification",component:AllnotificationComponent},
+            {path:"unreadnotification",component:UnreadnotificationComponent}
+        ]},
         { path: "editProfile", component: EditProfileComponent }
     ]},
     {path:"cousres/:id",component:CousreDetailsComponent,children:[
