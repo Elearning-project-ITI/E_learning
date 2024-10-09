@@ -69,7 +69,7 @@ class AuthController extends BaseController
         //     $image = $request->file('image');
         //     $imagePath = $image->store('images', 'user_images');
         // }
-        // $isValidEmail = $this->checkEmailValidity($request->email);
+        $isValidEmail = $this->checkEmailValidity($request->email);
 
         if (!$isValidEmail) {
             return $this->sendError(['The provided email does not real.'], [], 401);        
