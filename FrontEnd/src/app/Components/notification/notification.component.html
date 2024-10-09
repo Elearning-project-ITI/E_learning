@@ -1,4 +1,4 @@
-<div id="notification">
+<!-- <div id="notification">
     <div class="alert alert-secondary custom-alert" role="alert">
       <strong>Notice:</strong> This is a secondary alert—check it out!
     </div>
@@ -11,5 +11,17 @@
     <div class="alert alert-secondary custom-alert" role="alert">
       <strong>Alert:</strong> Last secondary alert—check it out!
     </div>
+  </div> -->
+  <div id="notification">
+<div class="buttons">
+  <a routerLink="allnotification">
+   <button class="btn btn-primary rounded">All</button>
+  </a>
+  <a routerLink="unreadnotification">
+    <button class="btn btn-primary rounded">UnRead</button>
+  </a>
+</div>
+<div class="container">
+  <router-outlet></router-outlet>
+</div>
   </div>
-  

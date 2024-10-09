@@ -1,0 +1,20 @@
+<div *ngIf="loading" class="loader">
+    <app-loader></app-loader> 
+  </div>
+  
+  <div *ngIf="!loading && notifications.length > 0" class="notification-list">
+    <ul>
+      <li *ngFor="let notification of notifications">
+        {{ notification.message }}
+      </li>
+    </ul>
+  </div>
+  
+  <div *ngIf="!loading && notifications.length === 0" class="no-notifications">
+    No notifications available.
+  </div>
+  
+  <div *ngIf="error" class="error">
+    {{ error }}
+  </div>
+  

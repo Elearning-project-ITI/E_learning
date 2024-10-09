@@ -37,6 +37,10 @@ import { CourseDetailsAdminComponent } from './course-details-admin/course-detai
 import { VerifyPaymentComponent } from './Components/verify-payment/verify-payment.component';
 import { UserReviewsComponent } from './Components/user-reviews/user-reviews.component';
 import { ReportComponent } from './Components/report/report.component';
+import { AllnotificationComponent } from './Components/allnotification/allnotification.component';
+import { UnreadnotificationComponent } from './Components/unreadnotification/unreadnotification.component';
+// import { AllnotificationComponent } from './allnotification/allnotification.component';
+// import { UnreadnotificationComponent } from './unreadnotification/unreadnotification.component';
 
 export const routes: Routes = [
     {path:"",component:HomeComponent},
@@ -49,7 +53,11 @@ export const routes: Routes = [
     {path:"forgetpassword",component:ForgetPasswordComponent},
     {path:"resetpassword",component:ResetPasswordComponent},
     {path:"verify-email",component:VerifyEmailComponent},
-    {path:"notification",component:NotificationComponent},
+    {path:"notification",component:NotificationComponent,children:[
+        {path:"",component:AllnotificationComponent},
+        {path:"allnotification",component:AllnotificationComponent},
+        {path:"unreadnotification",component:UnreadnotificationComponent}
+    ]},
     //verifypayment
     {path:"verifypayment",component:VerifyPaymentComponent},
 

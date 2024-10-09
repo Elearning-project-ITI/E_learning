@@ -4,6 +4,7 @@
   import { SnackbarService } from './snackbar.service';
   import { HttpClient } from '@angular/common/http';
   import { AuthService } from './auth.service'; // Import your AuthService
+import { ToastrService } from 'ngx-toastr';
 
   @Injectable({
     providedIn: 'root',
@@ -14,7 +15,7 @@
 
     constructor(private snackbarService: SnackbarService, private http: HttpClient,
       private authService: AuthService // Inject AuthService
-
+      , private toastr: ToastrService
     ) {
       const token = localStorage.getItem('access_token');  // Get token from localStorage
     //  console.log('Token:', token);
@@ -64,16 +65,20 @@
 
           adminchannel1.bind('NewUserRegistered', (data: { message: string }) => {
             console.log(data);
-            this.snackbarService.showMessage(data.message);
+            this.toastr.success(data.message)
+            // this.snackbarService.showMessage(data.message);
           });
 
           adminchannel1.bind('CourseBookedEvent', (data: any) => {
             console.log(data);
-            this.snackbarService.showMessage(data.adminMessage);
+            // this.toastr.success(data.message)
+            // this.snackbarService.showMessage(data.adminMessage);
+            this.toastr.success(data.adminMessage)
           });
           adminchannel1.bind('CourseAddedEvent', (data: any) => {
             console.log(data);
-            this.snackbarService.showMessage(data.adminMessage);
+            // this.snackbarService.showMessage(data.adminMessage);
+            this.toastr.success(data.adminMessage)
           });
         }
         else{       
@@ -84,12 +89,14 @@
       
           userChannel.bind('CourseAddedEvent', (data: any) => {
             console.log('Course added:', data);
-            this.snackbarService.showMessage(data.studentMessage);
+            // this.snackbarService.showMessage(data.studentMessage);
+            this.toastr.success(data.studentMessage)
           });
       
           personalChannel.bind('CourseBookedEvent', (data: any) => {
             console.log('Course booked:', data);
-            this.snackbarService.showMessage(data.studentMessage);
+            this.toastr.success(data.studentMessage)
+            // this.snackbarService.showMessage(data.studentMessage);
           });
         } 
       },

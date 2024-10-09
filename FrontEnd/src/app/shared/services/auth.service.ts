@@ -167,19 +167,19 @@ export class AuthService {
           
         adminchannel1.bind('NewUserRegistered', (data: { message: string }) => {
           console.log(data);
-          this.snackbarService.showMessage(data.message);
-          // this.toastr.success(data.message)
+          // this.snackbarService.showMessage(data.message);
+          this.toastr.success(data.message)
         });
 
         adminchannel1.bind('CourseBookedEvent', (data: any) => {
           console.log(data);
-          this.snackbarService.showMessage(data.adminMessage);
-          // this.toastr.success(data.message)
+          // this.snackbarService.showMessage(data.adminMessage);
+          this.toastr.success(data.adminMessage)
         });
         adminchannel1.bind('CourseAddedEvent', (data: any) => {
           console.log("ifthjitrir "+data);
-          this.snackbarService.showMessage(data.adminMessage);
-          // this.toastr.success(data.message)
+          // this.snackbarService.showMessage(data.adminMessage);
+          this.toastr.success(data.adminMessage)
         });
       }
       else {
@@ -193,12 +193,14 @@ export class AuthService {
 
             userChannel.bind('CourseAddedEvent', (data: any) => {
               console.log('Course added:', data);
-              this.snackbarService.showMessage(data.studentMessage);
+              // this.snackbarService.showMessage(data.studentMessage);
+              this.toastr.success(data.studentMessage)
             });
       
             personalChannel.bind('CourseBookedEvent', (data: any) => {
               console.log('Course booked:', data);
-              this.snackbarService.showMessage(data.studentMessage);
+              // this.snackbarService.showMessage(data.studentMessage);
+              this.toastr.success(data.studentMessage)
             });
         
          
@@ -368,6 +370,35 @@ export class AuthService {
       catchError(err => {
         console.error('Error fetching notifications', err);
         return throwError(() => new Error('Error fetching notifications'));
+      })
+    );
+  }
+  markAllNotificationsAsRead(): Observable<{ message: string }> {
+    const token = localStorage.getItem('access_token');
+  
+    if (!token) {
+      console.error('No access token found.');
+      return throwError(() => new Error('No access token found.'));
+    }
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    return this._HttpClient.post<{ status: string, message: string }>(
+      `${this.baseURL}/notifications/mark-all-read`, 
+      {}, // POST body is empty in this case
+      { headers }
+    ).pipe(
+      map(response => {
+        if (response.status === 'success') {
+          return { message: response.message };
+        } else {
+          console.error('Failed to mark notifications as read.');
+          return { message: 'Failed to mark notifications as read' };
+        }
+      }),
+      catchError(err => {
+        console.error('Error marking notifications as read', err);
+        return throwError(() => new Error('Error marking notifications as read'));
       })
     );
   }

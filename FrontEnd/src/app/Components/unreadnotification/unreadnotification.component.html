@@ -1,0 +1,23 @@
+<div class="notifications-container">
+    <h3>Unread Notifications</h3>
+    
+    <!-- Success or error messages -->
+    <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+    <div *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
+  
+    <!-- Unread notifications list -->
+    <ul *ngIf="unreadNotifications.length > 0; else noNotifications" class="list-group">
+      <li *ngFor="let notification of unreadNotifications" class="list-group-item">
+        {{ notification.message }}
+      </li>
+    </ul>
+    
+    <!-- Fallback for when there are no unread notifications -->
+    <ng-template #noNotifications>
+      <p class="text-muted">You have no unread notifications.</p>
+    </ng-template>
+  
+    <!-- Button to mark all as read -->
+    <button class="btn btn-primary mt-3" (click)="markAllAsRead()">Mark All as Read</button>
+  </div>
+  
