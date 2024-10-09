@@ -135,8 +135,9 @@ export class AdminAddQuizeComponent implements OnInit {
       },
       error: (errorResponse) => {
         console.log(errorResponse);
+        this.toastr.error("Please Fill the data !");
         if (errorResponse.error && errorResponse.error.errors) {
-          this.toastr.error("Validation errors occurred!");
+          this.toastr.error("Please Fill the data !");
         }
       }
     });
