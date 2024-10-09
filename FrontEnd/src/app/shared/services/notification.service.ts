@@ -92,12 +92,16 @@ import { ToastrService } from 'ngx-toastr';
 
               userChannel.bind('CourseAddedEvent', (data: any) => {
                 console.log('Course added:', data);
-                this.snackbarService.showMessage(data.studentMessage);
+                //this.snackbarService.showMessage(data.studentMessage);
+                this.toastr.success(data.studentMessage)
+
               });
         
               personalChannel.bind('CourseBookedEvent', (data: any) => {
                 console.log('Course booked:', data);
-                this.snackbarService.showMessage(data.studentMessage);
+                //this.snackbarService.showMessage(data.studentMessage);
+                this.toastr.success(data.studentMessage)
+
               });
           
            
