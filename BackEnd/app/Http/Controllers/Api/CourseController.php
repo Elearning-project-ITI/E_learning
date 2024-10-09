@@ -421,7 +421,7 @@ class CourseController extends Controller
 
     return response()->json([
         'success' => true,
-        'courses' => $courses,
+        'data' => $courses,
     ]);
 }
 public function myWishlist()

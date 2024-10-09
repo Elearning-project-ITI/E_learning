@@ -58,7 +58,7 @@
 // }
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterModule } from '@angular/router';
+import { Router, RouterLink, RouterModule ,ActivatedRoute} from '@angular/router';
 import { CoursesService } from '../../shared/services/courses.service';
 import { LoaderComponent } from "../loader/loader.component";
 import { ToastrModule, ToastrService } from 'ngx-toastr';
@@ -87,21 +87,31 @@ export class CoursesComponent implements OnInit {
   currentPage: number = 1;
 itemsPerPage: number = 6;
   searchTermSubject: Subject<string> = new Subject<string>();
-  constructor(private courseserv: CoursesService, private router: Router, private toastr: ToastrService,private _AuthService: AuthService, private profileDataService: ProfileDataService,) { }
+  isMyCourses: boolean = false;
+
+  constructor(    private route: ActivatedRoute
+,    private courseserv: CoursesService, private router: Router, private toastr: ToastrService,private _AuthService: AuthService, private profileDataService: ProfileDataService,) { }
 
   ngOnInit(): void {
-    this.courseserv.GetAllCourses().subscribe({
-      next: (response) => {
-        console.log(response);
-        if (response.success) {
+    this.isMyCourses = this.route.snapshot.data['type'] === 'my';
+    console.log(this.isMyCourses);
+    if (this.isMyCourses) {
+      this.fetchMyCourses();
+    } else {
+      this.fetchAllCourses();
+    }
+    // this.courseserv.GetAllCourses().subscribe({
+    //   next: (response) => {
+    //     console.log(response);
+    //     if (response.success) {
           
-          this.Courses = response.data;
-        }
-      },
-      error: (err) => {
-        console.log(err);  
-      }
-    });
+    //       this.Courses = response.data;
+    //     }
+    //   },
+    //   error: (err) => {
+    //     console.log(err);  
+    //   }
+    // });
     this.authSubscription = this._AuthService.isAuthenticated$.subscribe(
       (isAuthenticated: boolean) => {
         this.isLoggedIn = isAuthenticated;
@@ -150,6 +160,30 @@ itemsPerPage: number = 6;
       this.searchCourses(searchTerm);
     });
 
+  }
+  fetchAllCourses(): void {
+    this.courseserv.GetAllCourses().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.Courses = response.data;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
+  }
+  fetchMyCourses(): void {
+    this.courseserv.GetMyCourses().subscribe({
+      next: (response) => {
+        if (response.success) {
+          this.Courses = response.data;
+        }
+      },
+      error: (err) => {
+        console.log(err);
+      }
+    });
   }
   onSearch(event: any): void {
     const searchTerm = event.target.value;

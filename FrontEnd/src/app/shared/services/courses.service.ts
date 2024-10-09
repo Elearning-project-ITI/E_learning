@@ -42,6 +42,17 @@ export class CoursesService {
 
     return this.http.get<GetAllCoursesResponse>(this.DB_URL +'/course');
   }
+  GetMyCourses(): Observable<GetAllCoursesResponse> {
+    const token = localStorage.getItem('access_token');
+    if (!token) {
+      return throwError(() => new Error('User not authenticated'));
+    }
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+    return this.http.get<GetAllCoursesResponse>(this.DB_URL +'/my-courses', { headers }).pipe(
+      catchError(this.handleError)
+    );
+  }
   // , { headers }).pipe(
   //   catchError(this.handleError)
   GetCoursetByID(id:any): Observable<GetCourseResponse>{

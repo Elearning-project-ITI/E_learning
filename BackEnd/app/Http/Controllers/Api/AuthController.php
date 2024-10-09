@@ -71,11 +71,11 @@ class AuthController extends BaseController
         // }
         // $isValidEmail = $this->checkEmailValidity($request->email);
 
-        // if (!$isValidEmail) {
-        //     return $this->sendError(['The provided email does not real.'], [], 401);        
+        if (!$isValidEmail) {
+            return $this->sendError(['The provided email does not real.'], [], 401);        
 
-        //    // return $this->sendError('Invalid Email', ['error' => 'The provided email does not real.']);
-        // }
+           // return $this->sendError('Invalid Email', ['error' => 'The provided email does not real.']);
+        }
         $imagePath = null;
         if ($request->hasFile('image')) {
             $imagePath = $request->file('image')->store('user_images', 'uploads');
@@ -139,19 +139,19 @@ class AuthController extends BaseController
 
             
         }
-        if (is_null($user->email_verified_at)) {
-            if (now()->diffInMinutes($user->verification_token_created_at) < -60.0) {
-                $user->email_verification_token = Str::random(60);
-            $user->verification_token_created_at = now();
-            $user->save();
+        // if (is_null($user->email_verified_at)) {
+        //     if (now()->diffInMinutes($user->verification_token_created_at) < -60.0) {
+        //         $user->email_verification_token = Str::random(60);
+        //     $user->verification_token_created_at = now();
+        //     $user->save();
 
-            // Resend the email
-            Mail::to($user->email)->send(new VerifyEmail($user));
+        //     // Resend the email
+        //     Mail::to($user->email)->send(new VerifyEmail($user));
 
-            return $this->sendError(['Verification token has expired. A new verification email has been sent.'], [], 400);
-            }
-            return $this->sendError(['Please verify your email before logging in.'], [], 403);
-        }  
+        //     return $this->sendError(['Verification token has expired. A new verification email has been sent.'], [], 400);
+        //     }
+        //     return $this->sendError(['Please verify your email before logging in.'], [], 403);
+        // }  
         // Get the authenticated user
         $user = Auth::user();
         if ($user->tokens()->count() >= 2) {

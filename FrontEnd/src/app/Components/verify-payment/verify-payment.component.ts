@@ -51,7 +51,7 @@ export class VerifyPaymentComponent implements OnInit {
 
   private callPaymentSuccessApi(): void {
     if (this.courseId && this.session_id) {
-      this.message = 'Payment was successful!';
+      this.message = 'Payment successful! .waiting for open cousre material ....  ';
       this.isLoading = true;
 
       setTimeout(() => this.coursesService.paymentSuccess(this.courseId, this.session_id).subscribe({
