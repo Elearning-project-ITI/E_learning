@@ -28,9 +28,10 @@ class CourseBookedEvent implements ShouldBroadcastNow
     }
 
     public function broadcastOn()
-    {  
+    {      $userNameWithoutSpaces = str_replace(' ', '', $this->user->name);
+
         return [
-        new PrivateChannel("user-notifications.{$this->user->name}"), // For students
+        new PrivateChannel("user-notifications.{$userNameWithoutSpaces}"), // For students
         new PrivateChannel('admin-notifications'),
         ];
     }

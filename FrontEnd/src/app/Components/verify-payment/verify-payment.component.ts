@@ -64,7 +64,7 @@ export class VerifyPaymentComponent implements OnInit {
           console.error('Error calling success API:', error);
           this.isLoading = false;
         }
-      }), 3000);
+      }), 5000);
     } else {
       console.error('Course ID or Session ID is missing.');
     }

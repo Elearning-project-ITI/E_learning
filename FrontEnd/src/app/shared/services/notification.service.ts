@@ -106,7 +106,8 @@ import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
         
         
               // Replace token with user name for the channel subscription
-              const personalChannel = pusher.subscribe(`private-user-notifications.${response.name}`);
+              let outputString: string = response.name.split(' ').join('');
+              const personalChannel = pusher.subscribe(`private-user-notifications.${outputString}`);
               const userChannel = pusher.subscribe('private-user-notifications');
               console.log(personalChannel);
 
