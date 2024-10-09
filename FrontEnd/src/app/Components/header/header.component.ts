@@ -77,6 +77,7 @@ import { Subscription } from 'rxjs';
 import { ProfileDataService } from '../../shared/services/profile-data.service';
 import { jwtDecode } from 'jwt-decode';
 import { LoaderComponent } from "../loader/loader.component";
+import { PusherService } from '../../shared/services/notification.service'; // Import the new service
 
 @Component({
   selector: 'app-header',
@@ -90,6 +91,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userProfileImage: string = 'images/user.jpeg'; 
   userRole: string | null = null;
   private authSubscription!: Subscription;
+  private pusherSubscription!: Subscription;
+
   profileData: any = null;
   decodedData: any = null;
   unreadNotifications: { message: string }[] = [];
@@ -98,7 +101,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   displayUnread: boolean = true;
   successMessage: string = '';  
   errorMessage: string = '';   
-  constructor(private _AuthService: AuthService, private profileDataService: ProfileDataService, private router: Router) {}
+  constructor(     private pusherService: PusherService // Inject the new service
+,    private _AuthService: AuthService, private profileDataService: ProfileDataService, private router: Router) {}
 
   ngOnInit(): void {
     this.authSubscription = this._AuthService.isAuthenticated$.subscribe(
@@ -145,11 +149,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
         },
       });
     }
+    this.pusherSubscription = this.pusherService.fetchUnreadNotifications$.subscribe(() => {
+      this.fetchUnreadNotifications();
+    });
   }
 
   ngOnDestroy(): void {
     if (this.authSubscription) {
       this.authSubscription.unsubscribe();
+    }
+    if (this.pusherSubscription) {
+      this.pusherSubscription.unsubscribe();
     }
   }
 
@@ -201,8 +211,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
 
   logOutUser(): void {
+    this.pusherService.disconnectPusher();
     this._AuthService.logout();
     this.isLoggedIn = false;
+     // Disconnect Pusher on logout
+
     this.router.navigate(['/login']);
     // this.userProfileImage = 'images/user.jpeg'; // reset to default after logout
   }

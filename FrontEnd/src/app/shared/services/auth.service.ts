@@ -80,7 +80,7 @@
 // }
 import { environment } from '../../environments/environment';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable,forwardRef, Inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import Echo from 'laravel-echo';
@@ -88,6 +88,7 @@ import Pusher from 'pusher-js';
 import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
 import { SnackbarService } from './snackbar.service';
 import { ToastrService } from 'ngx-toastr';
+import { PusherService } from '../../shared/services/notification.service'; // Import the new service
 
 interface userAuth {
   user: any;
@@ -109,7 +110,8 @@ export class AuthService {
   isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
   // private profileDataSubject = new BehaviorSubject<any>(null);
   // profileData$ = this.profileDataSubject.asObservable();
-  constructor(private _HttpClient: HttpClient, private _Router: Router,private snackbarService: SnackbarService, private http: HttpClient , private toastr: ToastrService) {}
+  constructor(    @Inject(forwardRef(() => PusherService)) private pusherService: PusherService
+  ,private _HttpClient: HttpClient, private _Router: Router,private snackbarService: SnackbarService, private http: HttpClient , private toastr: ToastrService) {}
 
   saveUserData() {
     const token = localStorage.getItem('eToken');
@@ -133,19 +135,21 @@ export class AuthService {
           localStorage.setItem('access_token', this.userToken);
           console.log('Access Token Saved:', this.userToken);
           localStorage.removeItem('eToken');
-          this.isAuthenticatedSubject.next(true); // Emit true when token is saved
-          var pusher = new Pusher('35a4e7c2c07082b5318d', {
-            cluster: 'eu',
-            authEndpoint: `http://0.0.0.0:8000/api/broadcasting/auth`,
-            auth: {
-                headers: {
-                    'Authorization': `Bearer ${accessToken}`,  // Set Bearer token dynamically
-                    'Accept': 'application/vnd.api+json' 
-                }
-            }
-        });
+          this.isAuthenticatedSubject.next(true); 
+          this.pusherService.initializePusher(); // Initialize Pusher on login
+          // Emit true when token is saved
+        //   var pusher = new Pusher('35a4e7c2c07082b5318d', {
+        //     cluster: 'eu',
+        //     authEndpoint: `http://0.0.0.0:8000/api/broadcasting/auth`,
+        //     auth: {
+        //         headers: {
+        //             'Authorization': `Bearer ${accessToken}`,  // Set Bearer token dynamically
+        //             'Accept': 'application/vnd.api+json' 
+        //         }
+        //     }
+        // });
           // Subscribe to admin and user channels
-          this.subscribeToChannels(pusher);
+         // this.subscribeToChannels(pusher);
         } else {
           console.error('Access token not found in decoded JWT');
         }
@@ -154,79 +158,79 @@ export class AuthService {
       }
     }
   }
-  subscribeToChannels(pusher: Pusher) {
-    this.getUserInfo().subscribe({
-      next: (response) => {
-        const userName = response.name;
-        const userRole = response.role;
-       console.log(userName);
-      // Subscribe to the admin notifications channel only if the user is an admin
-      if (userRole === 'admin') {
+//   subscribeToChannels(pusher: Pusher) {
+//     this.getUserInfo().subscribe({
+//       next: (response) => {
+//         const userName = response.name;
+//         const userRole = response.role;
+//        console.log(userName);
+//       // Subscribe to the admin notifications channel only if the user is an admin
+//       if (userRole === 'admin') {
 
-        const adminchannel1 = pusher.subscribe('private-admin-notifications');
+//         const adminchannel1 = pusher.subscribe('private-admin-notifications');
           
-        adminchannel1.bind('NewUserRegistered', (data: { message: string }) => {
-          console.log(data);
-          // this.snackbarService.showMessage(data.message);
-          this.toastr.success(data.message)
-        });
+//         adminchannel1.bind('NewUserRegistered', (data: { message: string }) => {
+//           console.log(data);
+//           // this.snackbarService.showMessage(data.message);
+//           this.toastr.success(data.message)
+//         });
 
-        adminchannel1.bind('CourseBookedEvent', (data: any) => {
-          console.log(data);
-          // this.snackbarService.showMessage(data.adminMessage);
-          this.toastr.success(data.adminMessage)
-        });
-        adminchannel1.bind('CourseAddedEvent', (data: any) => {
-          console.log("ifthjitrir "+data);
-          // this.snackbarService.showMessage(data.adminMessage);
-          this.toastr.success(data.adminMessage)
-        });
-      }
-      else {
-        // Fetch user name from AuthService (assumes your AuthService provides user info)
+//         adminchannel1.bind('CourseBookedEvent', (data: any) => {
+//           console.log(data);
+//           // this.snackbarService.showMessage(data.adminMessage);
+//           this.toastr.success(data.adminMessage)
+//         });
+//         adminchannel1.bind('CourseAddedEvent', (data: any) => {
+//           console.log("ifthjitrir "+data);
+//           // this.snackbarService.showMessage(data.adminMessage);
+//           this.toastr.success(data.adminMessage)
+//         });
+//       }
+//       else {
+//         // Fetch user name from AuthService (assumes your AuthService provides user info)
       
       
-            // Replace token with user name for the channel subscription
-            const personalChannel = pusher.subscribe(`private-user-notifications.${response.name}`);
-            const userChannel = pusher.subscribe('private-user-notifications');
-            console.log(personalChannel);
+//             // Replace token with user name for the channel subscription
+//             const personalChannel = pusher.subscribe(`private-user-notifications.${response.name}`);
+//             const userChannel = pusher.subscribe('private-user-notifications');
+//             console.log(personalChannel);
 
-            userChannel.bind('CourseAddedEvent', (data: any) => {
-              console.log('Course added:', data);
-              // this.snackbarService.showMessage(data.studentMessage);
-              this.toastr.success(data.studentMessage)
-            });
+//             userChannel.bind('CourseAddedEvent', (data: any) => {
+//               console.log('Course added:', data);
+//               // this.snackbarService.showMessage(data.studentMessage);
+//               this.toastr.success(data.studentMessage)
+//             });
       
-            personalChannel.bind('CourseBookedEvent', (data: any) => {
-              console.log('Course booked:', data);
-              // this.snackbarService.showMessage(data.studentMessage);
-              this.toastr.success(data.studentMessage)
-            });
+//             personalChannel.bind('CourseBookedEvent', (data: any) => {
+//               console.log('Course booked:', data);
+//               // this.snackbarService.showMessage(data.studentMessage);
+//               this.toastr.success(data.studentMessage)
+//             });
         
          
-      }
-    },
-      error: (err) => {
-        console.error('Error:', err);
-      },
-    });
+//       }
+//     },
+//       error: (err) => {
+//         console.error('Error:', err);
+//       },
+//     });
     
-    // const adminchannel1 = pusher.subscribe('private-admin-notifications');
+//     // const adminchannel1 = pusher.subscribe('private-admin-notifications');
 
-    //   adminchannel1.bind('NewUserRegistered', (data: { message: string }) => {
-    //       console.log(data);
-    //       this.snackbarService.showMessage(data.message);
-    //   });
-    // Subscribe to admin notifications (only admins can listen)
-  //   if(this.echo){
-  //     console.log("Subscribing to channels...");
-  //   this.echo.private('admin-notifications')
-  //     .listen('NewUserRegistered', (e) => {
-  //       console.log("New user registered:", e);
-  //       this.snackbarService.showMessage(e.message);
-  //     });
-  // }
-}
+//     //   adminchannel1.bind('NewUserRegistered', (data: { message: string }) => {
+//     //       console.log(data);
+//     //       this.snackbarService.showMessage(data.message);
+//     //   });
+//     // Subscribe to admin notifications (only admins can listen)
+//   //   if(this.echo){
+//   //     console.log("Subscribing to channels...");
+//   //   this.echo.private('admin-notifications')
+//   //     .listen('NewUserRegistered', (e) => {
+//   //       console.log("New user registered:", e);
+//   //       this.snackbarService.showMessage(e.message);
+//   //     });
+//   // }
+// }
   getUserImage(): string {
     if (this.userimage) {
       const imageUrlParts = this.userimage.split('/storage/');
@@ -269,7 +273,7 @@ export class AuthService {
         localStorage.removeItem('pusherTransportTLS');
         this.userRole = null;
         this.isAuthenticatedSubject.next(false); // Emit false on logout
-        this._Router.navigate(['/login']);
+        //this._Router.navigate(['/login']);
       },
       error: (err) => {
         console.error('Logout failed:', err);
@@ -309,17 +313,17 @@ export class AuthService {
 
     return this._HttpClient.post(`${this.baseURL}/profile`, userData, { headers });
   }
-  getUserInfo(): Observable<{name: string; role: string }> {
-    const token = localStorage.getItem('access_token');
+  // getUserInfo(): Observable<{name: string; role: string }> {
+  //   const token = localStorage.getItem('access_token');
   
-    if (!token) {
-      console.error('No access token found.');
-      return throwError(() => new Error('No access token found.'));
-    }
+  //   if (!token) {
+  //     console.error('No access token found.');
+  //     return throwError(() => new Error('No access token found.'));
+  //   }
   
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this._HttpClient.get<{name: string;role: string }>(`${this.baseURL}/user/name`, { headers });
-  }
+  //   const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+  //   return this._HttpClient.get<{name: string;role: string }>(`${this.baseURL}/user/name`, { headers });
+  // }
   getUnreadNotifications(): Observable<{ message: string }[]> {
     const token = localStorage.getItem('access_token');
   
@@ -402,6 +406,7 @@ export class AuthService {
       })
     );
   }
+
     
   
 }

@@ -83,7 +83,7 @@ export class AddCourseComponent {
             this.toastr.success("Course Created Successfully")
             setTimeout(() => {
               this._Router.navigate(['/adminCourses']).then(() => {
-                window.location.reload(); // This will reload the page after navigation
+           //     window.location.reload(); // This will reload the page after navigation
               });
             }, 2000);
           }

@@ -1,23 +1,39 @@
-  import { Injectable } from '@angular/core';
+  import { Injectable ,forwardRef, Inject } from '@angular/core';
+  import { environment } from '../../environments/environment';
   import Echo from 'laravel-echo';  // Import Echo correctly
   import Pusher from 'pusher-js';   // Import Pusher correctly
   import { SnackbarService } from './snackbar.service';
-  import { HttpClient } from '@angular/common/http';
+  import { HttpClient,HttpHeaders } from '@angular/common/http';
   import { AuthService } from './auth.service'; // Import your AuthService
 import { ToastrService } from 'ngx-toastr';
+import { BehaviorSubject, Observable, catchError, map, throwError } from 'rxjs';
+
+//import { HeaderComponent } from '../../Components/header/header.component'; // Adjust the path as necessary
+//import { BehaviorSubject } from 'rxjs';
 
   @Injectable({
     providedIn: 'root',
   })
   export class PusherService {
+    
+    private fetchUnreadNotificationsSubject = new BehaviorSubject<void>(undefined);
+    fetchUnreadNotifications$ = this.fetchUnreadNotificationsSubject.asObservable();
+  
+    triggerFetchUnreadNotifications() {
+      this.fetchUnreadNotificationsSubject.next();
+    }
     private pusher: Pusher | null = null;
     private echo: Echo | null = null;
+    private baseURL = environment.apiUrl;
 
-    constructor(private snackbarService: SnackbarService, private http: HttpClient,
-      private authService: AuthService // Inject AuthService
-      , private toastr: ToastrService
+    constructor(private snackbarService: SnackbarService, private _HttpClient: HttpClient,
+       private toastr: ToastrService, 
+
     ) {
-      const token = localStorage.getItem('access_token');  // Get token from localStorage
+      this.initializePusher();
+      
+    }
+    initializePusher(){ const token = localStorage.getItem('access_token');  // Get token from localStorage
     //  console.log('Token:', token);
 
       if (token) {
@@ -37,7 +53,7 @@ import { ToastrService } from 'ngx-toastr';
         //     }
         //   },
         // });
-        var pusher = new Pusher('35a4e7c2c07082b5318d', {
+        this.pusher = new Pusher('35a4e7c2c07082b5318d', {
           cluster: 'eu',
           authEndpoint: `http://0.0.0.0:8000/api/broadcasting/auth`,
           auth: {
@@ -48,12 +64,10 @@ import { ToastrService } from 'ngx-toastr';
           }
       });
         // Subscribe to admin and user channels
-        this.subscribeToChannels(pusher);
-      }
-    }
-
+        this.subscribeToChannels(this.pusher);
+      }}
     subscribeToChannels(pusher: Pusher) {
-      this.authService.getUserInfo().subscribe({
+      this.getUserInfo().subscribe({
         next: (response) => {
           const userName = response.name;
           const userRole = response.role;
@@ -66,6 +80,8 @@ import { ToastrService } from 'ngx-toastr';
           adminchannel1.bind('NewUserRegistered', (data: { message: string }) => {
             console.log(data);
             this.toastr.success(data.message)
+            this.triggerFetchUnreadNotifications(); // Fetch unread notifications
+        
             // this.snackbarService.showMessage(data.message);
           });
 
@@ -74,11 +90,15 @@ import { ToastrService } from 'ngx-toastr';
             // this.toastr.success(data.message)
             // this.snackbarService.showMessage(data.adminMessage);
             this.toastr.success(data.adminMessage)
+            this.triggerFetchUnreadNotifications(); // Fetch unread notifications
+          
           });
           adminchannel1.bind('CourseAddedEvent', (data: any) => {
             console.log(data);
             // this.snackbarService.showMessage(data.adminMessage);
             this.toastr.success(data.adminMessage)
+            this.triggerFetchUnreadNotifications(); // Fetch unread notifications
+          
           });
         }
         else {
@@ -94,6 +114,8 @@ import { ToastrService } from 'ngx-toastr';
                 console.log('Course added:', data);
                 //this.snackbarService.showMessage(data.studentMessage);
                 this.toastr.success(data.studentMessage)
+                this.triggerFetchUnreadNotifications(); // Fetch unread notifications
+              
 
               });
         
@@ -101,6 +123,8 @@ import { ToastrService } from 'ngx-toastr';
                 console.log('Course booked:', data);
                 //this.snackbarService.showMessage(data.studentMessage);
                 this.toastr.success(data.studentMessage)
+                this.triggerFetchUnreadNotifications(); // Fetch unread notifications
+              
 
               });
           
@@ -127,5 +151,25 @@ import { ToastrService } from 'ngx-toastr';
     //       this.snackbarService.showMessage(e.message);
     //     });
     // }
+  }
+  getUserInfo(): Observable<{name: string; role: string }> {
+    const token = localStorage.getItem('access_token');
+  
+    if (!token) {
+      console.error('No access token found.');
+      return throwError(() => new Error('No access token found.'));
+    }
+  
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this._HttpClient.get<{name: string;role: string }>(`${this.baseURL}/user/name`, { headers });
+  }
+  disconnectPusher() {
+    console.log("logout form pusher" + this.pusher)
+
+    if (this.pusher) {
+      console.log("logout form pusher")
+      this.pusher.disconnect();
+      this.pusher = null;
+    }
   }
   }
