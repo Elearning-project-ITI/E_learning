@@ -81,24 +81,31 @@ import { ToastrService } from 'ngx-toastr';
             this.toastr.success(data.adminMessage)
           });
         }
-        else{       
-          const token = localStorage.getItem('access_token');
-          const userChannel = pusher.subscribe('private-user-notifications');
-          console.log(111)
-          const personalChannel = pusher.subscribe(`private-user-notifications.${token}`);
-      
-          userChannel.bind('CourseAddedEvent', (data: any) => {
-            console.log('Course added:', data);
-            // this.snackbarService.showMessage(data.studentMessage);
-            this.toastr.success(data.studentMessage)
-          });
-      
-          personalChannel.bind('CourseBookedEvent', (data: any) => {
-            console.log('Course booked:', data);
-            this.toastr.success(data.studentMessage)
-            // this.snackbarService.showMessage(data.studentMessage);
-          });
-        } 
+        else {
+          // Fetch user name from AuthService (assumes your AuthService provides user info)
+        
+        
+              // Replace token with user name for the channel subscription
+              const personalChannel = pusher.subscribe(`private-user-notifications.${response.name}`);
+              const userChannel = pusher.subscribe('private-user-notifications');
+              console.log(personalChannel);
+
+              userChannel.bind('CourseAddedEvent', (data: any) => {
+                console.log('Course added:', data);
+                //this.snackbarService.showMessage(data.studentMessage);
+                this.toastr.success(data.studentMessage)
+
+              });
+        
+              personalChannel.bind('CourseBookedEvent', (data: any) => {
+                console.log('Course booked:', data);
+                //this.snackbarService.showMessage(data.studentMessage);
+                this.toastr.success(data.studentMessage)
+
+              });
+          
+           
+        }
       },
         error: (err) => {
           console.error('Error:', err);
