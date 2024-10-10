@@ -80,7 +80,7 @@ export class AddCourseComponent {
             this.isLoading = false;
             console.log(response)
             this.msgSuccess = response.message;
-            this.toastr.success("Course Created Successfully")
+            // this.toastr.success("Course Created Successfully")
             setTimeout(() => {
               this._Router.navigate(['/adminCourses']).then(() => {
            //     window.location.reload(); // This will reload the page after navigation
